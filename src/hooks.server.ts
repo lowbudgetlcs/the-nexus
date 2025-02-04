@@ -1,4 +1,4 @@
-import { env } from '$env/dynamic/private'
+import { env } from '$env/dynamic/private';
 import { db } from '$lib/server/db';
 import { users } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';

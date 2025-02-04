@@ -5,15 +5,15 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Install dependencies separately to leverage Docker caching
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json yarn.lock ./
+RUN yarn install
 
 # Copy the rest of the app's source code
 COPY . .
 
 # Build the SvelteKit app
-RUN npm run build
-RUN npm prune --production
+RUN yarn run build
+RUN yarn prune --production
 
 # --- Production Image ---
 FROM node:20-alpine AS runner
@@ -34,4 +34,3 @@ EXPOSE 3000
 
 # Start the application
 CMD ["node", "build"]
-

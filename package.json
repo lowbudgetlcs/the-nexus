@@ -15,12 +15,13 @@
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
-		"@sveltejs/adapter-node": "^5.2.12",
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"@types/better-sqlite3": "^7.6.12",
 		"@types/jsonwebtoken": "^9.0.8",
 		"autoprefixer": "^10.4.20",
+		"bits-ui": "^1.0.0-next.85",
+		"clsx": "^2.1.1",
 		"dotenv": "^16.4.7",
 		"drizzle-kit": "^0.30.2",
 		"eslint": "^9.18.0",
@@ -33,14 +34,22 @@
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"tailwindcss": "^3.4.17",
+		"tailwindcss-animate": "^1.0.7",
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.20.0"
 	},
 	"dependencies": {
+		"@sveltejs/adapter-node": "^5.2.12",
 		"argon2": "^0.41.1",
 		"better-sqlite3": "^11.8.0",
 		"drizzle-orm": "^0.38.4",
+		"formsnap": "^2.0.0",
 		"jsonwebtoken": "^9.0.2",
-		"vite": "^6.0.11"
+		"postcss": "^8.5.1",
+		"sveltekit-superforms": "^2.23.1",
+		"tailwind-merge": "^3.0.1",
+		"tailwind-variants": "^0.3.1",
+		"vite": "^6.0.0",
+		"zod": "^3.24.1"
 	}
 }

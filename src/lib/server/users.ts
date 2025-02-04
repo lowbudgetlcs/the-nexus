@@ -1,5 +1,5 @@
 import argon2 from 'argon2';
-import { env } from '$env/dynamic/private'
+import { env } from '$env/dynamic/private';
 import { db } from '$lib/server/db';
 import { users } from '$lib/server/db/schema';
 import jwt from 'jsonwebtoken';
@@ -11,18 +11,18 @@ export async function loginUser(username: string, password: string): Promise<Res
 
 	if (fetchedUser.length < 1) {
 		return {
-      type: 'error',
+			type: 'error',
 			reason: 'User does not exist.'
 		};
 	}
 	const user = fetchedUser[0];
 
 	//const authenticated = await argon2.verify(user.password, password);
-  const authenticated = (password === user.password);
+	const authenticated = password === user.password;
 	if (!authenticated) {
 		return {
-			type:'error',
-      reason: 'Incorrect password.'
+			type: 'error',
+			reason: 'Incorrect password.'
 		};
 	}
 

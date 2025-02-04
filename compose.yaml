@@ -12,4 +12,3 @@ services:
       - ORIGIN=${ORIGIN}
     volumes:
       - ./sqlite.db:/app/sqlite.db:rw
-
