@@ -9,8 +9,10 @@
 </svelte:head>
 
 <div>
-	<section>
-		<h1>Login</h1>
-		<LoginForm data={data} />
+	<section class="flex flex-col items-center justify-center">
+		<h1 class="text-2xl">Login</h1>
+		<div class="">
+			<LoginForm {data} />
+		</div>
 	</section>
 </div>

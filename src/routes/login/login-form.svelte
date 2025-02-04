@@ -5,7 +5,7 @@
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
-  let { data }: { data: { form: SuperValidated<Infer<FormSchema>> } } = $props();
+	let { data }: { data: { form: SuperValidated<Infer<FormSchema>> } } = $props();
 
 	const form = superForm(data.form, {
 		validators: zodClient(formSchema)
@@ -17,21 +17,26 @@
 <form method="POST" action="?/login" use:enhance>
 	<Form.Field {form} name="username">
 		<Form.Control>
-      {#snippet children({ props })}
-			<Form.Label>Username</Form.Label>
-			<Input {...props} bind:value={$formData.username} />
-      {/snippet}
+			{#snippet children({ props })}
+				<Form.Label>Username</Form.Label>
+				<Input {...props} bind:value={$formData.username} />
+			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	<Form.Field {form} name="password">
 		<Form.Control>
-      {#snippet children({ props })}
-			<Form.Label>Password</Form.Label>
-			<Input {...props} type="password" bind:value={$formData.password} />
-      {/snippet}
+			{#snippet children({ props })}
+				<Form.Label>Password</Form.Label>
+				<Input {...props} type="password" bind:value={$formData.password} />
+			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	<Form.Button>Submit</Form.Button>
+	{#if data?.error}
+		<div class="text-red-500">
+			{data.error}
+		</div>
+	{/if}
 </form>
