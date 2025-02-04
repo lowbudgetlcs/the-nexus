@@ -21,7 +21,7 @@ clean:
 erase: stop clean
 
 # Rebuild and restart the container
-all: stop clean build run
+all: erase build run
 
 # Show logs from the running container
 logs:

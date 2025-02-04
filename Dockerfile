@@ -1,24 +1,19 @@
-# Use an official Node.js runtime as the base image
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
+ENV NODE_ENV=production
 
-# Set working directory inside the container
 WORKDIR /app
 
-# Install dependencies separately to leverage Docker caching
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
 RUN yarn install
 
-# Copy the rest of the app's source code
 COPY . .
-
-# Build the SvelteKit app
-RUN yarn run build
+RUN yarn build 
 
 # --- Production Image ---
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 
 WORKDIR /app
-
 # Copy only the necessary files from the builder stage
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/node_modules ./node_modules
