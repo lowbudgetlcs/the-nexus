@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
-	import { formSchema, type FormSchema } from './schema';
+	import { formSchema, type FormSchema } from './hashSchema';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
@@ -11,19 +11,10 @@
 		validators: zodClient(formSchema)
 	});
 
-	const { form: formData, enhance } = form;
+	const { form: formData, enhance, message } = form;
 </script>
 
-<form method="POST" action="?/login" use:enhance>
-	<Form.Field {form} name="username">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Username</Form.Label>
-				<Input {...props} bind:value={$formData.username} />
-			{/snippet}
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
+<form method="POST" action="?/hash" use:enhance>
 	<Form.Field {form} name="password">
 		<Form.Control>
 			{#snippet children({ props })}
@@ -34,4 +25,7 @@
 		<Form.FieldErrors />
 	</Form.Field>
 	<Form.Button>Submit</Form.Button>
+  {#if $message}
+	<p>Hash: {$message}</p>
+  {/if}
 </form>

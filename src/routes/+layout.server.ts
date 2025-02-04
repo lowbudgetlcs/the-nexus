@@ -7,8 +7,4 @@ export const load: LayoutServerLoad = (e) => {
 	if (!user && e.route.id != '/login') {
 		throw redirect(302, '/login');
 	}
-
-	return {
-		user
-	};
 };

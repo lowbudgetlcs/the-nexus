@@ -13,7 +13,6 @@ COPY . .
 
 # Build the SvelteKit app
 RUN yarn run build
-RUN yarn prune --production
 
 # --- Production Image ---
 FROM node:20-alpine AS runner

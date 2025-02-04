@@ -17,8 +17,12 @@ export async function loginUser(username: string, password: string): Promise<Res
 	}
 	const user = fetchedUser[0];
 
-	//const authenticated = await argon2.verify(user.password, password);
-	const authenticated = password === user.password;
+  let authenticated = false;
+  try {
+	authenticated = await argon2.verify(user.password, password);
+  } catch(e) {
+    authenticated = false;
+  }
 	if (!authenticated) {
 		return {
 			type: 'error',
@@ -36,4 +40,14 @@ export async function loginUser(username: string, password: string): Promise<Res
 	});
 
 	return { type: 'success', data: token };
+}
+
+export async function hash(password: string): Promise<Result<string>> {
+	try {
+		const hash = await argon2.hash(password);
+		return { type: 'success', data: hash };
+	} catch (e) {
+		console.log(e);
+		return { type: 'error', reason: 'argon2 hash failed.' };
+	}
 }

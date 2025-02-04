@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import type { PageProps } from './$types';
 	import LoginForm from './login-form.svelte';
-	let { data }: { data: PageData } = $props();
+	let { data }: PageProps = $props();
 </script>
 
 <svelte:head>
@@ -11,7 +11,7 @@
 <div>
 	<section class="flex flex-col items-center justify-center">
 		<h1 class="text-2xl">Login</h1>
-		<div class="">
+		<div>
 			<LoginForm {data} />
 		</div>
 	</section>
