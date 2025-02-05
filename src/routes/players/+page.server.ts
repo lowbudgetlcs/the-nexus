@@ -16,7 +16,7 @@ export const load: PageServerLoad = async () => {
     },
     {
       name: 'Unkindness#N B',
-      team: 'Naughty Bois',
+      team: null,
     },
     {
       name: 'Seir#qiiqo',

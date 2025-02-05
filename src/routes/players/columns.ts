@@ -5,7 +5,7 @@ import type { ColumnDef } from '@tanstack/table-core';
 
 export type Player = {
   name: string;
-  team: string;
+  team: string | null;
 };
 
 export const columns: ColumnDef<Player>[] = [

@@ -3,10 +3,13 @@
     type ColumnDef,
     type PaginationState,
     type SortingState,
+    type ColumnFilterState,
     getCoreRowModel,
     getPaginationRowModel,
     getSortedRowModel,
+    getFilteredRowModel,
   } from '@tanstack/table-core';
+  import { Input } from '$lib/components/ui/input/index.js';
   import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table';
   import * as Table from '$lib/components/ui/table';
   import { Button } from '$lib/components/ui/button';
@@ -15,11 +18,11 @@
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
   };
-
   let { data, columns }: DataTableProps<TData, TValue> = $props();
 
   let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
   let sorting = $state<SortingState>([]);
+  let columnFilters = $state<ColumnFiltersState>([]);
 
   const table = createSvelteTable({
     get data() {
@@ -29,6 +32,7 @@
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: (updater) => {
       if (typeof updater === 'function') {
         sorting = updater(sorting);
@@ -43,6 +47,13 @@
         pagination = updater;
       }
     },
+    onColumnFiltersChange: (updater) => {
+      if (typeof updater === 'function') {
+        columnFilters = updater(columnFilters);
+      } else {
+        columnFilters = updater;
+      }
+    },
     state: {
       get pagination() {
         return pagination;
@@ -50,11 +61,27 @@
       get sorting() {
         return sorting;
       },
+      get columnFilters() {
+        return columnFilters;
+      },
     },
   });
 </script>
 
 <section>
+  <div class="flex items-center py-4">
+    <Input
+      placeholder="Filter teams..."
+      value={(table.getColumn('team')?.getFilterValue() as string) ?? ''}
+      onchange={(e) => {
+        table.getColumn('team')?.setFilterValue(e.currentTarget.value);
+      }}
+      oninput={(e) => {
+        table.getColumn('team')?.setFilterValue(e.currentTarget.value);
+      }}
+      class="max-w-sm"
+    />
+  </div>
   <div class="rounded-md border">
     <Table.Root>
       <Table.Header>

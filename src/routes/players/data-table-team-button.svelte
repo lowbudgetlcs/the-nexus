@@ -7,6 +7,6 @@
 </script>
 
 <Button {variant} {...restProps}>
-  Teams
+  Team
   <ArrowUpDown class="ml-2" />
 </Button>
