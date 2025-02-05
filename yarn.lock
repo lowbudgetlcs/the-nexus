@@ -1663,7 +1663,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bits-ui@npm:^1.0.0-next.85":
+"bits-ui@npm:^1.0.0-next.86":
   version: 1.0.0-next.86
   resolution: "bits-ui@npm:1.0.0-next.86"
   dependencies:
@@ -3448,6 +3448,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lucide-svelte@npm:^0.474.0":
+  version: 0.474.0
+  resolution: "lucide-svelte@npm:0.474.0"
+  peerDependencies:
+    svelte: ^3 || ^4 || ^5.0.0-next.42
+  checksum: 10c0/d9da279a4a9a38fc208c7ecc69b2b6f641b0d04f466e54c9d8d77f9478cbda7426627b98dac9d8431917a871f3dbb1087699eaf08402840f578821d53ba58d14
+  languageName: node
+  linkType: hard
+
 "magic-string@npm:^0.30.11, magic-string@npm:^0.30.15, magic-string@npm:^0.30.3, magic-string@npm:^0.30.5":
   version: 0.30.17
   resolution: "magic-string@npm:0.30.17"
@@ -4983,7 +4992,7 @@ __metadata:
     argon2: "npm:^0.41.1"
     autoprefixer: "npm:^10.4.20"
     better-sqlite3: "npm:^11.8.1"
-    bits-ui: "npm:^1.0.0-next.85"
+    bits-ui: "npm:^1.0.0-next.86"
     clsx: "npm:^2.1.1"
     dotenv: "npm:^16.4.7"
     drizzle-kit: "npm:^0.30.2"
@@ -4994,6 +5003,7 @@ __metadata:
     formsnap: "npm:^2.0.0"
     globals: "npm:^15.14.0"
     jsonwebtoken: "npm:^9.0.2"
+    lucide-svelte: "npm:^0.474.0"
     postcss: "npm:^8.5.1"
     prettier: "npm:^3.4.2"
     prettier-plugin-svelte: "npm:^3.3.3"

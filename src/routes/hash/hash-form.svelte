@@ -25,7 +25,7 @@
     <Form.FieldErrors />
   </Form.Field>
   <Form.Button>Submit</Form.Button>
-  {#if $message}
-    <p>Hash: {$message}</p>
-  {/if}
 </form>
+{#if $message}
+  <p>Hash: {$message}</p>
+{/if}
