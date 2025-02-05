@@ -1,3 +1,5 @@
+import { renderComponent } from '$lib/components/ui/data-table';
+import DataTableActions from './data-table-actions.svelte';
 import type { ColumnDef } from '@tanstack/table-core';
 
 export type Player = {
@@ -13,5 +15,11 @@ export const columns: ColumnDef<Player>[] = [
   {
     accessorKey: 'team',
     header: 'Team'
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      return renderComponent(DataTableActions, { name: row.original.name });
+    }
   }
 ];
