@@ -1,11 +1,11 @@
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = (e) => {
-  const user = e.locals.user;
+export const load: LayoutServerLoad = ({ locals, route }) => {
+  const user = locals.user;
 
-  if (!user && e.route.id != '/login') {
+  if (!user && route.id != '/login') {
     throw redirect(302, '/login');
   }
-  return { render: !!user }
+  return { render: !!user };
 };
