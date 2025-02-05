@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { PageProps } from './$types';
-  //   import PlayerTable from './player-table.svelte';
   import DataTable from './data-table.svelte';
   import { columns } from './columns';
 
