@@ -8,9 +8,9 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions = {
   logout: async ({ cookies }) => {
     cookies.delete('AuthorizationToken', {
-      path: '/'
+      path: '/',
     });
 
     throw redirect(302, '/login');
-  }
+  },
 } satisfies Actions;

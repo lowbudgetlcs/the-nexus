@@ -26,7 +26,7 @@ export const handle = async ({ event, resolve }) => {
 
       const sessionUser = {
         id: user.id,
-        username: user.username
+        username: user.username,
       };
 
       event.locals.user = sessionUser;

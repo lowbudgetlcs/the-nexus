@@ -7,7 +7,7 @@ import { formSchema } from './hashSchema';
 
 export const load: PageServerLoad = async () => {
   return {
-    form: await superValidate(zod(formSchema))
+    form: await superValidate(zod(formSchema)),
   };
 };
 
@@ -19,5 +19,5 @@ export const actions = {
     const res = await hash(form.data.password);
     if (res.type === 'error') return setError(form, 'password', 'Failed to hash password.');
     return message(form, res.data);
-  }
+  },
 } satisfies Actions;

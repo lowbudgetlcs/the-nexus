@@ -12,7 +12,7 @@ export async function loginUser(username: string, password: string): Promise<Res
   if (fetchedUser.length < 1) {
     return {
       type: 'error',
-      reason: 'User does not exist.'
+      reason: 'User does not exist.',
     };
   }
   const user = fetchedUser[0];
@@ -26,17 +26,17 @@ export async function loginUser(username: string, password: string): Promise<Res
   if (!authenticated) {
     return {
       type: 'error',
-      reason: 'Incorrect password.'
+      reason: 'Incorrect password.',
     };
   }
 
   const jwtUser = {
     id: user.id,
-    username: user.username
+    username: user.username,
   };
 
   const token = jwt.sign(jwtUser, env.JWT_SECRET_KEY!, {
-    expiresIn: '1d'
+    expiresIn: '1d',
   });
 
   return { type: 'success', data: token };

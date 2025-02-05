@@ -6,3 +6,4 @@ node_modules
 .svelte-kit
 .yarn
 .github
+src/lib/components/ui

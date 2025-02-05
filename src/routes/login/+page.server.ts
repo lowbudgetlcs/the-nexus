@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ locals }) => {
   }
 
   return {
-    form: await superValidate(zod(formSchema))
+    form: await superValidate(zod(formSchema)),
   };
 };
 
@@ -30,8 +30,8 @@ export const actions = {
       path: '/',
       secure: true,
       sameSite: 'strict',
-      maxAge: 60 * 60 * 24 // 1 day
+      maxAge: 60 * 60 * 24, // 1 day
     });
     throw redirect(302, '/');
-  }
+  },
 } satisfies Actions;
