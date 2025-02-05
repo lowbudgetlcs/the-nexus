@@ -1,13 +1,13 @@
 import argon2 from 'argon2';
 import { env } from '$env/dynamic/private';
-import { db } from '$lib/server/db';
-import { users } from '$lib/server/db/schema';
+import { usersDb } from '$lib/server/db/users';
+import { users } from '$lib/server/db/users/schema';
 import jwt from 'jsonwebtoken';
 import { eq } from 'drizzle-orm';
 import type { Result } from '$lib/types/result';
 
 export async function loginUser(username: string, password: string): Promise<Result<string>> {
-  const fetchedUser = await db.select().from(users).where(eq(users.username, username)).limit(1);
+  const fetchedUser = await usersDb.select().from(users).where(eq(users.username, username)).limit(1);
 
   if (fetchedUser.length < 1) {
     return {
@@ -20,7 +20,7 @@ export async function loginUser(username: string, password: string): Promise<Res
   let authenticated = false;
   try {
     authenticated = await argon2.verify(user.password, password);
-  } catch (e) {
+  } catch (_) {
     authenticated = false;
   }
   if (!authenticated) {

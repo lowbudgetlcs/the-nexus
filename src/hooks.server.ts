@@ -1,6 +1,6 @@
 import { env } from '$env/dynamic/private';
-import { db } from '$lib/server/db';
-import { users } from '$lib/server/db/schema';
+import { usersDb } from '$lib/server/db/users';
+import { users } from '$lib/server/db/users/schema';
 import { eq } from 'drizzle-orm';
 import jwt from 'jsonwebtoken';
 
@@ -17,7 +17,7 @@ export const handle = async ({ event, resolve }) => {
         throw new Error('Something went wrong');
       }
 
-      const res = await db.select().from(users).where(eq(users.id, jwtUser.id));
+      const res = await usersDb.select().from(users).where(eq(users.id, jwtUser.id));
 
       if (res.length == 0) {
         throw new Error('User not found');
