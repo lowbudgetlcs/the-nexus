@@ -8,15 +8,15 @@ export type Player = {
 
 export const columns: ColumnDef<Player>[] = [
   {
+    accessorKey: 'active',
+    header: 'Active'
+  },
+  {
     accessorKey: 'name',
     header: 'Name'
   },
   {
     accessorKey: 'team',
     header: 'Team'
-  },
-  {
-    accessorKey: 'active',
-    header: 'Active'
   }
 ];

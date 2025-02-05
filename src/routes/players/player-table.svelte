@@ -1,12 +1,12 @@
 <script lang="ts">
   import * as Table from '$lib/components/ui/table/index.js';
-  import type { Player } from './+page.svelte';
+  import type { Player } from './columns';
 
-  let { players }: { players: Player[] } = $props();
+  let { data }: { data: { players: Player[] } } = $props();
 </script>
 
 <Table.Root class="mt-8">
-  <Table.Caption>{players.length} players loaded.</Table.Caption>
+  <Table.Caption>{data.players.length} players loaded.</Table.Caption>
   <Table.Header>
     <Table.Row>
       <Table.Head class="w-[100px]">Active?</Table.Head>
@@ -15,7 +15,7 @@
     </Table.Row>
   </Table.Header>
   <Table.Body>
-    {#each players as player}
+    {#each data.players as player}
       <Table.Row>
         <Table.Cell>{player.active ? 'yes' : 'no'}</Table.Cell>
         <Table.Cell class="font-medium">{player.name}</Table.Cell>
