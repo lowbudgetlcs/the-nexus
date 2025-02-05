@@ -21,7 +21,7 @@ export const commandChannelPermissions = pgTable("command_channel_permissions", 
 export const players = pgTable("players", {
 	id: serial().primaryKey().notNull(),
 	riotPuuid: char("riot_puuid", { length: 78 }).notNull(),
-	summonerName: varchar("summoner_name", { length: 25 }),
+	summonerName: varchar("summoner_name", { length: 25 }).notNull(),
 	teamId: integer("team_id"),
 }, (table) => [
 	foreignKey({
@@ -271,8 +271,7 @@ export const gameDumps = pgTable("game_dumps", {
 export const users = pgTable("users", {
 	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "users_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
 	username: varchar().notNull(),
-	// TODO: failed to parse database type 'bytea'
-	ha1: unknown("ha1").notNull(),
+	ha1: text().notNull(),
 });
 
 export const draftLobbies = pgTable("draft_lobbies", {

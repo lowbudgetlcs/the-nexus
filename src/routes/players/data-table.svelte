@@ -3,16 +3,16 @@
     type ColumnDef,
     type PaginationState,
     type SortingState,
-    type ColumnFilterState,
+    type ColumnFiltersState,
     getCoreRowModel,
     getPaginationRowModel,
     getSortedRowModel,
     getFilteredRowModel,
   } from '@tanstack/table-core';
   import { Input } from '$lib/components/ui/input/index.js';
-  import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table';
   import * as Table from '$lib/components/ui/table';
   import { Button } from '$lib/components/ui/button';
+  import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table';
 
   type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
@@ -117,22 +117,27 @@
       </Table.Body>
     </Table.Root>
   </div>
-  <div class="jusityf-end flex items-center space-x-2 py-4">
-    <Button
-      variant="outline"
-      size="sm"
-      onclick={() => table.previousPage()}
-      disabled={!table.getCanPreviousPage()}
-    >
-      Previous
-    </Button>
-    <Button
-      variant="outline"
-      size="sm"
-      onclick={() => table.nextPage()}
-      disabled={!table.getCanNextPage()}
-    >
-      Next
-    </Button>
+  <div class="flex flex-row justify-between">
+    <div class="flex items-center py-4">
+      <Button variant="outline">Create Player</Button>
+    </div>
+    <div class="flex items-center justify-end space-x-2 py-4">
+      <Button
+        variant="outline"
+        size="sm"
+        onclick={() => table.previousPage()}
+        disabled={!table.getCanPreviousPage()}
+      >
+        Previous
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        onclick={() => table.nextPage()}
+        disabled={!table.getCanNextPage()}
+      >
+        Next
+      </Button>
+    </div>
   </div>
 </section>

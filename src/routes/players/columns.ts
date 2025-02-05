@@ -6,6 +6,7 @@ import type { ColumnDef } from '@tanstack/table-core';
 export type Player = {
   name: string;
   team: string | null;
+  division: string | null;
 };
 
 export const columns: ColumnDef<Player>[] = [
@@ -20,6 +21,10 @@ export const columns: ColumnDef<Player>[] = [
         onclick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
       });
     },
+  },
+  {
+    accessorKey: 'division',
+    header: 'Division',
   },
   {
     id: 'actions',
