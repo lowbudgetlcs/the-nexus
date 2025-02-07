@@ -7,7 +7,11 @@ import { eq } from 'drizzle-orm';
 import type { Result } from '$lib/types/result';
 
 export async function loginUser(username: string, password: string): Promise<Result<string>> {
-  const fetchedUser = await usersDb.select().from(users).where(eq(users.username, username)).limit(1);
+  const fetchedUser = await usersDb
+    .select()
+    .from(users)
+    .where(eq(users.username, username))
+    .limit(1);
 
   if (fetchedUser.length < 1) {
     return {

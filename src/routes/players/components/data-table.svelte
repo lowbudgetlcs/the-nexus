@@ -13,12 +13,23 @@
   import * as Table from '$lib/components/ui/table';
   import { Button } from '$lib/components/ui/button';
   import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table';
+  import CreatePlayerDialog from './create-player-dialog.svelte';
+  import type { Infer, SuperValidated } from 'sveltekit-superforms';
+  import type { FormSchema } from './schema';
 
   type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
   };
-  let { data, columns }: DataTableProps<TData, TValue> = $props();
+  let {
+    data: tData,
+    form,
+  }: {
+    data: { tableData: DataTableProps<TData, TValue> };
+    form: SuperValidated<Infer<FormSchema>>;
+  } = $props();
+  let data = tData.tableData.data;
+  let columns = tData.tableData.columns;
 
   let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
   let sorting = $state<SortingState>([]);
@@ -119,7 +130,7 @@
   </div>
   <div class="flex flex-row justify-between">
     <div class="flex items-center py-4">
-      <Button variant="outline">Create Player</Button>
+      <CreatePlayerDialog data={{ form: form }} />
     </div>
     <div class="flex items-center justify-end space-x-2 py-4">
       <Button
