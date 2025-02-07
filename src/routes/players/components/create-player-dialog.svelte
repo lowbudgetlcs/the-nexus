@@ -1,17 +1,10 @@
 <script lang="ts">
   import { Button, buttonVariants } from '$lib/components/ui/button/index.js';
   import * as Dialog from '$lib/components/ui/dialog/index.js';
-  import * as Form from '$lib/components/ui/form';
-  import { Input } from '$lib/components/ui/input';
-  import { formSchema, type FormSchema } from './schema';
-  import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
-  import { zodClient } from 'sveltekit-superforms/adapters';
+  import type { PageProps } from '../$types';
+  import CreatePlayerForm from './create-player-form.svelte';
 
-  let { data }: { data: { form: SuperValidated<Infer<FormSchema>> } } = $props();
-  const form = superForm(data.form, {
-    validators: zodClient(formSchema),
-  });
-  const { form: formData, enhance } = form;
+  let { data }: PageProps = $props();
 </script>
 
 <Dialog.Root>
@@ -23,26 +16,7 @@
         Create a new player in the database. Team is optional.
       </Dialog.Description>
     </Dialog.Header>
-    <form method="POST" id="createPlayer" action="?/create" class="grid gap-4 py-4" use:enhance>
-      <Form.Field {form} name="summonerName" class="grid grid-cols-4 items-center gap-4">
-        <Form.Control>
-          {#snippet children({ props })}
-            <Form.Label class="text-right">Summoner Name</Form.Label>
-            <Input {...props} class="col-span-3" bind:value={$formData.summonerName} />
-          {/snippet}
-        </Form.Control>
-        <Form.FieldErrors />
-      </Form.Field>
-      <Form.Field {form} name="team" class="grid grid-cols-4 items-center gap-4">
-        <Form.Control>
-          {#snippet children({ props })}
-            <Form.Label class="text-right">Team</Form.Label>
-            <Input {...props} class="col-span-3" bind:value={$formData.team} />
-          {/snippet}
-        </Form.Control>
-        <Form.FieldErrors />
-      </Form.Field>
-    </form>
+    <CreatePlayerForm id="createPlayer" form={data.form} />
     <Dialog.Footer>
       <Button type="submit" form="createPlayer">Create Player</Button>
     </Dialog.Footer>
