@@ -2,7 +2,7 @@
   import Ellipsis from 'lucide-svelte/icons/ellipsis';
   import { Button } from '$lib/components/ui/button';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-  import type { Player } from './columns';
+  import type { Player } from '$lib/types/entities';
 
   let { player }: { player: Player } = $props();
 </script>

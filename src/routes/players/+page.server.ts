@@ -2,7 +2,7 @@ import { lblcsDb } from '$lib/server/db/lblcs';
 import { divisions, players, teams } from '$lib/server/db/lblcs/schema';
 import { eq } from 'drizzle-orm';
 import type { PageServerLoad, Actions } from './$types';
-import type { Player } from './components/columns';
+import type { Player } from '$lib/types/entities';
 import { zod } from 'sveltekit-superforms/adapters';
 import { createPlayerSchema } from './components/schema';
 import { fail, setError, superValidate } from 'sveltekit-superforms';

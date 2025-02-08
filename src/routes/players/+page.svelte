@@ -1,13 +1,21 @@
+<script lang="ts" module>
+  import { defineService } from '$lib/context';
+  const [getService, service] = defineService<SuperValidated<Infer<CreatePlayerFormSchema>>>();
+  export const createPlayerForm = getService;
+</script>
+
 <script lang="ts">
-  import type { PageProps } from './$types';
   import PlayerDataTable from './components/player-data-table.svelte';
   import { columns } from './components/columns';
-  import { setContext } from 'svelte';
+  import type { Infer, SuperValidated } from 'sveltekit-superforms';
+  import type { CreatePlayerFormSchema } from './components/schema';
+  import type { Player } from '$lib/types/entities';
 
-  let { data }: PageProps = $props();
-  setContext('createPlayerForm', data.form);
+  let { data } = $props();
+  let { players, form } = data;
+  service(form);
 </script>
 
 <section class="flex w-full items-center justify-center">
-  <PlayerDataTable data={data.players} {columns} />
+  <PlayerDataTable data={players} {columns} />
 </section>

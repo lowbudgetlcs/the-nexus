@@ -1,19 +1,19 @@
 <script lang="ts">
   import * as Form from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
-  import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
-  import { createPlayerSchema, type CreatePlayerFormSchema } from './schema';
+  import { superForm } from 'sveltekit-superforms';
+  import { createPlayerSchema } from './schema';
   import { zodClient } from 'sveltekit-superforms/adapters';
-  import { getContext } from 'svelte';
+  import { createPlayerForm } from '../+page.svelte';
 
-  let formCtx = getContext<SuperValidated<Infer<CreatePlayerFormSchema>>>('createPlayerForm');
+  let formCtx = createPlayerForm();
   const form = superForm(formCtx, {
     validators: zodClient(createPlayerSchema),
   });
   const { form: data, enhance } = form;
 </script>
 
-<form method="POST" id="createPlayer" action="?/create" class="grid gap-4 py-4" use:enhance>
+<form method="POST" id="createPlayerForm" action="?/create" class="grid gap-4 py-4" use:enhance>
   <Form.Field {form} name="summonerName" class="grid grid-cols-4 items-center gap-4">
     <Form.Control>
       {#snippet children({ props })}

@@ -15,7 +15,7 @@
     </Dialog.Header>
     <CreatePlayerForm />
     <Dialog.Footer>
-      <Button type="submit" form="createPlayer">Create Player</Button>
+      <Button type="submit" form="createPlayerForm">Create Player</Button>
     </Dialog.Footer>
   </Dialog.Content>
 </Dialog.Root>
