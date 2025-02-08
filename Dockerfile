@@ -27,4 +27,4 @@ USER appuser
 EXPOSE 3000
 
 # Start the application
-CMD ["node", "build"]
+CMD ["node", "--trace-uncaught", "build"]
