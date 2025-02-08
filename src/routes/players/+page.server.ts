@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import type { PageServerLoad, Actions } from './$types';
 import type { Player } from '$lib/types/entities';
 import { zod } from 'sveltekit-superforms/adapters';
-import { createPlayerSchema } from './components/schema';
+import { addPlayerSchema, createPlayerSchema } from './components/schema';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 
 export const load: PageServerLoad = async () => {
@@ -16,7 +16,8 @@ export const load: PageServerLoad = async () => {
 
   return {
     players: playerList,
-    form: await superValidate(zod(createPlayerSchema)),
+    createPlayerForm: await superValidate(zod(createPlayerSchema)),
+    addPlayerForm: await superValidate(zod(addPlayerSchema)),
   };
 };
 
@@ -24,8 +25,14 @@ export const actions = {
   create: async (e) => {
     const form = await superValidate(e, zod(createPlayerSchema));
     if (!form.valid) return fail(400, { form });
-    return setError(form, 'summonerName', 'You are bad at corki.');
+    return setError(form, 'summonerName', 'Not implemented yet.');
   },
-  add: async (e) => {},
-  remove: async (e) => {},
+  add: async (e) => {
+    const form = await superValidate(e, zod(addPlayerSchema));
+    if (!form.valid) return fail(400, { form });
+    return setError(form, 'team', 'Not implemented yet.');
+  },
+  remove: async (e) => {
+    console.log('Not implemented yet.');
+  },
 } satisfies Actions;

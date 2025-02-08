@@ -1,19 +1,22 @@
 <script lang="ts" module>
+  import type { AddPlayerFormSchema, CreatePlayerFormSchema } from './components/schema';
+  import type { Infer, SuperValidated } from 'sveltekit-superforms';
   import { defineService } from '$lib/context';
-  const [getService, service] = defineService<SuperValidated<Infer<CreatePlayerFormSchema>>>();
-  export const createPlayerForm = getService;
+  const [getServiceCPF, serviceCPF] =
+    defineService<SuperValidated<Infer<CreatePlayerFormSchema>>>();
+  export const createPlayerForm = getServiceCPF;
+  const [getServiceAPF, serviceAPF] = defineService<SuperValidated<Infer<AddPlayerFormSchema>>>();
+  export const addPlayerForm = getServiceAPF;
 </script>
 
 <script lang="ts">
   import PlayerDataTable from './components/player-data-table.svelte';
   import { columns } from './components/columns';
-  import type { Infer, SuperValidated } from 'sveltekit-superforms';
-  import type { CreatePlayerFormSchema } from './components/schema';
-  import type { Player } from '$lib/types/entities';
 
   let { data } = $props();
-  let { players, form } = data;
-  service(form);
+  let { players, createPlayerForm, addPlayerForm } = data;
+  serviceCPF(createPlayerForm);
+  serviceAPF(addPlayerForm);
 </script>
 
 <section class="flex w-full items-center justify-center">
