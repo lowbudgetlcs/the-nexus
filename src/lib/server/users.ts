@@ -21,29 +21,29 @@ export async function loginUser(username: string, password: string): Promise<Res
   }
   const user = fetchedUser[0];
 
-  let authenticated = false;
   try {
-    authenticated = await argon2.verify(user.password, password);
-  } catch (_) {
-    authenticated = false;
-  }
-  if (!authenticated) {
+    if (await argon2.verify(user.password, password)) {
+      const jwtUser = {
+        id: user.id,
+        username: user.username,
+      };
+
+      const token = jwt.sign(jwtUser, env.JWT_SECRET_KEY!, {
+        expiresIn: '1d',
+      });
+
+      return { type: 'success', data: token };
+    }
     return {
       type: 'error',
-      reason: 'Incorrect password.',
+      reason: 'Authentication failed.',
+    };
+  } catch (_) {
+    return {
+      type: 'error',
+      reason: 'Authentication failed.',
     };
   }
-
-  const jwtUser = {
-    id: user.id,
-    username: user.username,
-  };
-
-  const token = jwt.sign(jwtUser, env.JWT_SECRET_KEY!, {
-    expiresIn: '1d',
-  });
-
-  return { type: 'success', data: token };
 }
 
 export async function hash(password: string): Promise<Result<string>> {

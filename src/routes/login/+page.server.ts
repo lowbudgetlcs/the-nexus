@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ locals }) => {
   const user = locals.user;
 
   if (user) {
-    throw redirect(302, '/');
+    redirect(302, '/');
   }
 
   return {
@@ -23,7 +23,7 @@ export const actions = {
     if (!form.valid) fail(400, { form });
 
     const res = await loginUser(form.data.username, form.data.password);
-    if (res.type === 'error') return setError(form, 'password', 'Failed to authenticate.');
+    if (res.type === 'error') return setError(form, 'password', res.reason);
 
     e.cookies.set('AuthorizationToken', `Bearer ${res.data}`, {
       httpOnly: true,
@@ -32,6 +32,6 @@ export const actions = {
       sameSite: 'strict',
       maxAge: 60 * 60 * 24, // 1 day
     });
-    throw redirect(302, '/');
+    redirect(302, '/');
   },
 } satisfies Actions;
