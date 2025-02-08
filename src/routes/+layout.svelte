@@ -3,8 +3,7 @@
   import { Button } from '$lib/components/ui/button';
   import { NavigationMenu } from 'bits-ui';
   import { Separator } from '$lib/components/ui/separator';
-  import type { PageProps } from './$types';
-  const { data, children }: PageProps = $props();
+  const { data, children } = $props();
 </script>
 
 {#if data.render}

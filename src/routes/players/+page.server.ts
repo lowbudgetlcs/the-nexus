@@ -5,7 +5,7 @@ import type { PageServerLoad, Actions } from './$types';
 import type { Player } from '$lib/types/entities';
 import { zod } from 'sveltekit-superforms/adapters';
 import { addPlayerSchema, createPlayerSchema } from './components/schema';
-import { fail, setError, superValidate } from 'sveltekit-superforms';
+import { fail, superValidate } from 'sveltekit-superforms';
 
 export const load: PageServerLoad = async () => {
   const playerList: Player[] = await lblcsDb
@@ -25,14 +25,20 @@ export const actions = {
   create: async (e) => {
     const form = await superValidate(e, zod(createPlayerSchema));
     if (!form.valid) return fail(400, { form });
-    return setError(form, 'summonerName', 'Not implemented yet.');
+    // Check if valid riot id
+    // Check if team exists
+    // Add to players table with correct team id and puuid
   },
   add: async (e) => {
     const form = await superValidate(e, zod(addPlayerSchema));
     if (!form.valid) return fail(400, { form });
-    return setError(form, 'team', 'Not implemented yet.');
+    // Check if player exists
+    // Check if team exists
+    // Set player's teamId to new team
   },
   remove: async (e) => {
     console.log('Not implemented yet.');
+    // Check if player exists
+    // Set player's teamId to null
   },
 } satisfies Actions;
