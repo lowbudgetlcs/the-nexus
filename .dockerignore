@@ -1,7 +1,6 @@
 README.md
 *.swp
-.env
-.env.example
+.env*
 
 node_modules
 build/
@@ -13,7 +12,6 @@ build/
 .github
 
 .vscode
-.env.example
 .prettierignore
 .prettierrc
 compose.yaml

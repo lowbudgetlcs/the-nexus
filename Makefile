@@ -6,6 +6,9 @@ PORT = 3000
 build:
 	docker build -t $(APP_NAME) -f Dockerfile .
 
+build-debug:
+	docker build --no-cache --progress=plain -t $(APP_NAME) -f Dockerfile .
+
 run:
 	docker-compose up
 
@@ -31,5 +34,5 @@ logs:
 ps:
 	docker ps
 
-.PHONY: build run run-interactive stop clean restart logs ps all erase
+.PHONY: build run run-interactive stop clean restart logs ps all erase build-debug
 
