@@ -65,11 +65,12 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd docker/lblcs/${{ env.APP }}
-            echo POSTGRES_CONNECTION_URI="${{ secrets.POSTGRES_CONNECTION_URI }}" > .env
+            echo JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}" > .env
             echo RIOT_API_TOKEN="${{ secrets.RIOT_API_TOKEN }}" >> .env
             echo ORIGIN="${{ secrets.ORIGIN }}" >> .env
-            echo JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}" >> .env
-            echo RIOT_PROVIDER_ID="${{ secrets.RIOT_PROVIDER_ID }}" >> .env
+            echo USERS_DB_PATH="${{ secrets.USERS_DB_PATH }}" >> .env
+            echo DATABASE_URL="${{ secrets.DATABASE_URL }}" >> .env
+            echo NODE_ENV="${{ secrets.NODE_ENV }}" >> .env
             docker-compose down
             docker-compose pull
             docker-compose up -d
