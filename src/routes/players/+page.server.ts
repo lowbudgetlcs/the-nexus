@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import type { PageServerLoad, Actions } from './$types';
 import type { Player } from './components/columns';
 import { zod } from 'sveltekit-superforms/adapters';
-import { formSchema } from './components/schema';
+import { createPlayerSchema } from './components/schema';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 
 export const load: PageServerLoad = async () => {
@@ -16,13 +16,13 @@ export const load: PageServerLoad = async () => {
 
   return {
     players: playerList,
-    form: await superValidate(zod(formSchema)),
+    form: await superValidate(zod(createPlayerSchema)),
   };
 };
 
 export const actions = {
   create: async (e) => {
-    const form = await superValidate(e, zod(formSchema));
+    const form = await superValidate(e, zod(createPlayerSchema));
     if (!form.valid) return fail(400, { form });
     return setError(form, 'summonerName', 'You are bad at corki.');
   },

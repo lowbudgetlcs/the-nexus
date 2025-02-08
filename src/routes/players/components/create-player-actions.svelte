@@ -2,8 +2,9 @@
   import Ellipsis from 'lucide-svelte/icons/ellipsis';
   import { Button } from '$lib/components/ui/button';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+  import type { Player } from './columns';
 
-  let { name }: { name: string } = $props();
+  let { player }: { player: Player } = $props();
 </script>
 
 <DropdownMenu.Root>
@@ -18,8 +19,14 @@
   <DropdownMenu.Content>
     <DropdownMenu.Group>
       <DropdownMenu.GroupHeading>Actions</DropdownMenu.GroupHeading>
-      <DropdownMenu.Item onclick={() => navigator.clipboard.writeText(name)}>
+      <DropdownMenu.Item onclick={() => navigator.clipboard.writeText(player.name)}>
         Copy name
+      </DropdownMenu.Item>
+      <DropdownMenu.Item
+        onclick={() =>
+          navigator.clipboard.writeText(`${player.name},${player.team},${player.division}`)}
+      >
+        Copy row
       </DropdownMenu.Item>
     </DropdownMenu.Group>
     <DropdownMenu.Separator />

@@ -1,10 +1,7 @@
 <script lang="ts">
   import { Button, buttonVariants } from '$lib/components/ui/button/index.js';
   import * as Dialog from '$lib/components/ui/dialog/index.js';
-  import type { PageProps } from '../$types';
   import CreatePlayerForm from './create-player-form.svelte';
-
-  let { data }: PageProps = $props();
 </script>
 
 <Dialog.Root>
@@ -16,7 +13,7 @@
         Create a new player in the database. Team is optional.
       </Dialog.Description>
     </Dialog.Header>
-    <CreatePlayerForm id="createPlayer" form={data.form} />
+    <CreatePlayerForm />
     <Dialog.Footer>
       <Button type="submit" form="createPlayer">Create Player</Button>
     </Dialog.Footer>

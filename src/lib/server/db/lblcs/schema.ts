@@ -160,16 +160,14 @@ export const series = pgTable(
 export const teamGameData = pgTable(
   'team_game_data',
   {
-    id: integer()
-      .primaryKey()
-      .generatedByDefaultAsIdentity({
-        name: 'team_game_data_id_seq',
-        startWith: 1,
-        increment: 1,
-        minValue: 1,
-        maxValue: 2147483647,
-        cache: 1,
-      }),
+    id: integer().primaryKey().generatedByDefaultAsIdentity({
+      name: 'team_game_data_id_seq',
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 2147483647,
+      cache: 1,
+    }),
     teamPerformanceId: integer('team_performance_id').notNull(),
     gold: integer().notNull(),
     kills: integer().notNull(),
@@ -203,16 +201,14 @@ export const teamGameData = pgTable(
 export const teamPerformances = pgTable(
   'team_performances',
   {
-    id: integer()
-      .primaryKey()
-      .generatedByDefaultAsIdentity({
-        name: 'team_performances_id_seq',
-        startWith: 1,
-        increment: 1,
-        minValue: 1,
-        maxValue: 2147483647,
-        cache: 1,
-      }),
+    id: integer().primaryKey().generatedByDefaultAsIdentity({
+      name: 'team_performances_id_seq',
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 2147483647,
+      cache: 1,
+    }),
     teamId: integer('team_id'),
     gameId: integer('game_id'),
     divisionId: integer('division_id'),
@@ -240,16 +236,14 @@ export const teamPerformances = pgTable(
 export const playerGameData = pgTable(
   'player_game_data',
   {
-    id: integer()
-      .primaryKey()
-      .generatedByDefaultAsIdentity({
-        name: 'player_game_data_id_seq',
-        startWith: 1,
-        increment: 1,
-        minValue: 1,
-        maxValue: 2147483647,
-        cache: 1,
-      }),
+    id: integer().primaryKey().generatedByDefaultAsIdentity({
+      name: 'player_game_data_id_seq',
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 2147483647,
+      cache: 1,
+    }),
     playerPerformanceId: integer('player_performance_id').notNull(),
     kills: integer().default(0).notNull(),
     deaths: integer().default(0).notNull(),
@@ -304,16 +298,14 @@ export const playerGameData = pgTable(
 export const playerPerformances = pgTable(
   'player_performances',
   {
-    id: integer()
-      .primaryKey()
-      .generatedByDefaultAsIdentity({
-        name: 'player_performances_id_seq',
-        startWith: 1,
-        increment: 1,
-        minValue: 1,
-        maxValue: 2147483647,
-        cache: 1,
-      }),
+    id: integer().primaryKey().generatedByDefaultAsIdentity({
+      name: 'player_performances_id_seq',
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 2147483647,
+      cache: 1,
+    }),
     playerId: integer('player_id').notNull(),
     gameId: integer('game_id').notNull(),
     teamId: integer('team_id').notNull(),
@@ -347,16 +339,14 @@ export const playerPerformances = pgTable(
 export const gameDumps = pgTable(
   'game_dumps',
   {
-    id: integer()
-      .primaryKey()
-      .generatedByDefaultAsIdentity({
-        name: 'game_dumps_id_seq',
-        startWith: 1,
-        increment: 1,
-        minValue: 1,
-        maxValue: 2147483647,
-        cache: 1,
-      }),
+    id: integer().primaryKey().generatedByDefaultAsIdentity({
+      name: 'game_dumps_id_seq',
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 2147483647,
+      cache: 1,
+    }),
     gameId: integer('game_id').notNull(),
     dump: jsonb().notNull(),
   },
@@ -371,16 +361,14 @@ export const gameDumps = pgTable(
 );
 
 export const users = pgTable('users', {
-  id: integer()
-    .primaryKey()
-    .generatedByDefaultAsIdentity({
-      name: 'users_id_seq',
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
+  id: integer().primaryKey().generatedByDefaultAsIdentity({
+    name: 'users_id_seq',
+    startWith: 1,
+    increment: 1,
+    minValue: 1,
+    maxValue: 2147483647,
+    cache: 1,
+  }),
   username: varchar().notNull(),
   ha1: text().notNull(),
 });
@@ -388,16 +376,14 @@ export const users = pgTable('users', {
 export const draftLobbies = pgTable(
   'draft_lobbies',
   {
-    id: integer()
-      .primaryKey()
-      .generatedByDefaultAsIdentity({
-        name: 'draft_lobbies_id_seq',
-        startWith: 1,
-        increment: 1,
-        minValue: 1,
-        maxValue: 2147483647,
-        cache: 1,
-      }),
+    id: integer().primaryKey().generatedByDefaultAsIdentity({
+      name: 'draft_lobbies_id_seq',
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 2147483647,
+      cache: 1,
+    }),
     shortcode: varchar(),
     blueCode: varchar('blue_code', { length: 50 }).notNull(),
     redCode: varchar('red_code', { length: 50 }).notNull(),

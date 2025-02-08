@@ -3,10 +3,14 @@
   import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
   import { Button } from '$lib/components/ui/button';
 
-  let { variant = 'ghost', ...restProps }: ComponentProps<typeof Button> = $props();
+  let {
+    column,
+    variant = 'ghost',
+    ...restProps
+  }: ComponentProps<typeof Button> & { column: string } = $props();
 </script>
 
 <Button {variant} {...restProps}>
-  Team
+  {column}
   <ArrowUpDown class="ml-2" />
 </Button>

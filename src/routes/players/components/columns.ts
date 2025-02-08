@@ -1,6 +1,6 @@
 import { renderComponent } from '$lib/components/ui/data-table';
-import DataTableActions from './data-table-actions.svelte';
-import DataTableTeamButton from './data-table-team-button.svelte';
+import DataTableActions from './create-player-actions.svelte';
+import DataTableSortButton from '$lib/components/datatable/sort-button.svelte';
 import type { ColumnDef } from '@tanstack/table-core';
 
 export type Player = {
@@ -12,12 +12,18 @@ export type Player = {
 export const columns: ColumnDef<Player>[] = [
   {
     accessorKey: 'name',
-    header: 'Name',
+    header: ({ column }) => {
+      return renderComponent(DataTableSortButton, {
+        column: 'Name',
+        onclick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+      });
+    },
   },
   {
     accessorKey: 'team',
     header: ({ column }) => {
-      return renderComponent(DataTableTeamButton, {
+      return renderComponent(DataTableSortButton, {
+        column: 'Team',
         onclick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
       });
     },
@@ -29,7 +35,7 @@ export const columns: ColumnDef<Player>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
-      return renderComponent(DataTableActions, { name: row.original.name });
+      return renderComponent(DataTableActions, { player: row.original });
     },
   },
 ];

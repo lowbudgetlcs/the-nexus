@@ -1,11 +1,13 @@
 <script lang="ts">
   import type { PageProps } from './$types';
-  import DataTable from './components/data-table.svelte';
+  import PlayerDataTable from './components/player-data-table.svelte';
   import { columns } from './components/columns';
+  import { setContext } from 'svelte';
 
   let { data }: PageProps = $props();
+  setContext('createPlayerForm', data.form);
 </script>
 
 <section class="flex w-full items-center justify-center">
-  <DataTable data={{ tableData: { data: data.players, columns: columns } }} form={data.form} />
+  <PlayerDataTable data={data.players} {columns} />
 </section>
