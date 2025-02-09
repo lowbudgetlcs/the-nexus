@@ -2,8 +2,23 @@ import type { Result } from '$lib/types/result';
 import type { RiotAPITypes } from '@fightmegg/riot-api';
 import { fetchAccountByRiotId } from '$lib/server/riot';
 import { lblcsDb } from '$lib/server/db/lblcs';
-import { players, teams } from '$lib/server/db/lblcs/schema';
+import { divisions, players, teams } from '$lib/server/db/lblcs/schema';
 import { eq, sql } from 'drizzle-orm';
+import type { Player } from '$lib/types/entities';
+
+export async function fetchAllPlayers(): Promise<Result<Player[]>> {
+  try {
+    const fetchRes = await lblcsDb
+      .select({ name: players.summonerName, team: teams.name, division: divisions.name })
+      .from(players)
+      .leftJoin(teams, eq(players.teamId, teams.id))
+      .leftJoin(divisions, eq(teams.divisionId, divisions.id));
+    return { type: 'success', data: fetchRes };
+  } catch (e) {
+    console.log(e);
+    return { type: 'error', reason: 'An unknown error occured while fetching all players.' };
+  }
+}
 
 /**
  *
@@ -42,7 +57,10 @@ export async function checkPlayerExistence(puuid: string): Promise<Result<boolea
  * @param team
  * @returns
  */
-export async function insertPlayer(summonerName: string, team: string): Promise<Result<string>> {
+export async function insertPlayer(
+  summonerName: string,
+  team: string | null,
+): Promise<Result<string>> {
   const [gameName, tagLine] = summonerName.split('#');
   // Check that riot account exists
   const account = await checkRiotIdExists(gameName, tagLine);
