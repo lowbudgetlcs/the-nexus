@@ -9,3 +9,8 @@ export type Team = {
   division: string | null;
   playerCount: number;
 };
+
+export type Division = {
+  name: string;
+  teamCount: number;
+};
