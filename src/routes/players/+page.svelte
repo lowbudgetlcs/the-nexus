@@ -1,12 +1,18 @@
 <script lang="ts" module>
-  import type { AddPlayerFormSchema, CreatePlayerFormSchema } from './components/schema';
+  import type { ChangePlayerTeamFormSchema } from './components/change-team/schema';
+  import type { CreatePlayerFormSchema } from './components/create-player/schema';
+  import type { RemovePlayerTeamFormSchema } from './components/remove-team/schema';
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
   import { defineService } from '$lib/context';
-  const [getServiceCPF, serviceCPF] =
+  const [getCreatePlayerForm, setCreatePlayerForm] =
     defineService<SuperValidated<Infer<CreatePlayerFormSchema>>>();
-  export const createPlayerForm = getServiceCPF;
-  const [getServiceAPF, serviceAPF] = defineService<SuperValidated<Infer<AddPlayerFormSchema>>>();
-  export const addPlayerForm = getServiceAPF;
+  export const createPlayerForm = getCreatePlayerForm;
+  const [getChangePlayerTeamForms, setChangePlayerTeamForms] =
+    defineService<SuperValidated<Infer<ChangePlayerTeamFormSchema>>[]>();
+  export const changePlayerTeamForms = getChangePlayerTeamForms;
+  const [getRemovePlayerTeamForms, setRemovePlayerTeamForms] =
+    defineService<SuperValidated<Infer<RemovePlayerTeamFormSchema>>[]>();
+  export const removePlayerTeamForms = getRemovePlayerTeamForms;
 </script>
 
 <script lang="ts">
@@ -14,11 +20,15 @@
   import { columns } from './components/columns';
 
   let { data } = $props();
-  let { players, createPlayerForm, addPlayerForm } = data;
-  serviceCPF(createPlayerForm);
-  serviceAPF(addPlayerForm);
+  let { createPlayerForm, changePlayerTeamForms, removePlayerForms } = data;
+  let { players } = $derived(data);
+  setCreatePlayerForm(createPlayerForm);
+  setChangePlayerTeamForms(changePlayerTeamForms);
+  setRemovePlayerTeamForms(removePlayerForms);
 </script>
 
 <section class="flex w-full items-center justify-center">
-  <PlayerDataTable data={players} {columns} />
+  {#key players.length}
+    <PlayerDataTable data={players} {columns} />
+  {/key}
 </section>

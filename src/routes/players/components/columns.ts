@@ -1,5 +1,5 @@
 import { renderComponent } from '$lib/components/ui/data-table';
-import DataTableActions from './create-player-actions.svelte';
+import PlayerRowActions from './player-row-actions.svelte';
 import DataTableSortButton from '$lib/components/datatable/sort-button.svelte';
 import type { ColumnDef } from '@tanstack/table-core';
 import type { Player } from '$lib/types/entities';
@@ -30,7 +30,7 @@ export const columns: ColumnDef<Player>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
-      return renderComponent(DataTableActions, { player: row.original });
+      return renderComponent(PlayerRowActions, { player: row.original, id: row.id });
     },
   },
 ];

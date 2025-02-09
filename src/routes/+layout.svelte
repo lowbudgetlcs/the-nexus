@@ -3,6 +3,7 @@
   import { Button } from '$lib/components/ui/button';
   import { NavigationMenu } from 'bits-ui';
   import { Separator } from '$lib/components/ui/separator';
+  import { Toaster } from '$lib/components/ui/sonner';
   const { data, children } = $props();
 </script>
 
@@ -57,3 +58,6 @@
   <Separator class="z-10" />
 {/if}
 {@render children()}
+{#if data.render}
+  <Toaster />
+{/if}

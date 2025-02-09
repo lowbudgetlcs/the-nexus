@@ -12,7 +12,7 @@
   import * as Table from '$lib/components/ui/table';
   import { createSvelteTable } from '$lib/components/ui/data-table';
   import * as DataTable from '$lib/components/datatable/index';
-  import CreatePlayerDialog from './create-player-dialog.svelte';
+  import CreatePlayerDialog from './create-player/dialog.svelte';
 
   type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
