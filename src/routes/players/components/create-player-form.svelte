@@ -29,7 +29,7 @@
         <Input {...props} class="col-span-3" bind:value={$data.summonerName} />
       {/snippet}
     </Form.Control>
-    <Form.FieldErrors />
+    <Form.FieldErrors class="col-span-3 col-start-2" />
   </Form.Field>
   <Form.Field {form} name="team" class="grid grid-cols-4 items-center gap-4">
     <Form.Control>
@@ -38,6 +38,6 @@
         <Input {...props} class="col-span-3" bind:value={$data.team} />
       {/snippet}
     </Form.Control>
-    <Form.FieldErrors />
+    <Form.FieldErrors class="col-span-3 col-start-2" />
   </Form.Field>
 </form>

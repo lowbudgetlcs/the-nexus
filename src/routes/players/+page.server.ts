@@ -7,6 +7,9 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { addPlayerSchema, createPlayerSchema } from './components/schema';
 import { fail, superValidate, setError, message } from 'sveltekit-superforms';
 import { fetchAccountByRiotId } from '$lib/server/riot';
+import { check } from 'drizzle-orm/mysql-core';
+import type { RiotAPITypes } from '@fightmegg/riot-api';
+import type { Result } from '$lib/types/result';
 
 export const load: PageServerLoad = async () => {
   const playerList: Player[] = await lblcsDb
@@ -28,30 +31,22 @@ export const actions = {
     if (!form.valid) return fail(400, { form });
 
     const { summonerName, team } = form.data;
+    const gameName = summonerName.split('#')[0];
+    const tagLine = summonerName.split('#')[1];
     try {
       // Check that riot account exists
-      const gameName = summonerName.split('#')[0];
-      const tagLine = summonerName.split('#')[1];
-      const resAcc = await fetchAccountByRiotId(gameName, tagLine);
-      if (resAcc.type === 'error') return setError(form, 'summonerName', resAcc.reason);
-      const account = resAcc.data;
+      const account = await checkRiotIdExists(gameName, tagLine);
+      if (account.type === 'error') return setError(form, 'summonerName', account.reason);
       // Check player doesn't already exist
-      const resPlayer = await lblcsDb
-        .select()
-        .from(players)
-        .where(eq(players.riotPuuid, account.puuid));
-      if (resPlayer.length > 0)
-        return setError(form, 'summonerName', `Player '${gameName}#${tagLine}' already exists.`);
+      const playerCheck = await checkPlayerExistence(account.data.puuid);
+      if (playerCheck.type === 'error') return setError(form, 'summonerName', playerCheck.reason);
+      if (playerCheck.data)
+        return setError(form, 'summonerName', `Riot ID '${summonerName}' already exists.`);
       // Check if team exists
       if (team) {
-        const resTeam: Team[] = await lblcsDb
-          .select({ name: teams.name, division: divisions.name, playerCount: count(players.id) })
-          .from(teams)
-          .leftJoin(divisions, eq(teams.divisionId, divisions.id))
-          .leftJoin(players, eq(players.teamId, teams.id))
-          .where(sql`lower(${teams.name}) = lower(${team})`)
-          .groupBy(teams.name, divisions.name);
-        if (resTeam.length < 1) return setError(form, 'team', `Team '${team}' not found.`);
+        const teamCheck = await checkTeamExistence(team);
+        if (teamCheck.type === 'error') return setError(form, 'team', teamCheck.reason);
+        if (!teamCheck.data) return setError(form, 'team', `Team '${team}' does not exist.`);
       }
       // Insert player with teamId (possibly null)
       const teamId = lblcsDb.$with('team_id').as(
@@ -65,7 +60,7 @@ export const actions = {
         .insert(players)
         .values({
           summonerName: `${gameName}#${tagLine}`,
-          riotPuuid: account.puuid,
+          riotPuuid: account.data.puuid,
           teamId: sql`(SELECT * FROM ${teamId})`,
         });
       return message(form, `'${gameName}#${tagLine}' successfully created!`);
@@ -87,3 +82,40 @@ export const actions = {
     // Set player's teamId to null
   },
 } satisfies Actions;
+
+async function checkRiotIdExists(
+  gameName: string,
+  tagLine: string,
+): Promise<Result<RiotAPITypes.Account.AccountDTO>> {
+  const res = await fetchAccountByRiotId(gameName, tagLine);
+  if (res.type === 'error') return { type: 'error', reason: res.reason };
+  return { type: 'success', data: res.data };
+}
+
+async function checkPlayerExistence(puuid: string): Promise<Result<boolean>> {
+  try {
+    const resPlayer = await lblcsDb.select().from(players).where(eq(players.riotPuuid, puuid));
+    if (resPlayer.length > 0) return { type: 'success', data: true };
+    return { type: 'success', data: false };
+  } catch (e) {
+    console.log(e);
+    return { type: 'error', reason: 'Unknown error occured while checking player existence.' };
+  }
+}
+
+async function checkTeamExistence(team: string): Promise<Result<boolean>> {
+  try {
+    const resTeam: Team[] = await lblcsDb
+      .select({ name: teams.name, division: divisions.name, playerCount: count(players.id) })
+      .from(teams)
+      .leftJoin(divisions, eq(teams.divisionId, divisions.id))
+      .leftJoin(players, eq(players.teamId, teams.id))
+      .where(sql`lower(${teams.name}) = lower(${team})`)
+      .groupBy(teams.name, divisions.name);
+    if (resTeam.length > 0) return { type: 'success', data: true };
+    return { type: 'success', data: false };
+  } catch (e) {
+    console.log(e);
+    return { type: 'error', reason: 'An unknown error occured while checking team existence.' };
+  }
+}
