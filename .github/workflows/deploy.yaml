@@ -66,11 +66,11 @@ jobs:
           script: |
             cd docker/lblcs/${{ env.APP }}
             echo JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}" > .env
-            echo RIOT_API_TOKEN="${{ secrets.RIOT_API_TOKEN }}" >> .env
             echo ORIGIN="${{ secrets.ORIGIN }}" >> .env
             echo USERS_DB_PATH="${{ secrets.USERS_DB_PATH }}" >> .env
             echo DATABASE_URL="${{ secrets.DATABASE_URL }}" >> .env
             echo NODE_ENV="${{ secrets.NODE_ENV }}" >> .env
+            echo RIOT_API_TOKEN="${{ secrets.RIOT_API_TOKEN }}" >> .env
             docker-compose down
             docker-compose pull
             docker-compose up -d

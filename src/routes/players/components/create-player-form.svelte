@@ -6,9 +6,13 @@
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { createPlayerForm } from '../+page.svelte';
 
+  let { toggle = $bindable() }: { toggle: boolean } = $props();
   let formCtx = createPlayerForm();
   const form = superForm(formCtx, {
     validators: zodClient(createPlayerSchema),
+    onResult({ result }) {
+      if (result.status === 200) toggle = !toggle;
+    },
   });
   const { form: data, enhance } = form;
 </script>
