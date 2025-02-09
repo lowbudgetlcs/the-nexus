@@ -18,7 +18,7 @@
       }
     },
   });
-  const { form: data, enhance } = form;
+  const { form: formData, enhance } = form;
 </script>
 
 <form method="POST" id="createPlayerForm" action="?/create" class="grid gap-4 py-4" use:enhance>
@@ -26,7 +26,7 @@
     <Form.Control>
       {#snippet children({ props })}
         <Form.Label class="text-right">Summoner Name</Form.Label>
-        <Input {...props} class="col-span-3" bind:value={$data.summonerName} />
+        <Input {...props} class="col-span-3" bind:value={$formData.summonerName} />
       {/snippet}
     </Form.Control>
     <Form.FieldErrors class="col-span-3 col-start-2" />
@@ -35,7 +35,7 @@
     <Form.Control>
       {#snippet children({ props })}
         <Form.Label class="text-right">Team</Form.Label>
-        <Input {...props} class="col-span-3" bind:value={$data.team} />
+        <Input {...props} class="col-span-3" bind:value={$formData.team} />
       {/snippet}
     </Form.Control>
     <Form.FieldErrors class="col-span-3 col-start-2" />

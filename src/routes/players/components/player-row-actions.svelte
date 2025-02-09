@@ -3,10 +3,10 @@
   import { Button } from '$lib/components/ui/button';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
   import type { Player } from '$lib/types/entities';
-  import AddToTeamDialog from './add-to-team-dialog.svelte';
+  import AddPlayerToTeamDialog from './add-player-to-team-dialog.svelte';
   import RemoveFromTeamDialog from './remove-from-team-dialog.svelte';
 
-  let { player }: { player: Player } = $props();
+  let { player, id }: { player: Player; id: string } = $props();
   let addPlayerDialogToggle = $state(false);
   let removePlayerDialogToggle = $state(false);
 </script>
@@ -41,5 +41,5 @@
     >
   </DropdownMenu.Content>
 </DropdownMenu.Root>
-<AddToTeamDialog bind:toggle={addPlayerDialogToggle} {player} />
-<RemoveFromTeamDialog bind:toggle={removePlayerDialogToggle} {player} />
+<AddPlayerToTeamDialog bind:toggle={addPlayerDialogToggle} {player} {id} />
+<RemoveFromTeamDialog bind:toggle={removePlayerDialogToggle} {player} {id} />

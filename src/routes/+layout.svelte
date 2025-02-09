@@ -3,7 +3,7 @@
   import { Button } from '$lib/components/ui/button';
   import { NavigationMenu } from 'bits-ui';
   import { Separator } from '$lib/components/ui/separator';
-    import { Toaster } from '$lib/components/ui/sonner';
+  import { Toaster } from '$lib/components/ui/sonner';
   const { data, children } = $props();
 </script>
 

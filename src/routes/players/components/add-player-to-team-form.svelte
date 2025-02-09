@@ -1,0 +1,54 @@
+<script lang="ts">
+  import * as Form from '$lib/components/ui/form';
+  import { Input } from '$lib/components/ui/input';
+  import SuperDebug, { superForm, type Infer, type SuperForm } from 'sveltekit-superforms';
+  import { addPlayerSchema, type AddPlayerFormSchema } from './schema';
+  import type { Player } from '$lib/types/entities';
+  import { addPlayerForms } from '../+page.svelte';
+  import { zodClient } from 'sveltekit-superforms/adapters';
+  import { toast } from 'svelte-sonner';
+
+  let {
+    toggle,
+    player,
+    id,
+  }: {
+    toggle: boolean;
+    player: Player;
+    id: string;
+  } = $props();
+  let formCtxs = addPlayerForms();
+  const formCtx = formCtxs.filter((f) => f.id === id)[0];
+  const form = superForm(formCtx, {
+    id: id,
+    validators: zodClient(addPlayerSchema),
+    onUpdated({ form }) {
+      if (form.valid) {
+        toggle = !toggle;
+        toast.success(form.message);
+      }
+    },
+  });
+  const { form: formData, enhance } = form;
+  $formData.summonerName = player.name;
+</script>
+
+<form method="POST" id="add-player-to-team-{id}" action="?/add" class="grid gap-4 py-4" use:enhance>
+  <Form.Field {form} name="team" class="grid grid-cols-4 items-center gap-4">
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label class="text-right">Team</Form.Label>
+        <Input {...props} class="col-span-3" bind:value={$formData.team} />
+      {/snippet}
+    </Form.Control>
+    <Form.FieldErrors class="col-span-3 col-start-2" />
+  </Form.Field>
+  <Form.Field {form} name="summonerName" class="hidden">
+    <Form.Control>
+      {#snippet children({ props })}
+        <Input {...props} type="hidden" bind:value={$formData.summonerName} />
+      {/snippet}
+    </Form.Control>
+    <Form.FieldErrors />
+  </Form.Field>
+</form>

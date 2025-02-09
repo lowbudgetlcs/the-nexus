@@ -5,8 +5,9 @@
   const [getServiceCPF, serviceCPF] =
     defineService<SuperValidated<Infer<CreatePlayerFormSchema>>>();
   export const createPlayerForm = getServiceCPF;
-  const [getServiceAPF, serviceAPF] = defineService<SuperValidated<Infer<AddPlayerFormSchema>>>();
-  export const addPlayerForm = getServiceAPF;
+  const [getServiceAPFs, serviceAPFs] =
+    defineService<SuperValidated<Infer<AddPlayerFormSchema>>[]>();
+  export const addPlayerForms = getServiceAPFs;
 </script>
 
 <script lang="ts">
@@ -14,10 +15,10 @@
   import { columns } from './components/columns';
 
   let { data } = $props();
-  let { createPlayerForm, addPlayerForm } = data;
+  let { createPlayerForm, addPlayerForms } = data;
   let { players } = $derived(data);
   serviceCPF(createPlayerForm);
-  serviceAPF(addPlayerForm);
+  serviceAPFs(addPlayerForms);
 </script>
 
 <section class="flex w-full items-center justify-center">
