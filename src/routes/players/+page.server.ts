@@ -13,11 +13,18 @@ import { removePlayerTeamSchema } from './components/remove-team/schema';
 import { createPlayerSchema } from './components/create-player/schema';
 
 export const load: PageServerLoad = async () => {
-  const playerList: Player[] = await lblcsDb
-    .select({ name: players.summonerName, team: teams.name, division: divisions.name })
-    .from(players)
-    .leftJoin(teams, eq(players.teamId, teams.id))
-    .leftJoin(divisions, eq(teams.divisionId, divisions.id));
+  const playerList: Player[] = [];
+  try {
+    playerList.push(
+      ...(await lblcsDb
+        .select({ name: players.summonerName, team: teams.name, division: divisions.name })
+        .from(players)
+        .leftJoin(teams, eq(players.teamId, teams.id))
+        .leftJoin(divisions, eq(teams.divisionId, divisions.id))),
+    );
+  } catch (e) {
+    console.log(e);
+  }
 
   const promisesChangePlayerTeam = playerList.map((_, id) => {
     return superValidate(zod(changePlayerTeamSchema), { id: `${id}` });
