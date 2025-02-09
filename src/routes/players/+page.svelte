@@ -14,11 +14,14 @@
   import { columns } from './components/columns';
 
   let { data } = $props();
-  let { players, createPlayerForm, addPlayerForm } = data;
+  let { createPlayerForm, addPlayerForm } = data;
+  let { players } = $derived(data);
   serviceCPF(createPlayerForm);
   serviceAPF(addPlayerForm);
 </script>
 
 <section class="flex w-full items-center justify-center">
-  <PlayerDataTable data={players} {columns} />
+  {#key players.length}
+    <PlayerDataTable data={players} {columns} />
+  {/key}
 </section>
