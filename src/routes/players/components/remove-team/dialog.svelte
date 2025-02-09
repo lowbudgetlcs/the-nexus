@@ -20,7 +20,7 @@
     </Dialog.Header>
     <Form bind:toggle {player} {id} />
     <Dialog.Footer>
-      <Button type="submit" form="remove-player-to-team-{id}">Confirm?</Button>
+      <Button type="submit" form="remove-team-{id}">Confirm?</Button>
     </Dialog.Footer>
   </Dialog.Content>
 </Dialog.Root>

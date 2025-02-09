@@ -33,13 +33,7 @@
   $formData.summonerName = player.name;
 </script>
 
-<form
-  method="POST"
-  id="remove-player-to-team-{id}"
-  action="?/remove"
-  class="grid gap-4 py-4"
-  use:enhance
->
+<form method="POST" id="remove-team-{id}" action="?/removeTeam" class="grid gap-4 py-4" use:enhance>
   <Form.Field {form} name="summonerName" class="hidden">
     <Form.Control>
       {#snippet children({ props })}

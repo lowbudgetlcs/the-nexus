@@ -51,7 +51,7 @@ export const actions = {
     if (insertRes.type === 'error') return setError(form, 'summonerName', insertRes.reason);
     return message(form, `Successfully created '${summonerName}'!`);
   },
-  add: async (e) => {
+  changeTeam: async (e) => {
     const form = await superValidate(e, zod(changePlayerTeamSchema));
     if (!form.valid) return fail(400, { form });
     const { summonerName, team } = form.data;
@@ -86,7 +86,7 @@ export const actions = {
       return setError(form, 'team', 'An unexpected error occured.');
     }
   },
-  remove: async (e) => {
+  removeTeam: async (e) => {
     // Check if player exists
     const form = await superValidate(e, zod(removePlayerTeamSchema));
     if (!form.valid) return fail(400, { form });
