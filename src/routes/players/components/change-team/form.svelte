@@ -1,15 +1,15 @@
 <script lang="ts">
   import * as Form from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
-  import SuperDebug, { superForm, type Infer, type SuperForm } from 'sveltekit-superforms';
-  import { addPlayerSchema, type AddPlayerFormSchema } from './schema';
+  import { superForm } from 'sveltekit-superforms';
+  import { changePlayerTeamSchema } from './schema';
   import type { Player } from '$lib/types/entities';
-  import { addPlayerForms } from '../+page.svelte';
+  import { changePlayerTeamForms } from '../../+page.svelte';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { toast } from 'svelte-sonner';
 
   let {
-    toggle,
+    toggle = $bindable(),
     player,
     id,
   }: {
@@ -17,12 +17,13 @@
     player: Player;
     id: string;
   } = $props();
-  let formCtxs = addPlayerForms();
+  let formCtxs = changePlayerTeamForms();
   const formCtx = formCtxs.filter((f) => f.id === id)[0];
   const form = superForm(formCtx, {
     id: id,
-    validators: zodClient(addPlayerSchema),
+    validators: zodClient(changePlayerTeamSchema),
     onUpdated({ form }) {
+      console.log(form);
       if (form.valid) {
         toggle = !toggle;
         toast.success(form.message);
@@ -46,7 +47,7 @@
   <Form.Field {form} name="summonerName" class="hidden">
     <Form.Control>
       {#snippet children({ props })}
-        <Input {...props} type="hidden" bind:value={$formData.summonerName} />
+        <Input readonly {...props} type="hidden" bind:value={$formData.summonerName} />
       {/snippet}
     </Form.Control>
     <Form.FieldErrors />

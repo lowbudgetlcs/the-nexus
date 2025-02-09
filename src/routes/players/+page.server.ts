@@ -4,11 +4,13 @@ import { count, eq, sql } from 'drizzle-orm';
 import type { PageServerLoad, Actions } from './$types';
 import type { Player, Team } from '$lib/types/entities';
 import { zod } from 'sveltekit-superforms/adapters';
-import { addPlayerSchema, createPlayerSchema } from './components/schema';
 import { fail, superValidate, setError, message } from 'sveltekit-superforms';
 import { fetchAccountByRiotId } from '$lib/server/riot';
 import type { RiotAPITypes } from '@fightmegg/riot-api';
 import type { Result } from '$lib/types/result';
+import { changePlayerTeamSchema } from './components/change-team/schema';
+import { removePlayerTeamSchema } from './components/remove-team/schema';
+import { createPlayerSchema } from './components/create-player/schema';
 
 export const load: PageServerLoad = async () => {
   const playerList: Player[] = await lblcsDb
@@ -17,14 +19,18 @@ export const load: PageServerLoad = async () => {
     .leftJoin(teams, eq(players.teamId, teams.id))
     .leftJoin(divisions, eq(teams.divisionId, divisions.id));
 
-  const promises = playerList.map((_, id) => {
-    return superValidate(zod(addPlayerSchema), { id: `${id}` });
+  const promisesChangePlayerTeam = playerList.map((_, id) => {
+    return superValidate(zod(changePlayerTeamSchema), { id: `${id}` });
+  });
+  const promisesRemoveTeam = playerList.map((_, id) => {
+    return superValidate(zod(removePlayerTeamSchema), { id: `${id}` });
   });
 
   return {
     players: playerList,
     createPlayerForm: await superValidate(zod(createPlayerSchema)),
-    addPlayerForms: await Promise.all(promises),
+    changePlayerTeamForms: await Promise.all(promisesChangePlayerTeam),
+    removePlayerForms: await Promise.all(promisesRemoveTeam),
   };
 };
 
@@ -72,14 +78,15 @@ export const actions = {
     }
   },
   add: async (e) => {
-    const form = await superValidate(e, zod(addPlayerSchema));
+    const form = await superValidate(e, zod(changePlayerTeamSchema));
     if (!form.valid) return fail(400, { form });
     const { summonerName, team } = form.data;
     const [gameName, tagLine] = summonerName.split('#');
     // Check if player exists
-    const account = await checkRiotIdExists(gameName, tagLine);
-    if (account.type === 'error') return setError(form, 'team', account.reason);
-    const playerCheck = await checkPlayerExistence(account.data.puuid);
+    const accountRes = await checkRiotIdExists(gameName, tagLine);
+    if (accountRes.type === 'error') return setError(form, 'team', accountRes.reason);
+    const account = accountRes.data;
+    const playerCheck = await checkPlayerExistence(account.puuid);
     if (playerCheck.type === 'error') return setError(form, 'team', playerCheck.reason);
     if (!playerCheck.data) return setError(form, 'team', `Player '${summonerName}' doesn't exist.`);
     // Check if team exists
@@ -97,7 +104,8 @@ export const actions = {
       await lblcsDb
         .with(teamId)
         .update(players)
-        .set({ teamId: sql`(SELECT * FROM ${teamId})` });
+        .set({ teamId: sql`(SELECT * FROM ${teamId})` })
+        .where(eq(players.riotPuuid, account.puuid));
       return message(form, `Successfully added '${summonerName}' to '${team}'!`);
     } catch (e) {
       console.log(e);
@@ -105,8 +113,29 @@ export const actions = {
     }
   },
   remove: async (e) => {
-    console.log('Not implemented yet.');
     // Check if player exists
+    const form = await superValidate(e, zod(removePlayerTeamSchema));
+    if (!form.valid) return fail(400, { form });
+    const { summonerName } = form.data;
+    const [gameName, tagLine] = summonerName.split('#');
+    // Check if player exists
+    const accountRes = await checkRiotIdExists(gameName, tagLine);
+    if (accountRes.type === 'error') return setError(form, 'summonerName', accountRes.reason);
+    const account = accountRes.data;
+    const playerCheck = await checkPlayerExistence(account.puuid);
+    if (playerCheck.type === 'error') return setError(form, 'summonerName', playerCheck.reason);
+    if (!playerCheck.data)
+      return setError(form, 'summonerName', `Player '${summonerName}' doesn't exist.`);
+    try {
+      await lblcsDb
+        .update(players)
+        .set({ teamId: null })
+        .where(eq(players.riotPuuid, account.puuid));
+      return message(form, `Successfully removed '${summonerName}'.`);
+    } catch (e) {
+      console.log(e);
+      return setError(form, 'summonerName', 'An unexpected error occured.');
+    }
     // Set player's teamId to null
   },
 } satisfies Actions;

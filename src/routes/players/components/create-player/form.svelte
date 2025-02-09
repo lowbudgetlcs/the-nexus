@@ -4,7 +4,7 @@
   import { superForm } from 'sveltekit-superforms';
   import { createPlayerSchema } from './schema';
   import { zodClient } from 'sveltekit-superforms/adapters';
-  import { createPlayerForm } from '../+page.svelte';
+  import { createPlayerForm } from '../../+page.svelte';
   import { toast } from 'svelte-sonner';
 
   let { toggle = $bindable() }: { toggle: boolean } = $props();
@@ -21,7 +21,7 @@
   const { form: formData, enhance } = form;
 </script>
 
-<form method="POST" id="createPlayerForm" action="?/create" class="grid gap-4 py-4" use:enhance>
+<form method="POST" id="create-player-form" action="?/create" class="grid gap-4 py-4" use:enhance>
   <Form.Field {form} name="summonerName" class="grid grid-cols-4 items-center gap-4">
     <Form.Control>
       {#snippet children({ props })}

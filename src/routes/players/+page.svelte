@@ -1,13 +1,18 @@
 <script lang="ts" module>
-  import type { AddPlayerFormSchema, CreatePlayerFormSchema } from './components/schema';
+  import type { ChangePlayerTeamFormSchema } from './components/change-team/schema';
+  import type { CreatePlayerFormSchema } from './components/create-player/schema';
+  import type { RemovePlayerTeamFormSchema } from './components/remove-team/schema';
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
   import { defineService } from '$lib/context';
-  const [getServiceCPF, serviceCPF] =
+  const [getCreatePlayerForm, setCreatePlayerForm] =
     defineService<SuperValidated<Infer<CreatePlayerFormSchema>>>();
-  export const createPlayerForm = getServiceCPF;
-  const [getServiceAPFs, serviceAPFs] =
-    defineService<SuperValidated<Infer<AddPlayerFormSchema>>[]>();
-  export const addPlayerForms = getServiceAPFs;
+  export const createPlayerForm = getCreatePlayerForm;
+  const [getChangePlayerTeamForms, setChangePlayerTeamForms] =
+    defineService<SuperValidated<Infer<ChangePlayerTeamFormSchema>>[]>();
+  export const changePlayerTeamForms = getChangePlayerTeamForms;
+  const [getRemovePlayerTeamForms, setRemovePlayerTeamForms] =
+    defineService<SuperValidated<Infer<RemovePlayerTeamFormSchema>>[]>();
+  export const removePlayerTeamForms = getRemovePlayerTeamForms;
 </script>
 
 <script lang="ts">
@@ -15,10 +20,11 @@
   import { columns } from './components/columns';
 
   let { data } = $props();
-  let { createPlayerForm, addPlayerForms } = data;
+  let { createPlayerForm, changePlayerTeamForms, removePlayerForms } = data;
   let { players } = $derived(data);
-  serviceCPF(createPlayerForm);
-  serviceAPFs(addPlayerForms);
+  setCreatePlayerForm(createPlayerForm);
+  setChangePlayerTeamForms(changePlayerTeamForms);
+  setRemovePlayerTeamForms(removePlayerForms);
 </script>
 
 <section class="flex w-full items-center justify-center">
