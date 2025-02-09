@@ -5,13 +5,17 @@
   import { createPlayerSchema } from './schema';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { createPlayerForm } from '../+page.svelte';
+  import { toast } from 'svelte-sonner';
 
   let { toggle = $bindable() }: { toggle: boolean } = $props();
   let formCtx = createPlayerForm();
   const form = superForm(formCtx, {
     validators: zodClient(createPlayerSchema),
-    onResult({ result }) {
-      if (result.status === 200) toggle = !toggle;
+    onUpdated({ form }) {
+      if (form.valid) {
+        toggle = !toggle;
+        toast.success(form.message);
+      }
     },
   });
   const { form: data, enhance } = form;

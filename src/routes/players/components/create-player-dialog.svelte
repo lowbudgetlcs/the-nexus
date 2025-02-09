@@ -15,7 +15,7 @@
         Create a new player in the database. Team is optional.
       </Dialog.Description>
     </Dialog.Header>
-    <CreatePlayerForm bind:toggle />
+    <CreatePlayerForm bind:toggle={toggle}/>
     <Dialog.Footer>
       <Button type="submit" form="createPlayerForm">Create Player</Button>
     </Dialog.Footer>
