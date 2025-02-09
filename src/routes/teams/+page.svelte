@@ -12,8 +12,8 @@
   import type { CreateTeamFormSchema } from './components/create-team/schema';
 
   let { data } = $props();
-  const { createTeamForm } = data;
-  const { teams } = $derived(data);
+  const { createTeamForm, teams: teamList } = data;
+  const teams = $derived(teamList);
   setCreateTeamForm(createTeamForm);
 </script>
 

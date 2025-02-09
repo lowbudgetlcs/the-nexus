@@ -4,6 +4,21 @@ import { lblcsDb } from '$lib/server/db/lblcs';
 import { count, eq, sql } from 'drizzle-orm';
 import { teams, divisions, players } from '$lib/server/db/lblcs/schema';
 
+export async function fetchAllTeams(): Promise<Result<Team[]>> {
+  try {
+    const fetchRes = await lblcsDb
+      .select({ name: teams.name, division: divisions.name, playerCount: count(players.id) })
+      .from(teams)
+      .leftJoin(players, eq(players.teamId, teams.id))
+      .leftJoin(divisions, eq(teams.divisionId, divisions.id))
+      .groupBy(teams.name, divisions.name);
+    return { type: 'success', data: fetchRes };
+  } catch (e) {
+    console.log(e);
+    return { type: 'error', reason: 'An unkown error occured while fetching all teams.' };
+  }
+}
+
 /**
  *
  * @param team Case-insensitive team name.

@@ -2,18 +2,15 @@ import { fail, superValidate, setError } from 'sveltekit-superforms';
 import type { Actions, PageServerLoad } from '../$types';
 import { createTeamSchema } from './components/create-team/schema';
 import { zod } from 'sveltekit-superforms/adapters';
-import type { Team } from '$lib/types/entities';
-import { checkTeamExistence, insertTeam } from '$lib/server/teams';
+import { checkTeamExistence, fetchAllTeams, insertTeam } from '$lib/server/teams';
 import { checkDivisionExistence } from '$lib/server/divisions';
 import { insertPlayer } from '$lib/server/players';
+import type { Team } from '$lib/types/entities';
 
 export const load: PageServerLoad = async () => {
-  const teamList: Team[] = [{ name: "Ruuffian's Team", division: 'TEST_DIV', playerCount: 0 }];
-  try {
-    teamList.push(...[]);
-  } catch (e) {
-    console.log(e);
-  }
+  const teamList: Team[] = [];
+  const teamFetch = await fetchAllTeams();
+  if (teamFetch.type === 'success') teamList.push(...teamFetch.data);
   return { teams: teamList, createTeamForm: await superValidate(zod(createTeamSchema)) };
 };
 
