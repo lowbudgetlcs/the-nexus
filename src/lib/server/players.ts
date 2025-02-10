@@ -128,7 +128,10 @@ export async function updatePlayerTeam(
       .update(players)
       .set({ teamId: sql`(SELECT * FROM ${teamId})` })
       .where(eq(players.riotPuuid, account.puuid));
-    return { type: 'success', data: `Successfully added '${summonerName}' to '${team}'!` };
+    const data = team
+      ? `Successfully added '${summonerName}' to '${team}'!`
+      : `Successfully removed '${summonerName}'!`;
+    return { type: 'success', data: data };
   } catch (e) {
     console.log(e);
     return { type: 'error', reason: "An unexpected error occured while updating a player's team." };
