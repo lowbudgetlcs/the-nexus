@@ -2,8 +2,23 @@ import type { Result } from '$lib/types/result';
 import type { RiotAPITypes } from '@fightmegg/riot-api';
 import { fetchAccountByRiotId } from '$lib/server/riot';
 import { lblcsDb } from '$lib/server/db/lblcs';
-import { players, teams } from '$lib/server/db/lblcs/schema';
+import { divisions, players, teams } from '$lib/server/db/lblcs/schema';
 import { eq, sql } from 'drizzle-orm';
+import type { Player } from '$lib/types/entities';
+
+export async function fetchAllPlayers(): Promise<Result<Player[]>> {
+  try {
+    const fetchRes = await lblcsDb
+      .select({ name: players.summonerName, team: teams.name, division: divisions.name })
+      .from(players)
+      .leftJoin(teams, eq(players.teamId, teams.id))
+      .leftJoin(divisions, eq(teams.divisionId, divisions.id));
+    return { type: 'success', data: fetchRes };
+  } catch (e) {
+    console.log(e);
+    return { type: 'error', reason: 'An unknown error occured while fetching all players.' };
+  }
+}
 
 /**
  *
@@ -42,7 +57,10 @@ export async function checkPlayerExistence(puuid: string): Promise<Result<boolea
  * @param team
  * @returns
  */
-export async function insertPlayer(summonerName: string, team: string): Promise<Result<string>> {
+export async function insertPlayer(
+  summonerName: string,
+  team: string | null,
+): Promise<Result<string>> {
   const [gameName, tagLine] = summonerName.split('#');
   // Check that riot account exists
   const account = await checkRiotIdExists(gameName, tagLine);
@@ -75,5 +93,47 @@ export async function insertPlayer(summonerName: string, team: string): Promise<
   } catch (e) {
     console.log(e);
     return { type: 'error', reason: 'An unexpected error occured.' };
+  }
+}
+
+/**
+ * Updates a player's team with an existing team. Does not validate team existence.
+ * @param summonerName
+ * @param team
+ * @returns
+ */
+export async function updatePlayerTeam(
+  summonerName: string,
+  team: string | null,
+): Promise<Result<string>> {
+  const [gameName, tagLine] = summonerName.split('#');
+  // Check if player exists
+  const accountRes = await checkRiotIdExists(gameName, tagLine);
+  if (accountRes.type === 'error') return { type: 'error', reason: accountRes.reason };
+  const account = accountRes.data;
+  const playerCheck = await checkPlayerExistence(account.puuid);
+  if (playerCheck.type === 'error') return { type: 'error', reason: playerCheck.reason };
+  if (!playerCheck.data)
+    return { type: 'error', reason: `Player '${summonerName}' doesn't exist.` };
+  // Set player's teamId to new team
+  try {
+    const teamId = lblcsDb.$with('team_id').as(
+      lblcsDb
+        .select({ value: teams.id })
+        .from(teams)
+        .where(sql`lower(${teams.name}) = lower(${team})`),
+    );
+    await lblcsDb
+      .with(teamId)
+      .update(players)
+      .set({ teamId: sql`(SELECT * FROM ${teamId})` })
+      .where(eq(players.riotPuuid, account.puuid));
+    const data = team
+      ? `Successfully added '${summonerName}' to '${team}'!`
+      : `Successfully removed '${summonerName}'!`;
+    return { type: 'success', data: data };
+  } catch (e) {
+    console.log(e);
+    return { type: 'error', reason: "An unexpected error occured while updating a player's team." };
   }
 }

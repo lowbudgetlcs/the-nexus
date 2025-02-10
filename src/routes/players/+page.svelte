@@ -21,7 +21,7 @@
 
   let { data } = $props();
   let { createPlayerForm, changePlayerTeamForms, removePlayerForms } = data;
-  let { players } = $derived(data);
+  const { players } = $derived(data);
   setCreatePlayerForm(createPlayerForm);
   setChangePlayerTeamForms(changePlayerTeamForms);
   setRemovePlayerTeamForms(removePlayerForms);

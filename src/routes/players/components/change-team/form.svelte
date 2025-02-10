@@ -34,7 +34,7 @@
   $formData.summonerName = player.name;
 </script>
 
-<form method="POST" id="add-player-to-team-{id}" action="?/add" class="grid gap-4 py-4" use:enhance>
+<form method="POST" id="change-team-{id}" action="?/changeTeam" class="grid gap-4 py-4" use:enhance>
   <Form.Field {form} name="team" class="grid grid-cols-4 items-center gap-4">
     <Form.Control>
       {#snippet children({ props })}
