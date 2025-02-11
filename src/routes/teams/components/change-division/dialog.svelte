@@ -11,12 +11,12 @@
   <Dialog.Trigger></Dialog.Trigger>
   <Dialog.Content class="sm:max-w-[425px]">
     <Dialog.Header>
-      <Dialog.Title>Remove from Division</Dialog.Title>
-      <Dialog.Description>Remove {team.name} from {team.division}.</Dialog.Description>
+      <Dialog.Title>Change Team Division</Dialog.Title>
+      <Dialog.Description>Transfer {team.name} to a new Division.</Dialog.Description>
     </Dialog.Header>
     <Form bind:toggle {team} {id} />
     <Dialog.Footer>
-      <Button type="submit" form="remove-division-{id}">Confirm?</Button>
+      <Button type="submit" form="change-division-{id}">Confirm?</Button>
     </Dialog.Footer>
   </Dialog.Content>
 </Dialog.Root>

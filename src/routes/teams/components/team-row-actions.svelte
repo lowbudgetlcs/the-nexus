@@ -3,8 +3,8 @@
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
   import type { Team } from '$lib/types/entities';
   import Ellipsis from 'lucide-svelte/icons/ellipsis';
-  import ChangeDivisionDialog from './add-division/dialog.svelte'
-  import RemoveDivisionDialog from './remove-division/dialog.svelte'
+  import ChangeDivisionDialog from './change-division/dialog.svelte';
+  import RemoveDivisionDialog from './remove-division/dialog.svelte';
 
   let { team, id }: { team: Team; id: string } = $props();
   let changeDivisionDialogToggle = $state(false);
@@ -35,10 +35,10 @@
     </DropdownMenu.Group>
     <DropdownMenu.Separator />
     <DropdownMenu.Item onclick={() => (changeDivisionDialogToggle = true)}
-      >Change team</DropdownMenu.Item
+      >Change division</DropdownMenu.Item
     >
     <DropdownMenu.Item onclick={() => (removeDivisionDialogToggle = true)}
-      >Remove from team</DropdownMenu.Item
+      >Remove from division</DropdownMenu.Item
     >
   </DropdownMenu.Content>
 </DropdownMenu.Root>

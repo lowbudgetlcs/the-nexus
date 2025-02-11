@@ -10,12 +10,12 @@
   <Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>Create Team</Dialog.Trigger>
   <Dialog.Content class="sm:max-w-[425px]">
     <Dialog.Header>
-      <Dialog.Title>Create team</Dialog.Title>
+      <Dialog.Title>Create Team</Dialog.Title>
       <Dialog.Description>Create a new team in the database.</Dialog.Description>
     </Dialog.Header>
     <Form bind:toggle />
     <Dialog.Footer>
-      <Button type="submit" form="create-team-form">Create Team</Button>
+      <Button type="submit" form="create-team-form">Create Team!</Button>
     </Dialog.Footer>
   </Dialog.Content>
 </Dialog.Root>

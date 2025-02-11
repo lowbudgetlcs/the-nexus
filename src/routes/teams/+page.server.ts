@@ -7,6 +7,7 @@ import { checkTeamExistence, fetchAllTeams, insertTeam } from '$lib/server/teams
 import { checkDivisionExistence } from '$lib/server/divisions';
 import { insertPlayer } from '$lib/server/players';
 import type { Team } from '$lib/types/entities';
+import { changeDivisionSchema } from './components/change-division/schema';
 
 export const load: PageServerLoad = async () => {
   const teamList: Team[] = [];
@@ -17,10 +18,15 @@ export const load: PageServerLoad = async () => {
     return superValidate(zod(removeDivisionSchema), { id: `${id}` });
   });
 
+  const promisesChangeDivision = teamList.map((_, id) => {
+    return superValidate(zod(changeDivisionSchema), { id: `${id}` });
+  });
+
   return {
     teams: teamList,
     createTeamForm: await superValidate(zod(createTeamSchema)),
     removeDivisionForms: await Promise.all(promisesRemoveDivision),
+    changeDivisionForms: await Promise.all(promisesChangeDivision),
   };
 };
 
@@ -61,6 +67,11 @@ export const actions = {
   },
   removeDivision: async (e) => {
     const form = await superValidate(e, zod(removeDivisionSchema));
+    if (!form.valid) return fail(400, { form });
+    return message(form, 'Not yet implemented.');
+  },
+  changeDivision: async (e) => {
+    const form = await superValidate(e, zod(changeDivisionSchema));
     if (!form.valid) return fail(400, { form });
     return message(form, 'Not yet implemented.');
   },
