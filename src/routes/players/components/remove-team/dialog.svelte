@@ -15,7 +15,7 @@
   <Dialog.Trigger></Dialog.Trigger>
   <Dialog.Content class="sm:max-w-[425px]">
     <Dialog.Header>
-      <Dialog.Title>Remove a player from a team</Dialog.Title>
+      <Dialog.Title>Remove from Team</Dialog.Title>
       <Dialog.Description>Remove {player.name} from {player.team}.</Dialog.Description>
     </Dialog.Header>
     <Form bind:toggle {player} {id} />
