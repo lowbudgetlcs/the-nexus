@@ -1,6 +1,3 @@
-import { lblcsDb } from '$lib/server/db/lblcs';
-import { players, teams } from '$lib/server/db/lblcs/schema';
-import { eq, sql } from 'drizzle-orm';
 import type { PageServerLoad, Actions } from './$types';
 import type { Player } from '$lib/types/entities';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -8,13 +5,7 @@ import { fail, superValidate, setError, message } from 'sveltekit-superforms';
 import { changePlayerTeamSchema } from './components/change-team/schema';
 import { removePlayerTeamSchema } from './components/remove-team/schema';
 import { createPlayerSchema } from './components/create-player/schema';
-import {
-  checkPlayerExistence,
-  checkRiotIdExists,
-  fetchAllPlayers,
-  insertPlayer,
-  updatePlayerTeam,
-} from '$lib/server/players';
+import { fetchAllPlayers, insertPlayer, updatePlayerTeam } from '$lib/server/players';
 import { checkTeamExistence } from '$lib/server/teams';
 
 export const load: PageServerLoad = async () => {

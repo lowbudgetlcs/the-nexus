@@ -1,6 +1,7 @@
 import { fail, superValidate, setError, message } from 'sveltekit-superforms';
 import type { Actions, PageServerLoad } from '../$types';
 import { createTeamSchema } from './components/create-team/schema';
+import { removeDivisionSchema } from './components/remove-division/schema';
 import { zod } from 'sveltekit-superforms/adapters';
 import { checkTeamExistence, fetchAllTeams, insertTeam } from '$lib/server/teams';
 import { checkDivisionExistence } from '$lib/server/divisions';
@@ -11,7 +12,16 @@ export const load: PageServerLoad = async () => {
   const teamList: Team[] = [];
   const teamFetch = await fetchAllTeams();
   if (teamFetch.type === 'success') teamList.push(...teamFetch.data);
-  return { teams: teamList, createTeamForm: await superValidate(zod(createTeamSchema)) };
+
+  const promisesRemoveDivision = teamList.map((_, id) => {
+    return superValidate(zod(removeDivisionSchema), { id: `${id}` });
+  });
+
+  return {
+    teams: teamList,
+    createTeamForm: await superValidate(zod(createTeamSchema)),
+    removeDivisionForms: await Promise.all(promisesRemoveDivision),
+  };
 };
 
 export const actions = {
@@ -48,5 +58,10 @@ export const actions = {
       .map((res) => res.reason);
     if (insertErrors.length > 0) return setError(form, 'multi', insertErrors);
     return message(form, `Successfully created '${name}' with ${insertPromises.length} players!`);
+  },
+  removeDivision: async (e) => {
+    const form = await superValidate(e, zod(removeDivisionSchema));
+    if (!form.valid) return fail(400, { form });
+    return message(form, 'Not yet implemented.');
   },
 } satisfies Actions;
