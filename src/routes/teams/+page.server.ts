@@ -1,4 +1,4 @@
-import { fail, superValidate, setError } from 'sveltekit-superforms';
+import { fail, superValidate, setError, message } from 'sveltekit-superforms';
 import type { Actions, PageServerLoad } from '../$types';
 import { createTeamSchema } from './components/create-team/schema';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -47,5 +47,6 @@ export const actions = {
       .filter((res) => res.type === 'error')
       .map((res) => res.reason);
     if (insertErrors.length > 0) return setError(form, 'multi', insertErrors);
+    return message(form, `Successfully created '${name}' with ${insertPromises.length} players!`);
   },
 } satisfies Actions;
