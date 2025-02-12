@@ -7,9 +7,9 @@
     "dev": "vite dev",
     "build": "svelte-kit sync && vite build",
     "preview": "vite preview",
-    "format": "prettier --write .",
-    "lint": "prettier --check . && eslint .",
-    "lint:fix": "eslint . --fix",
+    "format": "prettier --write src/",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
     "intro": "npx drizzle-kit --config=drizzle-users.config.ts pull && npx drizzle-kit --config=drizzle-lblcs.config.ts pull && rm -rf ./src/lib/server/db/**/*.sql ./src/lib/server/db/**/relations.ts ./src/lib/server/db/**/meta/"
   },
   "devDependencies": {

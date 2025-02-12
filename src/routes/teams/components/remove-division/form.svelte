@@ -2,26 +2,26 @@
   import * as Form from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
   import { superForm } from 'sveltekit-superforms';
-  import { removePlayerTeamSchema } from './schema';
-  import type { Player } from '$lib/types/entities';
-  import { removePlayerTeamForms } from '../../+page.svelte';
+  import { removeDivisionSchema } from './schema';
+  import type { Team } from '$lib/types/entities';
+  import { removeDivisionForms } from '../../+page.svelte';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { toast } from 'svelte-sonner';
 
   let {
     toggle = $bindable(),
-    player,
+    team,
     id,
   }: {
     toggle: boolean;
-    player: Player;
+    team: Team;
     id: string;
   } = $props();
-  let formCtxs = removePlayerTeamForms();
+  let formCtxs = removeDivisionForms();
   const formCtx = formCtxs.filter((f) => f.id === id)[0];
   const form = superForm(formCtx, {
     id: id,
-    validators: zodClient(removePlayerTeamSchema),
+    validators: zodClient(removeDivisionSchema),
     onUpdated({ form }) {
       if (form.valid) {
         toggle = !toggle;
@@ -30,14 +30,20 @@
     },
   });
   const { form: formData, enhance } = form;
-  $formData.summonerName = player.name;
+  $formData.teamName = team.name;
 </script>
 
-<form method="POST" id="remove-team-{id}" action="?/removeTeam" class="grid gap-4 py-4" use:enhance>
-  <Form.Field {form} name="summonerName" class="hidden">
+<form
+  method="POST"
+  id="remove-division-{id}"
+  action="?/removeDivision"
+  class="grid gap-4 py-4"
+  use:enhance
+>
+  <Form.Field {form} name="teamName" class="hidden">
     <Form.Control>
       {#snippet children({ props })}
-        <Input readonly {...props} bind:value={$formData.summonerName} />
+        <Input readonly {...props} bind:value={$formData.teamName} />
       {/snippet}
     </Form.Control>
     <Form.FieldErrors />

@@ -6,6 +6,12 @@ import type { Result } from '$lib/types/result';
 const rAPI = () => {
   return new RiotAPI(env.RIOT_API_TOKEN);
 };
+/**
+ *
+ * @param gameName First half of a riot ID
+ * @param tagLine Second half of a riot ID
+ * @returns A result containing the associated account data object.
+ */
 export async function fetchAccountByRiotId(
   gameName: string,
   tagLine: string,

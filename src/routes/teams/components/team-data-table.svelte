@@ -12,7 +12,7 @@
   import * as Table from '$lib/components/ui/table';
   import { createSvelteTable } from '$lib/components/ui/data-table';
   import * as DataTable from '$lib/components/datatable/index';
-  import CreatePlayerDialog from './create-player/dialog.svelte';
+  import CreateTeamDialog from './create-team/dialog.svelte';
 
   type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
@@ -78,7 +78,7 @@
   </div>
   <div class="flex flex-row justify-between">
     <div class="flex items-center py-4">
-      <CreatePlayerDialog />
+      <CreateTeamDialog />
     </div>
     <DataTable.PageButtons {table} />
   </div>

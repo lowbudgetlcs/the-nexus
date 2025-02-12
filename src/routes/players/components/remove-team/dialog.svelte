@@ -15,12 +15,12 @@
   <Dialog.Trigger></Dialog.Trigger>
   <Dialog.Content class="sm:max-w-[425px]">
     <Dialog.Header>
-      <Dialog.Title>Remove a player from a team</Dialog.Title>
+      <Dialog.Title>Remove from Team</Dialog.Title>
       <Dialog.Description>Remove {player.name} from {player.team}.</Dialog.Description>
     </Dialog.Header>
     <Form bind:toggle {player} {id} />
     <Dialog.Footer>
-      <Button type="submit" form="remove-player-to-team-{id}">Confirm?</Button>
+      <Button type="submit" form="remove-team-{id}">Confirm?</Button>
     </Dialog.Footer>
   </Dialog.Content>
 </Dialog.Root>

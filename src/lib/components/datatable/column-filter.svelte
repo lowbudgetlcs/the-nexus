@@ -7,7 +7,7 @@
 
 <div class="flex items-center py-4">
   <Input
-    placeholder="Filter teams..."
+    placeholder="Filter {column}..."
     value={(table.getColumn(column)?.getFilterValue() as string) ?? ''}
     onchange={(e) => {
       table.getColumn(column)?.setFilterValue(e.currentTarget.value);
