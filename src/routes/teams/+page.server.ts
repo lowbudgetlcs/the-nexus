@@ -34,16 +34,19 @@ export const actions = {
   create: async (e) => {
     const form = await superValidate(e, zod(createTeamSchema));
     if (!form.valid) return fail(400, { form });
-    const { name, divisionName, multi } = form.data;
+    const { name, divisionName, multi, logo } = form.data;
     // Check that team doesnt exist
     const teamCheck = await checkTeamExistence(name);
     if (teamCheck.type === 'error') return setError(form, 'name', teamCheck.reason);
     if (teamCheck.data) return setError(form, 'name', `Team '${name}' already exists.`);
     // Check that division exists
-    const divisionCheck = await checkDivisionExistence(divisionName);
-    if (divisionCheck.type === 'error') return setError(form, 'divisionName', divisionCheck.reason);
-    if (!divisionCheck.data)
-      return setError(form, 'divisionName', `Division '${divisionName}' doesn't exist.`);
+    if (divisionName) {
+      const divisionCheck = await checkDivisionExistence(divisionName);
+      if (divisionCheck.type === 'error')
+        return setError(form, 'divisionName', divisionCheck.reason);
+      if (!divisionCheck.data)
+        return setError(form, 'divisionName', `Division '${divisionName}' doesn't exist.`);
+    }
     // Parse multi link
     const summoners = [];
     if (multi) {
@@ -55,7 +58,7 @@ export const actions = {
       }
     }
     // Create team
-    const insertTeamRes = await insertTeam(name, divisionName);
+    const insertTeamRes = await insertTeam(name, divisionName, logo);
     if (insertTeamRes.type === 'error') return setError(form, 'name', insertTeamRes.reason);
     // Insert players
     const insertPromises = summoners.map((p) => insertPlayer(p, name));

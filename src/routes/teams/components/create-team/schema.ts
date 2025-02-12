@@ -3,7 +3,8 @@ import { teamName, divisionName, multi } from '$lib/validation';
 
 const formSchema = z.object({
   name: teamName,
-  divisionName: divisionName,
+  divisionName: divisionName.nullable(),
+  logo: z.string().url().nullable(),
   multi: multi.nullable(),
 });
 export const createTeamSchema = formSchema;

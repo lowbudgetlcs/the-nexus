@@ -46,7 +46,11 @@ export async function checkTeamExistence(team: string): Promise<Result<boolean>>
  * @param team
  * @param division
  */
-export async function insertTeam(team: string, division: string): Promise<Result<string>> {
+export async function insertTeam(
+  team: string,
+  division: string | null,
+  logo: string | null,
+): Promise<Result<string>> {
   try {
     const divisionId = lblcsDb.$with('division_id').as(
       lblcsDb
@@ -57,7 +61,7 @@ export async function insertTeam(team: string, division: string): Promise<Result
     const insertRes = await lblcsDb
       .with(divisionId)
       .insert(teams)
-      .values({ name: team, divisionId: sql`(SELECT * FROM ${divisionId})` })
+      .values({ name: team, divisionId: sql`(SELECT * FROM ${divisionId})`, logo: logo })
       .returning();
     if (insertRes.length > 0)
       return { type: 'success', data: `Successfully inserted '${team}' into '${division}'!` };

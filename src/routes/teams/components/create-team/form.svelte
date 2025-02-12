@@ -49,4 +49,13 @@
     </Form.Control>
     <Form.FieldErrors class="col-span-3 col-start-2" />
   </Form.Field>
+  <Form.Field {form} name="logo" class="grid grid-cols-4 items-center gap-4">
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label class="text-right">Logo</Form.Label>
+        <Input {...props} class="col-span-3" bind:value={$formData.logo} />
+      {/snippet}
+    </Form.Control>
+    <Form.FieldErrors class="col-span-3 col-start-2" />
+  </Form.Field>
 </form>
