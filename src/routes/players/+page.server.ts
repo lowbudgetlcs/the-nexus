@@ -7,6 +7,7 @@ import { removePlayerTeamSchema } from './components/remove-team/schema';
 import { createPlayerSchema } from './components/create-player/schema';
 import { fetchAllPlayers, insertPlayer, updatePlayerTeam } from '$lib/server/players';
 import { checkTeamExistence } from '$lib/server/teams';
+import { sanitize } from '$lib/utils';
 
 export const load: PageServerLoad = async () => {
   const playerList: Player[] = [];
@@ -32,7 +33,8 @@ export const actions = {
   create: async (e) => {
     const form = await superValidate(e, zod(createPlayerSchema));
     if (!form.valid) return fail(400, { form });
-    const { summonerName, team } = form.data;
+    const { summonerName: unsanitizedSummoner, team: unsanitizedTeam } = form.data;
+    const [summonerName, team] = [sanitize(unsanitizedSummoner), sanitize(unsanitizedTeam)];
     // Check if team exists
     if (team) {
       const teamCheck = await checkTeamExistence(team);
@@ -46,7 +48,8 @@ export const actions = {
   changeTeam: async (e) => {
     const form = await superValidate(e, zod(changePlayerTeamSchema));
     if (!form.valid) return fail(400, { form });
-    const { summonerName, team } = form.data;
+    const { summonerName: unsanitizedSummoner, team: unsanitizedTeam } = form.data;
+    const [summonerName, team] = [sanitize(unsanitizedSummoner), sanitize(unsanitizedTeam)];
     // Check if team exists
     const teamCheck = await checkTeamExistence(team);
     if (teamCheck.type === 'error') return setError(form, 'team', teamCheck.reason);
@@ -58,7 +61,8 @@ export const actions = {
   removeTeam: async (e) => {
     const form = await superValidate(e, zod(removePlayerTeamSchema));
     if (!form.valid) return fail(400, { form });
-    const { summonerName } = form.data;
+    const { summonerName: unsanitizedSummoner } = form.data;
+    const [summonerName] = [sanitize(unsanitizedSummoner)];
     const updateRes = await updatePlayerTeam(summonerName, null);
     if (updateRes.type === 'error') return setError(form, 'summonerName', updateRes.reason);
     return message(form, updateRes.data);

@@ -8,6 +8,7 @@ import { checkDivisionExistence } from '$lib/server/divisions';
 import { insertPlayer } from '$lib/server/players';
 import type { Team } from '$lib/types/entities';
 import { changeDivisionSchema } from './components/change-division/schema';
+import { sanitize } from '$lib/utils';
 
 export const load: PageServerLoad = async () => {
   const teamList: Team[] = [];
@@ -34,7 +35,8 @@ export const actions = {
   create: async (e) => {
     const form = await superValidate(e, zod(createTeamSchema));
     if (!form.valid) return fail(400, { form });
-    const { name, divisionName, multi, logo } = form.data;
+    const { name: unsanitizedName, divisionName: unsanitizedDivision, multi, logo } = form.data;
+    const [name, divisionName] = [sanitize(unsanitizedName), sanitize(unsanitizedDivision)];
     // Check that team doesnt exist
     const teamCheck = await checkTeamExistence(name);
     if (teamCheck.type === 'error') return setError(form, 'name', teamCheck.reason);
