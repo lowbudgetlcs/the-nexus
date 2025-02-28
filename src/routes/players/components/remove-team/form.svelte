@@ -29,15 +29,18 @@
       }
     },
   });
-  const { form: formData, enhance } = form;
+  const { form: formData, enhance, errors } = form;
   $formData.summonerName = player.name;
 </script>
 
 <form method="POST" id="remove-team-{id}" action="?/removeTeam" class="grid gap-4 py-4" use:enhance>
-  <Form.Field {form} name="summonerName" class="hidden">
+  <Form.Field {form} name="summonerName">
     <Form.Control>
       {#snippet children({ props })}
-        <Input readonly {...props} bind:value={$formData.summonerName} />
+        {#if $errors.name === 'summonerName'}
+        <Form.Label class="text-right">Summoner Name</Form.Label>
+        {/if}
+        <Input readonly {...props} class="hidden" bind:value={$formData.summonerName} />
       {/snippet}
     </Form.Control>
     <Form.FieldErrors />
