@@ -23,14 +23,13 @@
     id: id,
     validators: zodClient(changePlayerTeamSchema),
     onUpdated({ form }) {
-      console.log(form);
       if (form.valid) {
         toggle = !toggle;
         toast.success(form.message);
       }
     },
   });
-  const { form: formData, enhance } = form;
+  const { form: formData, enhance, errors } = form;
   $formData.summonerName = player.name;
 </script>
 
@@ -44,9 +43,12 @@
     </Form.Control>
     <Form.FieldErrors class="col-span-3 col-start-2" />
   </Form.Field>
-  <Form.Field {form} name="summonerName" class="hidden">
+  <Form.Field {form} name="summonerName">
     <Form.Control>
       {#snippet children({ props })}
+        {#if $errors.name === 'summonerName'}
+        <Form.Label class="text-right">Summoner Name</Form.Label>
+        {/if}
         <Input readonly {...props} type="hidden" bind:value={$formData.summonerName} />
       {/snippet}
     </Form.Control>

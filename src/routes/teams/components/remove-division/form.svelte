@@ -29,7 +29,7 @@
       }
     },
   });
-  const { form: formData, enhance } = form;
+  const { form: formData, enhance, errors } = form;
   $formData.teamName = team.name;
 </script>
 
@@ -43,6 +43,9 @@
   <Form.Field {form} name="teamName" class="hidden">
     <Form.Control>
       {#snippet children({ props })}
+        {#if $errors.name === 'teamName'}
+          <Form.Label class="text-right">Team</Form.Label>
+        {/if}
         <Input readonly {...props} bind:value={$formData.teamName} />
       {/snippet}
     </Form.Control>
