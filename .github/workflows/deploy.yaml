@@ -64,7 +64,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd docker/lblcs/${{ env.APP }}
+            cd /lblcs/docker/${{ env.APP }}
             echo JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}" > .env
             echo ORIGIN="${{ secrets.ORIGIN }}" >> .env
             echo USERS_DB_PATH="${{ secrets.USERS_DB_PATH }}" >> .env
