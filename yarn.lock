@@ -5328,6 +5328,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"svelte-radix@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "svelte-radix@npm:2.0.1"
+  peerDependencies:
+    svelte: ^5.0.0
+  checksum: 10c0/0e9a4abf8a34a150cb5dfe9f659decffe78dd6382020fa76616aa56aaa0f1c08804d7b278c6ad11a50fca8b64234b7ba1cfc07185444815aa7c06cbfd07b8018
+  languageName: node
+  linkType: hard
+
 "svelte-sonner@npm:^0.3.28":
   version: 0.3.28
   resolution: "svelte-sonner@npm:0.3.28"
@@ -5630,6 +5639,7 @@ __metadata:
     prettier-plugin-tailwindcss: "npm:^0.6.11"
     svelte: "npm:^5.19.9"
     svelte-check: "npm:^4.0.0"
+    svelte-radix: "npm:^2.0.1"
     svelte-sonner: "npm:^0.3.28"
     sveltekit-superforms: "npm:^2.23.1"
     tailwind-merge: "npm:^3.0.1"
