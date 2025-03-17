@@ -1,6 +1,6 @@
 import type { Team } from '$lib/types/models';
 import type { AsyncResult } from '$lib/types/result';
-import { Ok, Err, Success } from '$lib/types/result';
+import { Ok, Err } from '$lib/types/result';
 import { lblcsDb } from '$lib/server/db/lblcs';
 import { count, eq, sql } from 'drizzle-orm';
 import { teams, divisions, players } from '$lib/server/db/lblcs/schema';
