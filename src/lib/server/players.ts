@@ -2,7 +2,6 @@ import type { Result } from '$lib/types/result';
 import { Ok, Err, Success } from '$lib/types/result';
 import type { RiotAPITypes } from '@fightmegg/riot-api';
 type AccountDto = RiotAPITypes.Account.AccountDTO;
-import { fetchAccountByRiotId } from '$lib/server/riot';
 import { lblcsDb } from '$lib/server/db/lblcs';
 import { divisions, players, teams } from '$lib/server/db/lblcs/schema';
 import { eq, sql } from 'drizzle-orm';
@@ -20,20 +19,6 @@ export async function fetchAllPlayers(): Promise<Result<Player[], string>> {
     console.log(e);
     return Err('An unexpected error occured.');
   }
-}
-
-/**
- *
- * @param gameName First half of a riot ID.
- * @param tagLine Second half of a riot ID.
- * @returns A result containing the associated AccountDTO
- */
-export async function checkRiotIdExists(
-  gameName: string,
-  tagLine: string,
-): Promise<Result<AccountDto, string>> {
-  const res = await fetchAccountByRiotId(gameName, tagLine);
-  return res;
 }
 
 /**
