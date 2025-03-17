@@ -10,3 +10,5 @@ export function sanitize(str: string | null): string | null;
 export function sanitize(str: string | null): string | null {
   return str?.trim() ?? null;
 }
+
+export const unexpectedError: string = 'An unexpected error has occured.';

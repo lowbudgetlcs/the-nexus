@@ -1,10 +1,12 @@
-import type { Team } from '$lib/types/entities';
-import type { Result } from '$lib/types/result';
+import type { Team } from '$lib/types/models';
+import type { AsyncResult } from '$lib/types/result';
+import { Ok, Err, Success } from '$lib/types/result';
 import { lblcsDb } from '$lib/server/db/lblcs';
 import { count, eq, sql } from 'drizzle-orm';
 import { teams, divisions, players } from '$lib/server/db/lblcs/schema';
+import { unexpectedError } from '$lib/utils';
 
-export async function fetchAllTeams(): Promise<Result<Team[]>> {
+export async function fetchAllTeams(): AsyncResult<Team[], string> {
   try {
     const fetchRes = await lblcsDb
       .select({ name: teams.name, division: divisions.name, playerCount: count(players.id) })
@@ -12,10 +14,10 @@ export async function fetchAllTeams(): Promise<Result<Team[]>> {
       .leftJoin(players, eq(players.teamId, teams.id))
       .leftJoin(divisions, eq(teams.divisionId, divisions.id))
       .groupBy(teams.name, divisions.name);
-    return { type: 'success', data: fetchRes };
+    return Ok(fetchRes);
   } catch (e) {
     console.log(e);
-    return { type: 'error', reason: 'An unkown error occured while fetching all teams.' };
+    return Err(unexpectedError);
   }
 }
 
@@ -24,7 +26,7 @@ export async function fetchAllTeams(): Promise<Result<Team[]>> {
  * @param team Case-insensitive team name.
  * @returns A result containing true if a team was found.
  */
-export async function checkTeamExistence(team: string): Promise<Result<boolean>> {
+export async function checkTeamExistence(team: string): AsyncResult<boolean, string> {
   try {
     const resTeam: Team[] = await lblcsDb
       .select({ name: teams.name, division: divisions.name, playerCount: count(players.id) })
@@ -33,11 +35,11 @@ export async function checkTeamExistence(team: string): Promise<Result<boolean>>
       .leftJoin(players, eq(players.teamId, teams.id))
       .where(sql`lower(${teams.name}) = lower(${team})`)
       .groupBy(teams.name, divisions.name);
-    if (resTeam.length > 0) return { type: 'success', data: true };
-    return { type: 'success', data: false };
+    if (resTeam.length > 0) return Ok(true);
+    return Ok(false);
   } catch (e) {
     console.log(e);
-    return { type: 'error', reason: 'An unknown error occured while checking team existence.' };
+    return Err(unexpectedError);
   }
 }
 
@@ -50,7 +52,7 @@ export async function insertTeam(
   team: string,
   division: string | null,
   logo: string | null,
-): Promise<Result<string>> {
+): AsyncResult<string, string> {
   try {
     const divisionId = lblcsDb.$with('division_id').as(
       lblcsDb
@@ -63,11 +65,10 @@ export async function insertTeam(
       .insert(teams)
       .values({ name: team, divisionId: sql`(SELECT * FROM ${divisionId})`, logo: logo })
       .returning();
-    if (insertRes.length > 0)
-      return { type: 'success', data: `Successfully inserted '${team}' into '${division}'!` };
-    return { type: 'error', reason: `Failed to insert '${team}' into '${division}'.` };
+    if (insertRes.length > 0) return Ok(`Successfully inserted '${team}' into '${division}'!`);
+    return Err(`Failed to insert '${team}' into '${division}'.`);
   } catch (e) {
     console.log(e);
-    return { type: 'error', reason: 'An unknown error occured while inserting a team.' };
+    return Err(unexpectedError);
   }
 }

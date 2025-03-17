@@ -5,6 +5,7 @@ import { divisions, players, teams } from '$lib/server/db/lblcs/schema';
 import { eq, sql } from 'drizzle-orm';
 import type { Player } from '$lib/types/models';
 import { fetchAccountByRiotId } from '$lib/server/riot';
+import { unexpectedError } from '$lib/utils';
 
 export async function fetchAllPlayers(): AsyncResult<Player[], string> {
   try {
@@ -16,7 +17,7 @@ export async function fetchAllPlayers(): AsyncResult<Player[], string> {
     return Ok(fetchRes);
   } catch (e) {
     console.log(e);
-    return Err('An unexpected error occured.');
+    return Err(unexpectedError);
   }
 }
 
@@ -32,7 +33,7 @@ export async function checkPlayerExistence(puuid: string): AsyncResult<boolean, 
     return Ok(false);
   } catch (e) {
     console.log(e);
-    return Err('An unexpected error occured.');
+    return Err(unexpectedError);
   }
 }
 
@@ -75,7 +76,7 @@ export async function insertPlayer(
     return Err(`Failed to insert '${summonerName}'.`);
   } catch (e) {
     console.log(e);
-    return Err('An unexpected error occured.');
+    return Err(unexpectedError);
   }
 }
 
@@ -116,6 +117,6 @@ export async function updatePlayerTeam(
     return Ok(data);
   } catch (e) {
     console.log(e);
-    return Err('An unexpected error occured.');
+    return Err(unexpectedError);
   }
 }

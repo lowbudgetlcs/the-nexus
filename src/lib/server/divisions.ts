@@ -4,6 +4,7 @@ import { divisions, teams } from '$lib/server/db/lblcs/schema';
 import { lblcsDb } from '$lib/server/db/lblcs';
 import { count, eq, sql } from 'drizzle-orm';
 import type { Division } from '$lib/types/models';
+import { unexpectedError } from '$lib/utils';
 
 /**
  *
@@ -22,6 +23,6 @@ export async function checkDivisionExistence(division: string): AsyncResult<bool
     return Ok(false);
   } catch (e) {
     console.log(e);
-    return Err('An unknown error occured while checking team existence.');
+    return Err(unexpectedError);
   }
 }
