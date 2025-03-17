@@ -1,3 +1,8 @@
+export type User = {
+  id: number;
+  username: string;
+};
+
 export type Player = {
   name: string;
   team: string | null;
