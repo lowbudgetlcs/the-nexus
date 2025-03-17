@@ -15,3 +15,5 @@ export const Err = <E>(error: E): Err<E> => {
 export const Success = <T, E>(result: Result<T, E>): result is Ok<T> => {
   return result._type === 'ok';
 };
+
+export type AsyncResult<T, E> = Promise<Result<T, E>>;

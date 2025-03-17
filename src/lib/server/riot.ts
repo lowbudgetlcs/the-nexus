@@ -1,7 +1,8 @@
 export const prerender = false;
 import { RiotAPI, RiotAPITypes, PlatformId } from '@fightmegg/riot-api';
 import { env } from '$env/dynamic/private';
-import type { Result } from '$lib/types/result';
+import type { AsyncResult } from '$lib/types/result';
+import { Ok, Err } from '$lib/types/result';
 
 const rAPI = () => {
   return new RiotAPI(env.RIOT_API_TOKEN);
@@ -15,15 +16,16 @@ const rAPI = () => {
 export async function fetchAccountByRiotId(
   gameName: string,
   tagLine: string,
-): Promise<Result<RiotAPITypes.Account.AccountDTO>> {
+): AsyncResult<RiotAPITypes.Account.AccountDTO, string> {
   try {
     const account = await rAPI().account.getByRiotId({
       region: PlatformId.AMERICAS,
       gameName,
       tagLine,
     });
-    return { type: 'success', data: account };
+    return Ok(account);
   } catch (e) {
-    return { type: 'error', reason: `Account '${gameName}#${tagLine}' not found.` };
+    console.error(e);
+    return Err(`Account '${gameName}#${tagLine}' not found.`);
   }
 }

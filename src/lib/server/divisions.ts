@@ -1,4 +1,4 @@
-import type { Result } from '$lib/types/result';
+import type { AsyncResult } from '$lib/types/result';
 import { Ok, Err } from '$lib/types/result';
 import { divisions, teams } from '$lib/server/db/lblcs/schema';
 import { lblcsDb } from '$lib/server/db/lblcs';
@@ -10,7 +10,7 @@ import type { Division } from '$lib/types/models';
  * @param division A division name.
  * @returns A result containing true if a division is found.
  */
-export async function checkDivisionExistence(division: string): Promise<Result<boolean, string>> {
+export async function checkDivisionExistence(division: string): AsyncResult<boolean, string> {
   try {
     const resDivision: Division[] = await lblcsDb
       .select({ name: divisions.name, teamCount: count(teams.id) })

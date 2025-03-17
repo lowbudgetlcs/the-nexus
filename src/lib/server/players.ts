@@ -1,13 +1,12 @@
-import type { Result } from '$lib/types/result';
+import type { AsyncResult } from '$lib/types/result';
 import { Ok, Err, Success } from '$lib/types/result';
-import type { RiotAPITypes } from '@fightmegg/riot-api';
-type AccountDto = RiotAPITypes.Account.AccountDTO;
 import { lblcsDb } from '$lib/server/db/lblcs';
 import { divisions, players, teams } from '$lib/server/db/lblcs/schema';
 import { eq, sql } from 'drizzle-orm';
 import type { Player } from '$lib/types/models';
+import { fetchAccountByRiotId } from '$lib/server/riot';
 
-export async function fetchAllPlayers(): Promise<Result<Player[], string>> {
+export async function fetchAllPlayers(): AsyncResult<Player[], string> {
   try {
     const fetchRes = await lblcsDb
       .select({ name: players.summonerName, team: teams.name, division: divisions.name })
@@ -24,9 +23,9 @@ export async function fetchAllPlayers(): Promise<Result<Player[], string>> {
 /**
  *
  * @param puuid A unique riot identifier.
- * @returns A result containing true if a player is found.
+ * @returns A result containing true if a player is found in the database.
  */
-export async function checkPlayerExistence(puuid: string): Promise<Result<boolean, string>> {
+export async function checkPlayerExistence(puuid: string): AsyncResult<boolean, string> {
   try {
     const resPlayer = await lblcsDb.select().from(players).where(eq(players.riotPuuid, puuid));
     if (resPlayer.length > 0) return Ok(true);
@@ -46,10 +45,10 @@ export async function checkPlayerExistence(puuid: string): Promise<Result<boolea
 export async function insertPlayer(
   summonerName: string,
   team: string | null,
-): Promise<Result<string, string>> {
+): AsyncResult<string, string> {
   const [gameName, tagLine] = summonerName.split('#');
   // Check that riot account exists
-  const account = await checkRiotIdExists(gameName, tagLine);
+  const account = await fetchAccountByRiotId(gameName, tagLine);
   if (!Success(account)) return account;
   // Check player doesn't already exist
   const playerCheck = await checkPlayerExistence(account.unwrap().puuid);
@@ -89,10 +88,10 @@ export async function insertPlayer(
 export async function updatePlayerTeam(
   summonerName: string,
   team: string | null,
-): Promise<Result<string, string>> {
+): AsyncResult<string, string> {
   const [gameName, tagLine] = summonerName.split('#');
   // Check if player exists
-  const accountRes = await checkRiotIdExists(gameName, tagLine);
+  const accountRes = await fetchAccountByRiotId(gameName, tagLine);
   if (!Success(accountRes)) return accountRes;
   const account = accountRes.unwrap();
   const playerCheck = await checkPlayerExistence(account.puuid);
