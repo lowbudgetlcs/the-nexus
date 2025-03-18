@@ -3,9 +3,9 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { fail, superValidate, setError, message } from 'sveltekit-superforms';
 import { createTeamSchema } from './components/create-team/schema';
 import { removeDivisionSchema } from './components/remove-division/schema';
-import { changeDivisionSchema } from './components/change-division/schema'; s
+import { changeDivisionSchema } from './components/change-division/schema';
 import { checkTeamExists, readAllTeams, createTeam } from '$lib/server/teams';
-import { checkDivisioExists, checkDivisionExists } from '$lib/server/divisions';
+import { checkDivisionExists } from '$lib/server/divisions';
 import { createPlayer } from '$lib/server/players';
 import type { Team } from '$lib/types/models';
 import { parseMulti, sanitize, Success } from '$lib/utils';
@@ -44,8 +44,7 @@ export const actions = {
     // Check that division exists
     if (divisionName) {
       const divisionExists = await checkDivisionExists(divisionName);
-      if (!Success(divisionExists))
-        return setError(form, 'divisionName', divisionExists.err);
+      if (!Success(divisionExists)) return setError(form, 'divisionName', divisionExists.err);
       if (!divisionExists.unwrap())
         return setError(form, 'divisionName', `Division '${divisionName}' doesn't exist.`);
     }

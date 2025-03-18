@@ -14,7 +14,7 @@ export async function loginUser(username: string, password: string): AsyncResult
     .where(eq(users.username, username));
 
   if (fetchedUser.length < 1) {
-    return Err(`'${username}' does not exist.`)
+    return Err(`'${username}' does not exist.`);
   }
   const user = fetchedUser[0];
 
@@ -31,16 +31,16 @@ export async function loginUser(username: string, password: string): AsyncResult
 
       return Ok(token);
     }
-    return Err('Authentication failed.')
+    return Err('Authentication failed.');
   } catch (_) {
-    return Err('Authentication failed.')
+    return Err('Authentication failed.');
   }
 }
 
 export async function hash(password: string): AsyncResult<string, string> {
   try {
     const hash = await argon2.hash(password);
-    return Ok(hash)
+    return Ok(hash);
   } catch (e) {
     console.log(e);
     return Err('argon2 hash failed.');

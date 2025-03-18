@@ -31,7 +31,7 @@ export async function checkTeamExists(team: string): AsyncResult<boolean, string
     const res: { count: number }[] = await lblcsDb
       .select({ count: count() })
       .from(teams)
-      .where(sql`lower(${teams.name}) = lower(${team})`)
+      .where(sql`lower(${teams.name}) = lower(${team})`);
     if (res[0].count > 0) return Ok(true);
     return Ok(false);
   } catch (e) {

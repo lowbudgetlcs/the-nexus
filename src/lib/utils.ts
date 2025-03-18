@@ -46,4 +46,4 @@ export const parseMulti = (url: string | null): Array<string> => {
     return summonersParam.split(',');
   }
   return [];
-}
+};

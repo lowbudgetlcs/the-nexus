@@ -10,7 +10,12 @@ import { unexpectedError } from '$lib/utils';
 export async function readAllPlayers(): AsyncResult<Player[], string> {
   try {
     const res = await lblcsDb
-      .select({ name: players.summonerName, team: teams.name, division: divisions.name, puuid: players.riotPuuid })
+      .select({
+        name: players.summonerName,
+        team: teams.name,
+        division: divisions.name,
+        puuid: players.riotPuuid,
+      })
       .from(players)
       .leftJoin(teams, eq(players.teamId, teams.id))
       .leftJoin(divisions, eq(teams.divisionId, divisions.id));
@@ -43,11 +48,19 @@ export async function readPlayerByPuuid(puuid: string): AsyncResult<boolean, str
  * @param tagLine Second half of a riotId
  * @returns A result containing a player if found in the database.
  */
-export async function readPlayerByRiotId(gameName: string, tagLine: string): AsyncResult<Player, string> {
+export async function readPlayerByRiotId(
+  gameName: string,
+  tagLine: string,
+): AsyncResult<Player, string> {
   const riotId = `${gameName}#${tagLine}`;
   try {
     const res = await lblcsDb
-      .select({ name: players.summonerName, team: teams.name, division: divisions.name, puuid: players.riotPuuid })
+      .select({
+        name: players.summonerName,
+        team: teams.name,
+        division: divisions.name,
+        puuid: players.riotPuuid,
+      })
       .from(players)
       .leftJoin(teams, eq(players.teamId, teams.id))
       .leftJoin(divisions, eq(teams.divisionId, divisions.id))
@@ -73,11 +86,11 @@ export async function createPlayer(
   const [gameName, tagLine] = summonerName.split('#');
   // Check riot id exists
   const account = await fetchAccountByRiotId(gameName, tagLine);
-  console.log(account)
+  console.log(account);
   if (!Success(account)) return account;
   // Check player doesn't already exist
   const player = await readPlayerByPuuid(account.unwrap().puuid);
-  console.log(player)
+  console.log(player);
   if (!Success(player)) return player;
   if (player.unwrap()) return Err(`Player '${summonerName}' already exists`);
   try {
