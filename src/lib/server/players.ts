@@ -9,12 +9,12 @@ import { unexpectedError } from '$lib/utils';
 
 export async function readAllPlayers(): AsyncResult<Player[], string> {
   try {
-    const fetchRes = await lblcsDb
+    const res = await lblcsDb
       .select({ name: players.summonerName, team: teams.name, division: divisions.name, puuid: players.riotPuuid })
       .from(players)
       .leftJoin(teams, eq(players.teamId, teams.id))
       .leftJoin(divisions, eq(teams.divisionId, divisions.id));
-    return Ok(fetchRes);
+    return Ok(res);
   } catch (e) {
     console.log(e);
     return Err(unexpectedError);
@@ -28,8 +28,8 @@ export async function readAllPlayers(): AsyncResult<Player[], string> {
  */
 export async function readPlayerByPuuid(puuid: string): AsyncResult<boolean, string> {
   try {
-    const resPlayer = await lblcsDb.select().from(players).where(eq(players.riotPuuid, puuid));
-    if (resPlayer.length > 0) return Ok(true);
+    const res = await lblcsDb.select().from(players).where(eq(players.riotPuuid, puuid));
+    if (res.length > 0) return Ok(true);
     return Ok(false);
   } catch (e) {
     console.log(e);
@@ -46,14 +46,14 @@ export async function readPlayerByPuuid(puuid: string): AsyncResult<boolean, str
 export async function readPlayerByRiotId(gameName: string, tagLine: string): AsyncResult<Player, string> {
   const riotId = `${gameName}#${tagLine}`;
   try {
-    const resPlayer = await lblcsDb
+    const res = await lblcsDb
       .select({ name: players.summonerName, team: teams.name, division: divisions.name, puuid: players.riotPuuid })
       .from(players)
       .leftJoin(teams, eq(players.teamId, teams.id))
       .leftJoin(divisions, eq(teams.divisionId, divisions.id))
       .where(sql`lower(${players.summonerName}) = lower(${riotId})`);
-    if (resPlayer.length > 0) return Err(`Player '${riotId}' not found.`);
-    return Ok(resPlayer[0]);
+    if (res.length > 0) return Err(`Player '${riotId}' not found.`);
+    return Ok(res[0]);
   } catch (e) {
     console.log(e);
     return Err(unexpectedError);
@@ -85,7 +85,7 @@ export async function createPlayer(
         .from(teams)
         .where(sql`lower(${teams.name}) = lower(${team})`),
     );
-    const insertRes = await lblcsDb
+    const res = await lblcsDb
       .with(teamId)
       .insert(players)
       .values({
@@ -94,7 +94,7 @@ export async function createPlayer(
         teamId: sql`(SELECT * FROM ${teamId})`,
       })
       .returning();
-    if (insertRes.length > 0) return Ok(`Successfully inserted '${summonerName}'!`);
+    if (res.length > 0) return Ok(`Successfully inserted '${summonerName}'!`);
     return Err(`Failed to insert '${summonerName}'.`);
   } catch (e) {
     console.log(e);
