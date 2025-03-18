@@ -9,4 +9,5 @@ export default defineConfig({
     url: process.env.USERS_DB_PATH,
   },
   dialect: 'sqlite',
+  schema: 'src/lib/server/db/users/schema.ts'
 });
