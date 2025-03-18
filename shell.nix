@@ -6,6 +6,7 @@ in pkgs.mkShellNoCC {
   packages = with pkgs; [
     yarn-berry
     nodejs_22
+    sqlite
   ];
 }
 
