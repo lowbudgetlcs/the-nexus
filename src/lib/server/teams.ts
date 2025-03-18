@@ -6,15 +6,15 @@ import { count, eq, sql } from 'drizzle-orm';
 import { teams, divisions, players } from '$lib/server/db/lblcs/schema';
 import { unexpectedError } from '$lib/utils';
 
-export async function fetchAllTeams(): AsyncResult<Team[], string> {
+export async function readAllTeams(): AsyncResult<Team[], string> {
   try {
-    const fetchRes = await lblcsDb
+    const res = await lblcsDb
       .select({ name: teams.name, division: divisions.name, playerCount: count(players.id) })
       .from(teams)
       .leftJoin(players, eq(players.teamId, teams.id))
       .leftJoin(divisions, eq(teams.divisionId, divisions.id))
       .groupBy(teams.name, divisions.name);
-    return Ok(fetchRes);
+    return Ok(res);
   } catch (e) {
     console.log(e);
     return Err(unexpectedError);
@@ -26,16 +26,13 @@ export async function fetchAllTeams(): AsyncResult<Team[], string> {
  * @param team Case-insensitive team name.
  * @returns A result containing true if a team was found.
  */
-export async function checkTeamExistence(team: string): AsyncResult<boolean, string> {
+export async function checkTeamExists(team: string): AsyncResult<boolean, string> {
   try {
-    const resTeam: Team[] = await lblcsDb
-      .select({ name: teams.name, division: divisions.name, playerCount: count(players.id) })
+    const res: { count: number }[] = await lblcsDb
+      .select({ count: count() })
       .from(teams)
-      .leftJoin(divisions, eq(teams.divisionId, divisions.id))
-      .leftJoin(players, eq(players.teamId, teams.id))
       .where(sql`lower(${teams.name}) = lower(${team})`)
-      .groupBy(teams.name, divisions.name);
-    if (resTeam.length > 0) return Ok(true);
+    if (res[0].count > 0) return Ok(true);
     return Ok(false);
   } catch (e) {
     console.log(e);
