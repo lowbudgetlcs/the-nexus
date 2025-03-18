@@ -11,7 +11,7 @@ import { unexpectedError } from '$lib/utils';
  * @param division A division name.
  * @returns A result containing true if a division is found.
  */
-export async function checkDivisionExistence(division: string): AsyncResult<boolean, string> {
+export async function checkDivisionExists(division: string): AsyncResult<boolean, string> {
   try {
     const resDivision: Division[] = await lblcsDb
       .select({ name: divisions.name, teamCount: count(teams.id) })

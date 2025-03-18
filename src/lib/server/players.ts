@@ -73,10 +73,13 @@ export async function createPlayer(
   const [gameName, tagLine] = summonerName.split('#');
   // Check riot id exists
   const account = await fetchAccountByRiotId(gameName, tagLine);
+  console.log(account)
   if (!Success(account)) return account;
   // Check player doesn't already exist
   const player = await readPlayerByPuuid(account.unwrap().puuid);
-  if (Success(player)) return Err(`Player '${summonerName}' already exists`);
+  console.log(player)
+  if (!Success(player)) return player;
+  if (player.unwrap()) return Err(`Player '${summonerName}' already exists`);
   try {
     // Insert player with teamId (possibly null)
     const teamId = lblcsDb.$with('team_id').as(

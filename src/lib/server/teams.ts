@@ -45,7 +45,7 @@ export async function checkTeamExists(team: string): AsyncResult<boolean, string
  * @param team
  * @param division
  */
-export async function insertTeam(
+export async function createTeam(
   team: string,
   division: string | null,
   logo: string | null,

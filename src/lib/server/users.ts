@@ -4,8 +4,7 @@ import { usersDb } from '$lib/server/db/users';
 import { users } from '$lib/server/db/users/schema';
 import jwt from 'jsonwebtoken';
 import { eq } from 'drizzle-orm';
-import type { AsyncResult } from '$lib/utils';
-import { Ok, Err } from '$lib/utils';
+import { type AsyncResult, Ok, Err } from '$lib/utils';
 import type { User } from '$lib/types/models';
 
 export async function loginUser(username: string, password: string): AsyncResult<string, string> {

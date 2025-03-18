@@ -34,3 +34,16 @@ export const Success = <T, E>(result: Result<T, E>): result is Ok<T> => {
 };
 
 export type AsyncResult<T, E> = Promise<Result<T, E>>;
+
+// Parsing multi.op.gg links
+
+export const parseMulti = (url: string | null): Array<string> => {
+  if (url === null) return [];
+  const [_, queryString] = url.split('?');
+  const params = new URLSearchParams(queryString);
+  const summonersParam = params.get('summoners');
+  if (summonersParam) {
+    return summonersParam.split(',');
+  }
+  return [];
+}
