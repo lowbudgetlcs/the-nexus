@@ -1,8 +1,8 @@
 export const prerender = false;
 import { RiotAPI, RiotAPITypes, PlatformId } from '@fightmegg/riot-api';
 import { env } from '$env/dynamic/private';
-import type { AsyncResult } from '$lib/types/result';
-import { Ok, Err } from '$lib/types/result';
+import type { AsyncResult } from '$lib/utils';
+import { Ok, Err } from '$lib/utils';
 
 const rAPI = () => {
   return new RiotAPI(env.RIOT_API_TOKEN);

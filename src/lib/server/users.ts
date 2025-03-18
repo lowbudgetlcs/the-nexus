@@ -4,18 +4,18 @@ import { usersDb } from '$lib/server/db/users';
 import { users } from '$lib/server/db/users/schema';
 import jwt from 'jsonwebtoken';
 import { eq } from 'drizzle-orm';
-import type { AsyncResult } from '$lib/types/result';
-import { Ok, Err } from '$lib/types/result';
+import type { AsyncResult } from '$lib/utils';
+import { Ok, Err } from '$lib/utils';
+import type { User } from '$lib/types/models';
 
 export async function loginUser(username: string, password: string): AsyncResult<string, string> {
-  const fetchedUser = await usersDb
+  const fetchedUser: User[] = await usersDb
     .select()
     .from(users)
-    .where(eq(users.username, username))
-    .limit(1);
+    .where(eq(users.username, username));
 
   if (fetchedUser.length < 1) {
-    Err(`'${username}' does not exist.`)
+    return Err(`'${username}' does not exist.`)
   }
   const user = fetchedUser[0];
 

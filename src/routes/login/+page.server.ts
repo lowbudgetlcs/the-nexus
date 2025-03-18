@@ -4,7 +4,7 @@ import type { PageServerLoad, Actions } from './$types';
 import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
-import { Success } from '$lib/types/result';
+import { Success } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ locals }) => {
   const user = locals.user;

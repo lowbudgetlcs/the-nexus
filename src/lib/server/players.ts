@@ -1,5 +1,5 @@
-import type { AsyncResult } from '$lib/types/result';
-import { Ok, Err, Success } from '$lib/types/result';
+import type { AsyncResult } from '$lib/utils';
+import { Ok, Err, Success } from '$lib/utils';
 import { lblcsDb } from '$lib/server/db/lblcs';
 import { divisions, players, teams } from '$lib/server/db/lblcs/schema';
 import { eq, sql } from 'drizzle-orm';
