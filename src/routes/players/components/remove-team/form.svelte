@@ -38,7 +38,7 @@
     <Form.Control>
       {#snippet children({ props })}
         {#if $errors.name === 'summonerName'}
-        <Form.Label class="text-right">Summoner Name</Form.Label>
+          <Form.Label class="text-right">Summoner Name</Form.Label>
         {/if}
         <Input readonly {...props} class="hidden" bind:value={$formData.summonerName} />
       {/snippet}

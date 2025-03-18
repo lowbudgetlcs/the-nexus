@@ -1,6 +1,7 @@
 import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from '../$types';
 import { hash } from '$lib/server/users';
+import { Success } from '$lib/utils';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './hashSchema';
@@ -17,7 +18,7 @@ export const actions = {
     if (!form.valid) fail(400, { form });
 
     const res = await hash(form.data.password);
-    if (res.type === 'error') return setError(form, 'password', 'Failed to hash password.');
-    return message(form, res.data);
+    if (!Success(res)) return setError(form, 'password', res.err);
+    return message(form, res.unwrap());
   },
 } satisfies Actions;

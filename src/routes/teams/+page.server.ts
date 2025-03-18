@@ -1,19 +1,19 @@
-import { fail, superValidate, setError, message } from 'sveltekit-superforms';
 import type { Actions, PageServerLoad } from '../$types';
+import { zod } from 'sveltekit-superforms/adapters';
+import { fail, superValidate, setError, message } from 'sveltekit-superforms';
 import { createTeamSchema } from './components/create-team/schema';
 import { removeDivisionSchema } from './components/remove-division/schema';
-import { zod } from 'sveltekit-superforms/adapters';
-import { checkTeamExistence, fetchAllTeams, insertTeam } from '$lib/server/teams';
-import { checkDivisionExistence } from '$lib/server/divisions';
-import { insertPlayer } from '$lib/server/players';
-import type { Team } from '$lib/types/entities';
 import { changeDivisionSchema } from './components/change-division/schema';
-import { sanitize } from '$lib/utils';
+import { checkTeamExists, readAllTeams, createTeam } from '$lib/server/teams';
+import { checkDivisionExists } from '$lib/server/divisions';
+import { createPlayer } from '$lib/server/players';
+import type { Team } from '$lib/types/models';
+import { parseMulti, sanitize, Success } from '$lib/utils';
 
 export const load: PageServerLoad = async () => {
   const teamList: Team[] = [];
-  const teamFetch = await fetchAllTeams();
-  if (teamFetch.type === 'success') teamList.push(...teamFetch.data);
+  const teams = await readAllTeams();
+  if (Success(teams)) teamList.push(...teams.unwrap());
 
   const promisesRemoveDivision = teamList.map((_, id) => {
     return superValidate(zod(removeDivisionSchema), { id: `${id}` });
@@ -38,37 +38,28 @@ export const actions = {
     const { name: unsanitizedName, divisionName: unsanitizedDivision, multi, logo } = form.data;
     const [name, divisionName] = [sanitize(unsanitizedName), sanitize(unsanitizedDivision)];
     // Check that team doesnt exist
-    const teamCheck = await checkTeamExistence(name);
-    if (teamCheck.type === 'error') return setError(form, 'name', teamCheck.reason);
-    if (teamCheck.data) return setError(form, 'name', `Team '${name}' already exists.`);
+    const teamExists = await checkTeamExists(name);
+    if (!Success(teamExists)) return setError(form, 'name', teamExists.err);
+    if (teamExists.unwrap()) return setError(form, 'name', `Team '${name}' already exists.`);
     // Check that division exists
     if (divisionName) {
-      const divisionCheck = await checkDivisionExistence(divisionName);
-      if (divisionCheck.type === 'error')
-        return setError(form, 'divisionName', divisionCheck.reason);
-      if (!divisionCheck.data)
+      const divisionExists = await checkDivisionExists(divisionName);
+      if (!Success(divisionExists)) return setError(form, 'divisionName', divisionExists.err);
+      if (!divisionExists.unwrap())
         return setError(form, 'divisionName', `Division '${divisionName}' doesn't exist.`);
     }
     // Parse multi link
-    const summoners = [];
-    if (multi) {
-      const [_, queryString] = multi.split('?');
-      const params = new URLSearchParams(queryString);
-      const summonersParam = params.get('summoners');
-      if (summonersParam) {
-        summoners.push(...summonersParam.split(','));
-      }
-    }
+    const summoners = parseMulti(multi);
     // Create team
-    const insertTeamRes = await insertTeam(name, divisionName, logo);
-    if (insertTeamRes.type === 'error') return setError(form, 'name', insertTeamRes.reason);
-    // Insert players
-    const insertPromises = summoners.map((p) => insertPlayer(p, name));
-    const insertErrors = (await Promise.all(insertPromises))
-      .filter((res) => res.type === 'error')
-      .map((res) => res.reason);
-    if (insertErrors.length > 0) return setError(form, 'multi', insertErrors);
-    return message(form, `Successfully created '${name}' with ${insertPromises.length} players!`);
+    const res = await createTeam(name, divisionName, logo);
+    if (!Success(res)) return setError(form, 'name', res.err);
+    // Create players
+    const createPromises = summoners.map((p) => createPlayer(p, name));
+    const createErrors = (await Promise.all(createPromises))
+      .filter((res) => !Success(res))
+      .map((res) => res.err);
+    if (createErrors.length > 0) return setError(form, 'multi', createErrors);
+    return message(form, `Successfully created '${name}' with ${createPromises.length} players!`);
   },
   removeDivision: async (e) => {
     const form = await superValidate(e, zod(removeDivisionSchema));
