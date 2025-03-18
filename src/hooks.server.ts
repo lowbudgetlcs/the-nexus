@@ -1,10 +1,11 @@
 import { env } from '$env/dynamic/private';
 import { usersDb } from '$lib/server/db/users';
 import { users } from '$lib/server/db/users/schema';
+import type { Handle } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import jwt from 'jsonwebtoken';
 
-export const handle = async ({ event, resolve }) => {
+export const handle: Handle = async ({ event, resolve }) => {
   const authCookie = event.cookies.get('AuthorizationToken');
 
   if (authCookie) {
@@ -35,5 +36,6 @@ export const handle = async ({ event, resolve }) => {
     }
   }
 
-  return await resolve(event);
+  const response = await resolve(event);
+  return response;
 };
