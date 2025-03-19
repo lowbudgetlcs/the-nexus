@@ -13,6 +13,8 @@ export const columns: ColumnDef<Team>[] = [
         onclick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
       });
     },
+    // @ts-expect-error Custom filter function
+    filterFn: 'fuzzy',
   },
   {
     accessorKey: 'division',
@@ -22,15 +24,22 @@ export const columns: ColumnDef<Team>[] = [
         onclick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
       });
     },
+    // @ts-expect-error Custom filter function
+    filterFn: 'fuzzy',
   },
   {
     accessorKey: 'playerCount',
-    header: 'Player Count',
+    header: ({ column }) => {
+      return renderComponent(DataTableSortButton, {
+        column: 'Player Count',
+        onclick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+      });
+    },
   },
   {
     id: 'actions',
     cell: ({ row }) => {
-      return renderComponent(TeamRowActions, { team: row.original, id: row.id });
+      return renderComponent(TeamRowActions, { team: row.original });
     },
   },
 ];
