@@ -10,6 +10,14 @@
   export const createTeamForm = getCreateTeamForm;
   export const removeDivisionForm = getRemoveDivisionForm;
   export const changeDivisionForms = getChangeDivisionForm;
+  // Dialog target player and toggle states
+  export const [getDialogTeam, setDialogTeam] = defineCtx<{ team: Team | null }>();
+  export const [getChangeDivisionToggle, setChangeDivisionToggle] = defineCtx<{
+    toggle: boolean;
+  }>();
+  export const [getRemoveDivisionToggle, setRemoveDivisionToggle] = defineCtx<{
+    toggle: boolean;
+  }>();
 </script>
 
 <script lang="ts">
@@ -20,6 +28,8 @@
     CreateTeamFormSchema,
     RemoveDivisionFormSchema,
   } from './components/schemas';
+  import ChangeDivisionDialog from './components/change-division-dialog.svelte';
+  import RemoveDivisionDialog from './components/remove-division-dialog.svelte';
 
   let { data } = $props();
   const { createTeamSuperform, changeDivisionSuperform, removeDivisionSuperform } = data;
@@ -27,10 +37,18 @@
   setCreateTeamForm(createTeamSuperform);
   setRemoveDivisionForm(removeDivisionSuperform);
   setChangeDivisionForm(changeDivisionSuperform);
+  let dialogTeam = $state({ team: null });
+  setDialogTeam(dialogTeam);
+  let changeDivisionToggle = $state({ toggle: false });
+  setChangeDivisionToggle(changeDivisionToggle);
+  let removeDivisionToggle = $state({ toggle: false });
+  setRemoveDivisionToggle(removeDivisionToggle);
 </script>
 
 <section class="flex w-full items-center justify-center">
   {#key teams.length}
     <TeamDataTable data={teams} {columns} />
   {/key}
+  <ChangeDivisionDialog />
+  <RemoveDivisionDialog />
 </section>

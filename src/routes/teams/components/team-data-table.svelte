@@ -101,6 +101,4 @@
   <div class="flex flex-row justify-between">
     <DataTable.PageButtons {table} />
   </div>
-  <ChangeDivisionDialog />
-  <RemoveDivisionDialog />
 </section>
