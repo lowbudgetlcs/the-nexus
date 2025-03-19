@@ -65,7 +65,7 @@ export async function readPlayerByRiotId(
       .leftJoin(teams, eq(players.teamId, teams.id))
       .leftJoin(divisions, eq(teams.divisionId, divisions.id))
       .where(sql`lower(${players.summonerName}) = lower(${riotId})`);
-    if (res.length > 0) return Err(`Player '${riotId}' not found.`);
+    if (res.length === 0) return Err(`Player '${riotId}' not found.`);
     return Ok(res[0]);
   } catch (e) {
     console.log(e);

@@ -1,7 +1,9 @@
 <script lang="ts" module>
-  import type { ChangePlayerTeamFormSchema } from './components/change-team/schema';
-  import type { CreatePlayerFormSchema } from './components/create-player/schema';
-  import type { RemovePlayerTeamFormSchema } from './components/remove-team/schema';
+  import type {
+    CreatePlayerFormSchema,
+    ChangePlayerTeamFormSchema,
+    RemovePlayerTeamFormSchema,
+  } from './components/schemas';
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
   import { defineService } from '$lib/context';
   const [getCreatePlayerForm, setCreatePlayerForm] =

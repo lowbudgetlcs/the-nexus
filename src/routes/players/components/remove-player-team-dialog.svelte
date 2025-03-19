@@ -2,7 +2,7 @@
   import { Button } from '$lib/components/ui/button';
   import * as Dialog from '$lib/components/ui/dialog';
   import type { Player } from '$lib/types/models';
-  import Form from './form.svelte';
+  import Form from './remove-player-team-form.svelte';
 
   let {
     toggle = $bindable(),

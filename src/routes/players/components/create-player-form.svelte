@@ -2,9 +2,9 @@
   import * as Form from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
   import { superForm } from 'sveltekit-superforms';
-  import { createPlayerSchema } from './schema';
+  import { createPlayerSchema } from './schemas';
+  import { createPlayerForm } from '../+page.svelte';
   import { zodClient } from 'sveltekit-superforms/adapters';
-  import { createPlayerForm } from '../../+page.svelte';
   import { toast } from 'svelte-sonner';
 
   let { toggle = $bindable() }: { toggle: boolean } = $props();

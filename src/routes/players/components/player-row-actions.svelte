@@ -3,8 +3,8 @@
   import { Button } from '$lib/components/ui/button';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
   import type { Player } from '$lib/types/models';
-  import AddPlayerToTeamDialog from './change-team/dialog.svelte';
-  import RemovePlayerFromTeamDialog from './remove-team/dialog.svelte';
+  import AddPlayerToTeamDialog from './change-player-team-dialog.svelte';
+  import RemovePlayerFromTeamDialog from './remove-player-team-dialog.svelte';
 
   let { player, id }: { player: Player; id: string } = $props();
   let changeTeamDialogToggle = $state(false);
