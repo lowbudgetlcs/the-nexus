@@ -7,11 +7,13 @@
     getPaginationRowModel,
     getSortedRowModel,
     getFilteredRowModel,
+    type FilterFn,
   } from '@tanstack/table-core';
   import * as Table from '$lib/components/ui/table';
   import { createSvelteTable } from '$lib/components/ui/data-table';
   import * as DataTable from '$lib/components/datatable/index';
   import CreatePlayerDialog from './create-player/dialog.svelte';
+  import { rankItem } from '@tanstack/match-sorter-utils';
 
   type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
@@ -22,6 +24,16 @@
   let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
   let sorting = $state<SortingState>([]);
   let globalFilter = $state('');
+  const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+    // Rank the item
+    const itemRank = rankItem(row.getValue(columnId), value);
+
+    // Store the itemRank info
+    addMeta({ itemRank });
+
+    // Return if the item should be filtered in/out
+    return itemRank.passed;
+  };
 
   const table = createSvelteTable({
     get data() {
@@ -32,7 +44,10 @@
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    globalFilterFn: 'includesString',
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
+    globalFilterFn: 'fuzzy',
     onSortingChange: (updater) => {
       if (typeof updater === 'function') {
         sorting = updater(sorting);

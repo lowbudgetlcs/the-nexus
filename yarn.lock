@@ -1438,6 +1438,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/match-sorter-utils@npm:^8.19.4":
+  version: 8.19.4
+  resolution: "@tanstack/match-sorter-utils@npm:8.19.4"
+  dependencies:
+    remove-accents: "npm:0.5.0"
+  checksum: 10c0/935022e3d639f19472131d289f3e1202253ff34301717c337e9bac0eeae6a0bd56450ed8ae2f7eb7ac9dfefa7ceaa7d126d8c5441021968b4a9eabc3ac4f8ba1
+  languageName: node
+  linkType: hard
+
 "@tanstack/table-core@npm:^8.20.5":
   version: 8.20.5
   resolution: "@tanstack/table-core@npm:8.20.5"
@@ -4849,6 +4858,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"remove-accents@npm:0.5.0":
+  version: 0.5.0
+  resolution: "remove-accents@npm:0.5.0"
+  checksum: 10c0/a75321aa1b53d9abe82637115a492770bfe42bb38ed258be748bf6795871202bc8b4badff22013494a7029f5a241057ad8d3f72adf67884dbe15a9e37e87adc4
+  languageName: node
+  linkType: hard
+
 "resolve-from@npm:^4.0.0":
   version: 4.0.0
   resolution: "resolve-from@npm:4.0.0"
@@ -5613,6 +5629,7 @@ __metadata:
     "@sveltejs/adapter-node": "npm:^5.2.12"
     "@sveltejs/kit": "npm:^2.17.1"
     "@sveltejs/vite-plugin-svelte": "npm:^5.0.3"
+    "@tanstack/match-sorter-utils": "npm:^8.19.4"
     "@tanstack/table-core": "npm:^8.20.5"
     "@types/jsonwebtoken": "npm:^9"
     "@types/pg": "npm:^8"
