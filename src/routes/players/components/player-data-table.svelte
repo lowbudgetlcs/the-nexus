@@ -3,7 +3,6 @@
     type ColumnDef,
     type PaginationState,
     type SortingState,
-    type ColumnFiltersState,
     getCoreRowModel,
     getPaginationRowModel,
     getSortedRowModel,
@@ -22,7 +21,7 @@
   let { columns, data }: DataTableProps<TData, TValue> = $props();
   let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
   let sorting = $state<SortingState>([]);
-  let columnFilters = $state<ColumnFiltersState>([]);
+  let globalFilter = $state('');
 
   const table = createSvelteTable({
     get data() {
@@ -33,6 +32,7 @@
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: 'includesString',
     onSortingChange: (updater) => {
       if (typeof updater === 'function') {
         sorting = updater(sorting);
@@ -47,29 +47,29 @@
         pagination = updater;
       }
     },
-    onColumnFiltersChange: (updater) => {
+    onGlobalFilterChange: (updater) => {
       if (typeof updater === 'function') {
-        columnFilters = updater(columnFilters);
+        globalFilter = updater(globalFilter);
       } else {
-        columnFilters = updater;
+        globalFilter = updater;
       }
     },
     state: {
+      get globalFilter() {
+        return globalFilter;
+      },
       get pagination() {
         return pagination;
       },
       get sorting() {
         return sorting;
       },
-      get columnFilters() {
-        return columnFilters;
-      },
     },
   });
 </script>
 
 <section>
-  <DataTable.ColumnFilter {table} column="name" />
+  <DataTable.GlobalFilter {table} />
   <div class="rounded-md border">
     <Table.Root>
       <DataTable.Header {table} />

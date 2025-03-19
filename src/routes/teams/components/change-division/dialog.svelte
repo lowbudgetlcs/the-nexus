@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button';
   import * as Dialog from '$lib/components/ui/dialog';
-  import type { Team } from '$lib/types/entities';
+  import type { Team } from '$lib/types/models';
   import Form from './form.svelte';
 
   let { toggle = $bindable(), team, id }: { toggle: boolean; team: Team; id: string } = $props();

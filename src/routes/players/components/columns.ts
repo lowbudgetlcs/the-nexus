@@ -13,6 +13,7 @@ export const columns: ColumnDef<Player>[] = [
         onclick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
       });
     },
+    filterFn: 'includesString',
   },
   {
     accessorKey: 'team',
@@ -22,10 +23,12 @@ export const columns: ColumnDef<Player>[] = [
         onclick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
       });
     },
+    filterFn: 'includesString',
   },
   {
     accessorKey: 'division',
     header: 'Division',
+    filterFn: 'includesString',
   },
   {
     id: 'actions',
