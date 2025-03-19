@@ -3,12 +3,16 @@
   import { Button } from '$lib/components/ui/button';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
   import type { Player } from '$lib/types/models';
-  import AddPlayerToTeamDialog from './change-player-team-dialog.svelte';
-  import RemovePlayerFromTeamDialog from './remove-player-team-dialog.svelte';
+  import { getChangeTeamToggle, getDialogPlayer, getRemoveTeamToggle } from '../+page.svelte';
 
-  let { player, id }: { player: Player; id: string } = $props();
-  let changeTeamDialogToggle = $state(false);
-  let removeTeamDialogToggle = $state(false);
+  let {
+    player,
+  }: {
+    player: Player;
+  } = $props();
+  let changeTeamToggle = getChangeTeamToggle();
+  let removeTeamToggle = getRemoveTeamToggle();
+  let dialogPlayer = getDialogPlayer();
 </script>
 
 <DropdownMenu.Root>
@@ -34,13 +38,17 @@
       </DropdownMenu.Item>
     </DropdownMenu.Group>
     <DropdownMenu.Separator />
-    <DropdownMenu.Item onclick={() => (changeTeamDialogToggle = true)}
-      >Change team</DropdownMenu.Item
+    <DropdownMenu.Item
+      onclick={() => {
+        changeTeamToggle.toggle = !changeTeamToggle.toggle;
+        dialogPlayer.player = player;
+      }}>Change team</DropdownMenu.Item
     >
-    <DropdownMenu.Item onclick={() => (removeTeamDialogToggle = true)}
-      >Remove from team</DropdownMenu.Item
+    <DropdownMenu.Item
+      onclick={() => {
+        removeTeamToggle.toggle = !removeTeamToggle.toggle;
+        dialogPlayer.player = player;
+      }}>Remove from team</DropdownMenu.Item
     >
   </DropdownMenu.Content>
 </DropdownMenu.Root>
-<AddPlayerToTeamDialog bind:toggle={changeTeamDialogToggle} {player} {id} />
-<RemovePlayerFromTeamDialog bind:toggle={removeTeamDialogToggle} {player} {id} />

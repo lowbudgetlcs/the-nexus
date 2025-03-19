@@ -12,7 +12,7 @@
   import * as Table from '$lib/components/ui/table';
   import { createSvelteTable } from '$lib/components/ui/data-table';
   import * as DataTable from '$lib/components/datatable/index';
-  import CreatePlayerDialog from './create-player-dialog.svelte';
+  import CreateDialog from './create-dialog.svelte';
   import { rankItem } from '@tanstack/match-sorter-utils';
 
   type DataTableProps<TData, TValue> = {
@@ -47,6 +47,7 @@
     filterFns: {
       fuzzy: fuzzyFilter,
     },
+    // @ts-expect-error Custom filter function.
     globalFilterFn: 'fuzzy',
     onSortingChange: (updater) => {
       if (typeof updater === 'function') {
@@ -81,10 +82,15 @@
       },
     },
   });
+
+  let createToggle = $state(false);
 </script>
 
 <section>
-  <DataTable.GlobalFilter {table} />
+  <div class="flex items-end justify-between py-2">
+    <DataTable.GlobalFilter {table} />
+    <CreateDialog bind:toggle={createToggle} />
+  </div>
   <div class="rounded-md border">
     <Table.Root>
       <DataTable.Header {table} />
@@ -92,9 +98,6 @@
     </Table.Root>
   </div>
   <div class="flex flex-row justify-between">
-    <div class="flex items-center py-4">
-      <CreatePlayerDialog />
-    </div>
     <DataTable.PageButtons {table} />
   </div>
 </section>

@@ -13,6 +13,7 @@ export const columns: ColumnDef<Player>[] = [
         onclick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
       });
     },
+    // @ts-expect-error Custom filter function
     filterFn: 'fuzzy',
   },
   {
@@ -23,17 +24,19 @@ export const columns: ColumnDef<Player>[] = [
         onclick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
       });
     },
+    // @ts-expect-error Custom filter function
     filterFn: 'fuzzy',
   },
   {
     accessorKey: 'division',
     header: 'Division',
+    // @ts-expect-error Custom filter function
     filterFn: 'fuzzy',
   },
   {
     id: 'actions',
     cell: ({ row }) => {
-      return renderComponent(PlayerRowActions, { player: row.original, id: row.id });
+      return renderComponent(PlayerRowActions, { player: row.original });
     },
   },
 ];

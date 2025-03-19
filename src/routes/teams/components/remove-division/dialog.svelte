@@ -1,4 +1,4 @@
-models<script lang="ts">
+<script lang="ts">
   import { Button } from '$lib/components/ui/button';
   import * as Dialog from '$lib/components/ui/dialog';
   import type { Team } from '$lib/types/models';
@@ -7,7 +7,7 @@ models<script lang="ts">
   let { toggle = $bindable(), team, id }: { toggle: boolean; team: Team; id: string } = $props();
 </script>
 
-<Dialog.Root bind:open={toggle} onOpenChange={(t) => (toggle = t)}>
+models<Dialog.Root bind:open={toggle} onOpenChange={(t) => (toggle = t)}>
   <Dialog.Trigger></Dialog.Trigger>
   <Dialog.Content class="sm:max-w-[425px]">
     <Dialog.Header>

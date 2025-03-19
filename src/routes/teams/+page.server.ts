@@ -8,7 +8,7 @@ import { checkTeamExists, readAllTeams, createTeam } from '$lib/server/teams';
 import { checkDivisionExists } from '$lib/server/divisions';
 import { createPlayer } from '$lib/server/players';
 import type { Team } from '$lib/types/models';
-import { parseMulti, sanitize, Success } from '$lib/utils';
+import { parseMulti, Success } from '$lib/utils';
 
 export const load: PageServerLoad = async () => {
   const teamList: Team[] = [];
@@ -35,8 +35,7 @@ export const actions = {
   create: async (e) => {
     const form = await superValidate(e, zod(createTeamSchema));
     if (!form.valid) return fail(400, { form });
-    const { name: unsanitizedName, divisionName: unsanitizedDivision, multi, logo } = form.data;
-    const [name, divisionName] = [sanitize(unsanitizedName), sanitize(unsanitizedDivision)];
+    const { name, divisionName, multi, logo } = form.data;
     // Check that team doesnt exist
     const teamExists = await checkTeamExists(name);
     if (!Success(teamExists)) return setError(form, 'name', teamExists.err);
@@ -57,6 +56,7 @@ export const actions = {
     const createPromises = summoners.map((p) => createPlayer(p, name));
     const createErrors = (await Promise.all(createPromises))
       .filter((res) => !Success(res))
+      // @ts-expect-error Type narrowing performed in previous filter check
       .map((res) => res.err);
     if (createErrors.length > 0) return setError(form, 'multi', createErrors);
     return message(form, `Successfully created '${name}' with ${createPromises.length} players!`);
