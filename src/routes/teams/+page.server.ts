@@ -13,7 +13,8 @@ import { parseMulti, Success } from '$lib/utils';
 export const load: PageServerLoad = async () => {
   const teamList: Team[] = [];
   const teams = await readAllTeams();
-  if (Success(teams)) teamList.push(...teams.unwrap());
+  if (Success(teams)) return { teams: teams.unwrap() }
+  return { teams: [] }
 
   const promisesRemoveDivision = teamList.map((_, id) => {
     return superValidate(zod(removeDivisionSchema), { id: `${id}` });
