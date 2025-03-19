@@ -24,7 +24,7 @@
   let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
   let sorting = $state<SortingState>([]);
   let globalFilter = $state('');
-  const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+  const fuzzyFilter: FilterFn<TData> = (row, columnId, value, addMeta) => {
     // Rank the item
     const itemRank = rankItem(row.getValue(columnId), value);
 

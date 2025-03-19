@@ -10,10 +10,10 @@
     placeholder="Filter..."
     value={table.getState().globalFilter}
     onchange={(e) => {
-      table.setGlobalFilter(e.target.value);
+      table.setGlobalFilter(e.currentTarget.value);
     }}
     oninput={(e) => {
-      table.setGlobalFilter(e.target.value);
+      table.setGlobalFilter(e.currentTarget.value);
     }}
     class="max-w-sm"
   />
