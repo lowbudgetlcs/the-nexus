@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-  import type { Team } from '$lib/types/entities';
+  import type { Team } from '$lib/types/models';
   import Ellipsis from 'lucide-svelte/icons/ellipsis';
   import ChangeDivisionDialog from './change-division/dialog.svelte';
   import RemoveDivisionDialog from './remove-division/dialog.svelte';

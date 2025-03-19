@@ -2,7 +2,7 @@
   import Ellipsis from 'lucide-svelte/icons/ellipsis';
   import { Button } from '$lib/components/ui/button';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-  import type { Player } from '$lib/types/entities';
+  import type { Player } from '$lib/types/models';
   import AddPlayerToTeamDialog from './change-team/dialog.svelte';
   import RemovePlayerFromTeamDialog from './remove-team/dialog.svelte';
 

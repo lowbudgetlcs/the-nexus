@@ -2,7 +2,7 @@ import { renderComponent } from '$lib/components/ui/data-table';
 import TeamRowActions from './team-row-actions.svelte';
 import DataTableSortButton from '$lib/components/datatable/sort-button.svelte';
 import type { ColumnDef } from '@tanstack/table-core';
-import type { Team } from '$lib/types/entities';
+import type { Team } from '$lib/types/models';
 
 export const columns: ColumnDef<Team>[] = [
   {

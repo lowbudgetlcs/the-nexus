@@ -3,7 +3,7 @@
   import { Input } from '$lib/components/ui/input';
   import { superForm } from 'sveltekit-superforms';
   import { changeDivisionSchema } from './schema';
-  import type { Team } from '$lib/types/entities';
+  import type { Team } from '$lib/types/models';
   import { changeDivisionForms } from '../../+page.svelte';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { toast } from 'svelte-sonner';

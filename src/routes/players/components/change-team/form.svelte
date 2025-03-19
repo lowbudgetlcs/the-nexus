@@ -3,7 +3,7 @@
   import { Input } from '$lib/components/ui/input';
   import { superForm } from 'sveltekit-superforms';
   import { changePlayerTeamSchema } from './schema';
-  import type { Player } from '$lib/types/entities';
+  import type { Player } from '$lib/types/models';
   import { changePlayerTeamForms } from '../../+page.svelte';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { toast } from 'svelte-sonner';
