@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Defualt error message to users
+// Default error message to users
 export const unexpectedError: string = 'An unexpected error has occured.';
 
 // Result Type
