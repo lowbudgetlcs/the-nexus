@@ -12,8 +12,9 @@
   import * as Table from '$lib/components/ui/table';
   import { createSvelteTable } from '$lib/components/ui/data-table';
   import * as DataTable from '$lib/components/datatable/index';
-  import CreateDialog from './create-dialog.svelte';
   import { rankItem } from '@tanstack/match-sorter-utils';
+  import { getCreatePlayerToggle } from '../+page.svelte';
+  import Button from '$lib/components/ui/button/button.svelte';
 
   type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
@@ -83,13 +84,14 @@
     },
   });
 
-  let createToggle = $state(false);
+  let toggle = getCreatePlayerToggle();
 </script>
 
 <section>
   <div class="flex items-end justify-between py-2">
     <DataTable.GlobalFilter {table} />
-    <CreateDialog bind:toggle={createToggle} />
+    <Button variant="outline" onclick={() => (toggle.toggle = !toggle.toggle)}>Create Player</Button
+    >
   </div>
   <div class="rounded-md border">
     <Table.Root>

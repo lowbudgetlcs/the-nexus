@@ -3,12 +3,12 @@
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
   import type { Team } from '$lib/types/models';
   import Ellipsis from 'lucide-svelte/icons/ellipsis';
-  import ChangeDivisionDialog from './change-division/dialog.svelte';
-  import RemoveDivisionDialog from './remove-division/dialog.svelte';
+  import { getChangeDivisionToggle, getRemoveDivisionToggle, getDialogTeam } from '../+page.svelte';
 
-  let { team, id }: { team: Team; id: string } = $props();
-  let changeDivisionDialogToggle = $state(false);
-  let removeDivisionDialogToggle = $state(false);
+  let { team }: { team: Team } = $props();
+  let changeDivisionToggle = getChangeDivisionToggle();
+  let removeDivisionToggle = getRemoveDivisionToggle();
+  let dialogTeam = getDialogTeam();
 </script>
 
 <DropdownMenu.Root>
@@ -34,13 +34,17 @@
       </DropdownMenu.Item>
     </DropdownMenu.Group>
     <DropdownMenu.Separator />
-    <DropdownMenu.Item onclick={() => (changeDivisionDialogToggle = true)}
-      >Change division</DropdownMenu.Item
+    <DropdownMenu.Item
+      onclick={() => {
+        changeDivisionToggle.toggle = !changeDivisionToggle.toggle;
+        dialogTeam.team = team;
+      }}>Change division</DropdownMenu.Item
     >
-    <DropdownMenu.Item onclick={() => (removeDivisionDialogToggle = true)}
-      >Remove from division</DropdownMenu.Item
+    <DropdownMenu.Item
+      onclick={() => {
+        removeDivisionToggle.toggle = !removeDivisionToggle.toggle;
+        dialogTeam.team = team;
+      }}>Remove from division</DropdownMenu.Item
     >
   </DropdownMenu.Content>
 </DropdownMenu.Root>
-<ChangeDivisionDialog bind:toggle={changeDivisionDialogToggle} {team} {id} />
-<RemoveDivisionDialog bind:toggle={removeDivisionDialogToggle} {team} {id} />

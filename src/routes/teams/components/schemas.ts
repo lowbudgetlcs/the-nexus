@@ -1,9 +1,7 @@
-
 import { z } from 'zod';
 import { teamName, divisionName, multi } from '$lib/validation';
 
 export const changeDivisionSchema = z.object({
-  teamName: teamName,
   divisionName: divisionName,
 });
 export const createTeamSchema = z.object({

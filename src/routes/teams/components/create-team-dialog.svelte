@@ -6,25 +6,25 @@
   import { superForm } from 'sveltekit-superforms';
   import { createTeamSchema } from './schemas';
   import { zodClient } from 'sveltekit-superforms/adapters';
-  import { createTeamForm } from '../+page.svelte';
+  import { createTeamForm, getCreateTeamToggle } from '../+page.svelte';
   import { toast } from 'svelte-sonner';
 
+  let toggle = getCreateTeamToggle();
   let formCtx = createTeamForm();
   const form = superForm(formCtx, {
     validators: zodClient(createTeamSchema),
     onUpdated({ form }) {
       if (form.valid) {
-        toggle = !toggle;
+        toggle.toggle = !toggle.toggle;
         toast.success(form.message);
       }
     },
   });
   const { form: formData, enhance } = form;
-  let toggle = $state(false);
 </script>
 
-<Dialog.Root bind:open={toggle} onOpenChange={(t) => (toggle = t)}>
-  <Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>Create Team</Dialog.Trigger>
+<Dialog.Root bind:open={toggle.toggle} onOpenChange={(t) => (toggle.toggle = t)}>
+  <Dialog.Trigger></Dialog.Trigger>
   <Dialog.Content class="sm:max-w-[425px]">
     <form method="POST" action="?/create" class="grid gap-4 py-4" use:enhance>
       <Dialog.Header>

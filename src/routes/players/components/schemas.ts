@@ -1,8 +1,7 @@
 import { z } from 'zod';
 import { summonerName, teamName } from '$lib/validation';
 
-export const removePlayerTeamSchema = z.object({
-});
+export const removePlayerTeamSchema = z.object({});
 export type RemovePlayerTeamFormSchema = typeof removePlayerTeamSchema;
 
 export const createPlayerSchema = z.object({

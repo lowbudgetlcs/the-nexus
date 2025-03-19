@@ -18,6 +18,9 @@
   export const removeTeamForm = getRemoveTeamForm;
   // Dialog target player and toggle states
   export const [getDialogPlayer, setDialogPlayer] = defineCtx<{ player: Player | null }>();
+  export const [getCreatePlayerToggle, setCreatePlayerToggle] = defineCtx<{
+    toggle: boolean;
+  }>();
   export const [getChangeTeamToggle, setChangeTeamToggle] = defineCtx<{
     toggle: boolean;
   }>();
@@ -32,6 +35,7 @@
   import RemoveTeamDialog from './components/remove-team-dialog.svelte';
   import { columns } from './components/columns';
   import type { Player } from '$lib/types/models';
+  import CreatePlayerDialog from './components/create-player-dialog.svelte';
 
   let { data } = $props();
   let { createPlayerSuperform, changeTeamSuperform, removeTeamSuperform } = data;
@@ -40,6 +44,8 @@
   setChangeTeamForm(changeTeamSuperform);
   setRemoveTeamForm(removeTeamSuperform);
   let dialogPlayer = $state({ player: null });
+  let createPlayerToggle = $state({ toggle: false });
+  setCreatePlayerToggle(createPlayerToggle);
   setDialogPlayer(dialogPlayer);
   let changeTeamToggle = $state({ toggle: false });
   setChangeTeamToggle(changeTeamToggle);
@@ -51,6 +57,7 @@
   {#key players.length}
     <PlayerDataTable data={players} {columns} />
   {/key}
+  <CreatePlayerDialog />
   <ChangeTeamDialog />
   <RemoveTeamDialog />
 </section>

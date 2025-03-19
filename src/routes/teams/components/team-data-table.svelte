@@ -3,19 +3,19 @@
     type ColumnDef,
     type PaginationState,
     type SortingState,
-    type ColumnFiltersState,
     getCoreRowModel,
     getPaginationRowModel,
     getSortedRowModel,
     getFilteredRowModel,
+    type FilterFn,
   } from '@tanstack/table-core';
   import * as Table from '$lib/components/ui/table';
   import { createSvelteTable } from '$lib/components/ui/data-table';
   import * as DataTable from '$lib/components/datatable/index';
   import CreateTeamDialog from './create-team-dialog.svelte';
-  import ChangeDivisionDialog from './change-division-dialog.svelte';
-  import RemoveDivisionDialog from './remove-division-dialog.svelte';
   import { rankItem } from '@tanstack/match-sorter-utils';
+  import Button from '$lib/components/ui/button/button.svelte';
+  import { getCreateTeamToggle } from '../+page.svelte';
 
   type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
@@ -84,13 +84,13 @@
       },
     },
   });
-  let createToggle = $state(false);
+  let toggle = getCreateTeamToggle();
 </script>
 
 <section>
-  <div class="flex items-center py-4">
+  <div class="flex items-center justify-between py-4">
     <DataTable.GlobalFilter {table} />
-    <CreateTeamDialog bind:toggle={createToggle} />
+    <Button variant="outline" onclick={() => (toggle.toggle = !toggle.toggle)}>Create Team</Button>
   </div>
   <div class="rounded-md border">
     <Table.Root>

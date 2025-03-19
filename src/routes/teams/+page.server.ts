@@ -9,8 +9,8 @@ import { changeDivisionSchema, createTeamSchema, removeDivisionSchema } from './
 
 export const load: PageServerLoad = async () => {
   const teams = await readAllTeams();
-  if (Success(teams)) return { teams: teams.unwrap() }
-  return { teams: [] }
+  if (Success(teams)) return { teams: teams.unwrap() };
+  return { teams: [] };
 };
 
 export const actions = {

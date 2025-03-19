@@ -17,8 +17,9 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions = {
-  create: async (e) => {
-    const form = await superValidate(e, zod(createPlayerSchema));
+  create: async ({ request }) => {
+    const data = await request.formData();
+    const form = await superValidate(data, zod(createPlayerSchema));
     if (!form.valid) return fail(400, { form });
     const { summonerName, team } = form.data;
     // Check if team exists

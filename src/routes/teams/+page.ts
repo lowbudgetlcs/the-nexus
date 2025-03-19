@@ -11,4 +11,3 @@ export const load: PageLoad = async ({ data }) => {
     changeDivisionSuperform: await superValidate(zod(changeDivisionSchema)),
   };
 };
-
