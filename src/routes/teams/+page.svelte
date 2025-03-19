@@ -1,30 +1,32 @@
 <script lang="ts" module>
-  import { defineService } from '$lib/context';
+  import { defineCtx } from '$lib/context';
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
   const [getCreateTeamForm, setCreateTeamForm] =
-    defineService<SuperValidated<Infer<CreateTeamFormSchema>>>();
+    defineCtx<SuperValidated<Infer<CreateTeamFormSchema>>>();
+  const [getRemoveDivisionForm, setRemoveDivisionForm] =
+    defineCtx<SuperValidated<Infer<RemoveDivisionFormSchema>>>();
+  const [getChangeDivisionForm, setChangeDivisionForm] =
+    defineCtx<SuperValidated<Infer<ChangeDivisionFormSchema>>>();
   export const createTeamForm = getCreateTeamForm;
-  const [getRemoveDivisionForms, setRemoveDivisionForms] =
-    defineService<SuperValidated<Infer<RemoveDivisionFormSchema>>[]>();
-  export const removeDivisionForms = getRemoveDivisionForms;
-  const [getChangeDivisionForms, setChangeDivisionForms] =
-    defineService<SuperValidated<Infer<ChangeDivisionFormSchema>>[]>();
-  export const changeDivisionForms = getChangeDivisionForms;
+  export const removeDivisionForm = getRemoveDivisionForm;
+  export const changeDivisionForms = getChangeDivisionForm;
 </script>
 
 <script lang="ts">
   import { columns } from './components/columns';
   import TeamDataTable from './components/team-data-table.svelte';
-  import type { CreateTeamFormSchema } from './components/create-team/schema';
-  import type { RemoveDivisionFormSchema } from './components/remove-division/schema';
-  import type { ChangeDivisionFormSchema } from './components/change-division/schema';
+  import type {
+    ChangeDivisionFormSchema,
+    CreateTeamFormSchema,
+    RemoveDivisionFormSchema,
+  } from './components/schemas';
 
   let { data } = $props();
-  const { createTeamForm, removeDivisionForms, changeDivisionForms } = data;
+  const { createTeamSuperform, changeDivisionSuperform, removeDivisionSuperform } = data;
   const { teams } = $derived(data);
-  setCreateTeamForm(createTeamForm);
-  setRemoveDivisionForms(removeDivisionForms);
-  setChangeDivisionForms(changeDivisionForms);
+  setCreateTeamForm(createTeamSuperform);
+  setRemoveDivisionForm(removeDivisionSuperform);
+  setChangeDivisionForm(changeDivisionSuperform);
 </script>
 
 <section class="flex w-full items-center justify-center">
