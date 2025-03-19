@@ -1,7 +1,7 @@
 import { zod } from 'sveltekit-superforms/adapters';
 import { PageLoad } from './$types';
 import { superValidate } from 'sveltekit-superforms';
-import { createTeamSchema, removeDivisionSchema, changeDivisionSchema} from './components/schemas';
+import { createTeamSchema, removeDivisionSchema, changeDivisionSchema } from './components/schemas';
 
 export const load: PageLoad = async ({ data }) => {
   return {

@@ -1,4 +1,4 @@
-import type { Actions, PageServerLoad } from '../$types';
+import type { Actions, PageServerLoad } from './$types';
 import { zod } from 'sveltekit-superforms/adapters';
 import { fail, superValidate, setError, message } from 'sveltekit-superforms';
 import { createTeamSchema } from './components/create-team/schema';
@@ -7,29 +7,12 @@ import { changeDivisionSchema } from './components/change-division/schema';
 import { checkTeamExists, readAllTeams, createTeam } from '$lib/server/teams';
 import { checkDivisionExists } from '$lib/server/divisions';
 import { createPlayer } from '$lib/server/players';
-import type { Team } from '$lib/types/models';
 import { parseMulti, Success } from '$lib/utils';
 
 export const load: PageServerLoad = async () => {
-  const teamList: Team[] = [];
   const teams = await readAllTeams();
   if (Success(teams)) return { teams: teams.unwrap() }
   return { teams: [] }
-
-  const promisesRemoveDivision = teamList.map((_, id) => {
-    return superValidate(zod(removeDivisionSchema), { id: `${id}` });
-  });
-
-  const promisesChangeDivision = teamList.map((_, id) => {
-    return superValidate(zod(changeDivisionSchema), { id: `${id}` });
-  });
-
-  return {
-    teams: teamList,
-    createTeamForm: await superValidate(zod(createTeamSchema)),
-    removeDivisionForms: await Promise.all(promisesRemoveDivision),
-    changeDivisionForms: await Promise.all(promisesChangeDivision),
-  };
 };
 
 export const actions = {
