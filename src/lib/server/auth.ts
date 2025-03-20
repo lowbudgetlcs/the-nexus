@@ -33,7 +33,6 @@ export async function login(username: string, password: string): AsyncResult<str
   const user = res.unwrap();
   try {
     console.log(user.password);
-    console.log(password);
     if (await argon2.verify(user.password, password)) {
       console.log("Authenticated.")
       const jwtUser = {
