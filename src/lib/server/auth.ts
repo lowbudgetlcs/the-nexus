@@ -29,10 +29,13 @@ export const authenticate = async (token: string): Promise<SessionUser | null> =
 
 export async function login(username: string, password: string): AsyncResult<string, string> {
   const res = await readUserByUsername(username);
-  if (!Success(res)) return Err('Authentication failed.');
+  if (!Success(res)) return res;
   const user = res.unwrap();
   try {
+    console.log(user.password);
+    console.log(password);
     if (await argon2.verify(user.password, password)) {
+      console.log("Authenticated.")
       const jwtUser = {
         id: user.id,
         username: user.username,
@@ -41,6 +44,7 @@ export async function login(username: string, password: string): AsyncResult<str
       const token = jwt.sign(jwtUser, env.JWT_SECRET_KEY!, {
         expiresIn: '1d',
       });
+      console.log('Signed.')
 
       return Ok(token);
     }
