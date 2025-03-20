@@ -1,6 +1,6 @@
 import { fail } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from '../$types';
-import { hash } from '$lib/server/users';
+import type { Actions, PageServerLoad } from './$types';
+import { hash } from '$lib/server/auth';
 import { Success } from '$lib/utils';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -8,7 +8,7 @@ import { formSchema } from './hashSchema';
 
 export const load: PageServerLoad = async () => {
   return {
-    form: await superValidate(zod(formSchema)),
+    superform: await superValidate(zod(formSchema)),
   };
 };
 

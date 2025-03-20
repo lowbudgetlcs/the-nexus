@@ -14,7 +14,6 @@
 >
   <h1 class="text-5xl font-extrabold text-destructive">Oops!</h1>
   <p class="mt-2 text-lg text-muted-foreground">Something went wrong.</p>
-  <a class="underline text-blue-400 mt-4 text-xl font-bold" href="/home">Go Home...</a>
-  <p class="text-md mt-1 italic text-secondary-foreground">Status Code: {status}</p>
+  <p class="mt-4 text-xl font-bold">Status Code: {status}</p>
   <p class="text-md mt-1 italic text-secondary-foreground">{message}</p>
 </div>

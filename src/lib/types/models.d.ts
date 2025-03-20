@@ -4,6 +4,11 @@ export type User = {
   password: string;
 };
 
+export type SessionUser = {
+  id: number,
+  username: string,
+};
+
 export type Player = {
   name: string;
   team: string | null;

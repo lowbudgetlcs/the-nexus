@@ -5,9 +5,9 @@
   import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
 
-  let { form: formProp }: { form: SuperValidated<Infer<FormSchema>> } = $props();
+  let { superform }: { superform: SuperValidated<Infer<FormSchema>> } = $props();
 
-  const form = superForm(formProp, {
+  const form = superForm(superform, {
     validators: zodClient(formSchema),
   });
 
