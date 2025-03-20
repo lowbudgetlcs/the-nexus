@@ -7,6 +7,6 @@ export const actions = {
       path: '/',
     });
 
-    throw redirect(302, '/login');
+    redirect(302, '/login');
   },
 } satisfies Actions;
