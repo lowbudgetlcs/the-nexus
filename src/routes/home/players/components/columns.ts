@@ -27,7 +27,12 @@ export const columns: ColumnDef<Player>[] = [
   {
     id: 'division',
     accessorFn: row => row.division ?? '',
-    header: 'Division',
+    header: ({ column }) => {
+      return renderComponent(DataTableSortButton, {
+        column: 'Division',
+        onclick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+      });
+    },
   },
   {
     id: 'actions',
