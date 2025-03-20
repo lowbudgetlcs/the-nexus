@@ -1,38 +1,34 @@
-import { loginUser } from '$lib/server/users';
+import { login } from '$lib/server/auth';
 import { redirect, fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { formSchema } from './schema';
 import { Success } from '$lib/utils';
+import { loginSchema } from './schema';
 
 export const load: PageServerLoad = async ({ locals }) => {
   const user = locals.user;
-
   if (user) {
-    redirect(302, '/');
+    redirect(302, '/home');
   }
-
-  return {
-    form: await superValidate(zod(formSchema)),
-  };
 };
 
 export const actions = {
-  login: async (e) => {
-    const form = await superValidate(e, zod(formSchema));
+  login: async ({ request, cookies }) => {
+    const data = await request.formData();
+    const form = await superValidate(data, zod(loginSchema));
     if (!form.valid) fail(400, { form });
 
-    const res = await loginUser(form.data.username, form.data.password);
+    const res = await login(form.data.username, form.data.password);
     if (!Success(res)) return setError(form, 'password', res.err);
 
-    e.cookies.set('AuthorizationToken', `Bearer ${res.unwrap()}`, {
+    cookies.set('AuthorizationToken', `Bearer ${res.unwrap()}`, {
       httpOnly: true,
       path: '/',
       secure: true,
       sameSite: 'strict',
-      maxAge: 60 * 60 * 2, // 2 day
+      maxAge: 60 * 60 * 24, // 1 day
     });
-    redirect(302, '/');
+    redirect(302, '/home');
   },
 } satisfies Actions;

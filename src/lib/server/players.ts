@@ -18,7 +18,8 @@ export async function readAllPlayers(): AsyncResult<Player[], string> {
       })
       .from(players)
       .leftJoin(teams, eq(players.teamId, teams.id))
-      .leftJoin(divisions, eq(teams.divisionId, divisions.id));
+      .leftJoin(divisions, eq(teams.divisionId, divisions.id))
+      .orderBy(players.summonerName);
     return Ok(res);
   } catch (e) {
     console.log(e);
@@ -65,7 +66,7 @@ export async function readPlayerByRiotId(
       .leftJoin(teams, eq(players.teamId, teams.id))
       .leftJoin(divisions, eq(teams.divisionId, divisions.id))
       .where(sql`lower(${players.summonerName}) = lower(${riotId})`);
-    if (res.length > 0) return Err(`Player '${riotId}' not found.`);
+    if (res.length === 0) return Err(`Player '${riotId}' not found.`);
     return Ok(res[0]);
   } catch (e) {
     console.log(e);
@@ -86,7 +87,6 @@ export async function createPlayer(
   const [gameName, tagLine] = summonerName.split('#');
   // Check riot id exists
   const account = await fetchAccountByRiotId(gameName, tagLine);
-  console.log(account);
   if (!Success(account)) return account;
   // Check player doesn't already exist
   const player = await readPlayerByPuuid(account.unwrap().puuid);

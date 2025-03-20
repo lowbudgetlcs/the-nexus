@@ -1,39 +1,17 @@
-import { env } from '$env/dynamic/private';
-import { usersDb } from '$lib/server/db/users';
-import { users } from '$lib/server/db/users/schema';
-import type { Handle } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
-import jwt from 'jsonwebtoken';
+import { authenticate } from '$lib/server/auth';
+import { type Handle, redirect } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
+  // Get authentication cookie
   const authCookie = event.cookies.get('AuthorizationToken');
 
   if (authCookie) {
     // Remove Bearer prefix
     const token = authCookie.split(' ')[1];
-
-    try {
-      const jwtUser = jwt.verify(token, env.JWT_SECRET_KEY);
-      if (typeof jwtUser === 'string') {
-        throw new Error('Something went wrong');
-      }
-
-      const res = await usersDb.select().from(users).where(eq(users.id, jwtUser.id));
-
-      if (res.length == 0) {
-        throw new Error('User not found');
-      }
-      const user = res[0];
-
-      const sessionUser = {
-        id: user.id,
-        username: user.username,
-      };
-
-      event.locals.user = sessionUser;
-    } catch (error) {
-      console.error(error);
-    }
+    event.locals.user = await authenticate(token);
+  }
+  if (!event.url.pathname.startsWith('/login')) {
+    if (!event.locals.user) throw redirect(303, '/login');
   }
 
   const response = await resolve(event);

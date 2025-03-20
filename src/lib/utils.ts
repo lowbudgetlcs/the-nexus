@@ -5,13 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function sanitize(str: string): string;
-export function sanitize(str: string | null): string | null;
-export function sanitize(str: string | null): string | null {
-  return str?.trim() ?? null;
-}
-
-// Defualt error message to users
+// Default error message to users
 export const unexpectedError: string = 'An unexpected error has occured.';
 
 // Result Type
