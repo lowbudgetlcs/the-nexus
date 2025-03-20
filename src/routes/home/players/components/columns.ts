@@ -13,25 +13,21 @@ export const columns: ColumnDef<Player>[] = [
         onclick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
       });
     },
-    // @ts-expect-error Custom filter function
-    filterFn: 'fuzzy',
   },
   {
-    accessorKey: 'team',
+    id: 'team',
+    accessorFn: row => row.team ?? '',
     header: ({ column }) => {
       return renderComponent(DataTableSortButton, {
         column: 'Team',
         onclick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
       });
     },
-    // @ts-expect-error Custom filter function
-    filterFn: 'fuzzy',
   },
   {
-    accessorKey: 'division',
+    id: 'division',
+    accessorFn: row => row.division ?? '',
     header: 'Division',
-    // @ts-expect-error Custom filter function
-    filterFn: 'fuzzy',
   },
   {
     id: 'actions',

@@ -35,7 +35,6 @@
     // Return if the item should be filtered in/out
     return itemRank.passed;
   };
-
   const table = createSvelteTable({
     get data() {
       return data;
