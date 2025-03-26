@@ -16,8 +16,8 @@
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
+    --border: 240 5.9% 80%;
+    --input: 240 5.9% 85%;
 
     --primary: 240 5.9% 10%;
     --primary-foreground: 0 0% 98%;
@@ -35,7 +35,7 @@
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 80%;
+    --sidebar-background: 0 0% 90%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;

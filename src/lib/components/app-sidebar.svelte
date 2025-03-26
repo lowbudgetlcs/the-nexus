@@ -31,13 +31,13 @@
   ];
 </script>
 
-<Sidebar.Root variant="floating">
+<Sidebar.Root>
   <Sidebar.Header>
     <Sidebar.MenuRow>
       <Sidebar.MenuItem>
         <Sidebar.MenuButton>
           {#snippet child({ props })}
-            <a href="/home" {...props}><Atom />The Nexus</a>
+            <a href="/home" class="text-2xl" {...props}><Atom size={64} />The Nexus</a>
           {/snippet}
         </Sidebar.MenuButton>
       </Sidebar.MenuItem>
@@ -57,15 +57,16 @@
             <Sidebar.MenuItem>
               <Sidebar.MenuButton>
                 {#snippet child({ props })}
+                  {@const Icon = item.icon}
                   {#if item.url}
                     <a href={item.url} {...props}>
-                      <item.icon />
-                      <span>{item.title}</span>
+                      <Icon size=64 />
+                      <span class="text-2xl">{item.title}</span>
                     </a>
                   {:else}
                     <p {...props}>
-                      <item.icon />
-                      <span>{item.title}</span>
+                      <Icon />
+                      <span class="text-2xl">{item.title}</span>
                     </p>
                   {/if}
                 {/snippet}

@@ -53,9 +53,9 @@
   setRemoveTeamToggle(removeTeamToggle);
 </script>
 
-<section class="mr-8 mt-1 rounded">
-  <h1 class="text-6xl">Players</h1>
-  <div class="items-center justify-center">
+<section class="ml-2 mr-8 mt-1 flex-1 rounded">
+  <h1 class="mb-6 mt-8 text-6xl font-semibold">Players</h1>
+  <div class="max-w-[1400px]">
     {#key players.length}
       <PlayerDataTable data={players} {columns} />
     {/key}

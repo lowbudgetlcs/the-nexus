@@ -1,10 +1,8 @@
 <script lang="ts" generics="TData, TValue">
   import {
     type ColumnDef,
-    type PaginationState,
     type SortingState,
     getCoreRowModel,
-    getPaginationRowModel,
     getSortedRowModel,
     getFilteredRowModel,
     type FilterFn,
@@ -15,6 +13,7 @@
   import { rankItem } from '@tanstack/match-sorter-utils';
   import { getCreatePlayerToggle } from '../+page.svelte';
   import Button from '$lib/components/ui/button/button.svelte';
+  import ScrollArea from '$lib/components/ui/scroll-area/scroll-area.svelte';
 
   type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
@@ -22,7 +21,6 @@
   };
 
   let { columns, data }: DataTableProps<TData, TValue> = $props();
-  let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
   let sorting = $state<SortingState>([]);
   let globalFilter = $state('');
   const fuzzyFilter: FilterFn<TData> = (row, columnId, value, addMeta) => {
@@ -41,7 +39,6 @@
     },
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     filterFns: {
@@ -56,13 +53,6 @@
         sorting = updater;
       }
     },
-    onPaginationChange: (updater) => {
-      if (typeof updater === 'function') {
-        pagination = updater(pagination);
-      } else {
-        pagination = updater;
-      }
-    },
     onGlobalFilterChange: (updater) => {
       if (typeof updater === 'function') {
         globalFilter = updater(globalFilter);
@@ -74,9 +64,6 @@
       get globalFilter() {
         return globalFilter;
       },
-      get pagination() {
-        return pagination;
-      },
       get sorting() {
         return sorting;
       },
@@ -87,22 +74,15 @@
 </script>
 
 <section>
-  <div class="flex items-end justify-between py-2">
+  <div class="flex flex-row justify-between py-2">
     <DataTable.GlobalFilter {table} />
-  </div>
-  <div class="rounded-md border">
-    <Table.Root>
-      <DataTable.Header {table} />
-      <DataTable.Body {table} {columns} />
-    </Table.Root>
-  </div>
-  <div class="flex flex-row justify-between py-4">
-    <Button
-      variant="outline"
-      size="sm"
-      class="py-4"
-      onclick={() => (toggle.toggle = !toggle.toggle)}>Create Player</Button
+    <Button class="py-4" onclick={() => (toggle.toggle = !toggle.toggle)}
+      >Create Player</Button
     >
-    <DataTable.PageButtons {table} />
   </div>
+  <ScrollArea class="h-[1000px]">
+    <div class="rounded-md border">
+      <DataTable.Datatable {table} {columns} />
+    </div>
+  </ScrollArea>
 </section>
