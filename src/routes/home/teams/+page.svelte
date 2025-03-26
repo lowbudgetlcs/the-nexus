@@ -52,11 +52,14 @@
   setRemoveDivisionToggle(removeDivisionToggle);
 </script>
 
-<section class="flex w-full items-center justify-center">
-  {#key teams.length}
-    <TeamDataTable data={teams} {columns} />
-  {/key}
-  <CreateTeamDialog />
-  <ChangeDivisionDialog />
-  <RemoveDivisionDialog />
+<section class="ml-2 mr-8 mt-1 flex-1 rounded">
+  <h1 class="mb-6 mt-8 text-6xl font-semibold">Teams</h1>
+  <div class="max-w-[1400px]">
+    {#key teams.length}
+      <TeamDataTable data={teams} {columns} />
+    {/key}
+  </div>
 </section>
+<CreateTeamDialog />
+<ChangeDivisionDialog />
+<RemoveDivisionDialog />

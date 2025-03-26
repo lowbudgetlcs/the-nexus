@@ -1,10 +1,8 @@
 <script lang="ts" generics="TData, TValue">
   import {
     type ColumnDef,
-    type PaginationState,
     type SortingState,
     getCoreRowModel,
-    getPaginationRowModel,
     getSortedRowModel,
     getFilteredRowModel,
     type FilterFn,
@@ -12,10 +10,10 @@
   import * as Table from '$lib/components/ui/table';
   import { createSvelteTable } from '$lib/components/ui/data-table';
   import * as DataTable from '$lib/components/datatable/index';
-  import CreateTeamDialog from './create-team-dialog.svelte';
   import { rankItem } from '@tanstack/match-sorter-utils';
   import Button from '$lib/components/ui/button/button.svelte';
   import { getCreateTeamToggle } from '../+page.svelte';
+    import ScrollArea from '$lib/components/ui/scroll-area/scroll-area.svelte';
 
   type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
@@ -23,7 +21,6 @@
   };
 
   let { columns, data }: DataTableProps<TData, TValue> = $props();
-  let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
   let sorting = $state<SortingState>([]);
   let globalFilter = $state('');
   const fuzzyFilter: FilterFn<TData> = (row, columnId, value, addMeta) => {
@@ -43,7 +40,6 @@
     },
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     filterFns: {
@@ -58,13 +54,6 @@
         sorting = updater;
       }
     },
-    onPaginationChange: (updater) => {
-      if (typeof updater === 'function') {
-        pagination = updater(pagination);
-      } else {
-        pagination = updater;
-      }
-    },
     onGlobalFilterChange: (updater) => {
       if (typeof updater === 'function') {
         globalFilter = updater(globalFilter);
@@ -76,9 +65,6 @@
       get globalFilter() {
         return globalFilter;
       },
-      get pagination() {
-        return pagination;
-      },
       get sorting() {
         return sorting;
       },
@@ -88,17 +74,11 @@
 </script>
 
 <section>
-  <div class="flex items-center justify-between py-4">
+  <div class="flex items-center justify-between py-2">
     <DataTable.GlobalFilter {table} />
-    <Button variant="outline" onclick={() => (toggle.toggle = !toggle.toggle)}>Create Team</Button>
+    <Button class="py-4" variant="outline" onclick={() => (toggle.toggle = !toggle.toggle)}>Create Team</Button>
   </div>
-  <div class="rounded-md border">
-    <Table.Root>
-      <DataTable.Header {table} />
-      <DataTable.Body {table} {columns} />
-    </Table.Root>
-  </div>
-  <div class="flex flex-row justify-between">
-    <DataTable.PageButtons {table} />
-  </div>
+  <ScrollArea class="h-[1000px] rounded border">
+    <DataTable.Datatable {table} {columns} />
+  </ScrollArea>
 </section>
