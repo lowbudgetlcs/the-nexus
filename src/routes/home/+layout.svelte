@@ -2,13 +2,15 @@
   import { Toaster } from '$lib/components/ui/sonner';
   import * as Sidebar from '$lib/components/ui/sidebar';
   import AppSidebar from '$lib/components/app-sidebar.svelte';
+  import type { LayoutProps } from './$types';
 
-  let { children } = $props();
+  let { data, children }: LayoutProps = $props();
+  let { user } = data;
 </script>
 
 <Sidebar.Provider>
-  <div class="flex mr-4">
-    <AppSidebar />
+  <div class="mr-4 flex">
+    <AppSidebar {user} />
     <Sidebar.Trigger class="" />
   </div>
   <main class="h-screen w-screen">
