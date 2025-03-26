@@ -1,13 +1,20 @@
 <script lang="ts">
   import * as Sidebar from '$lib/components/ui/sidebar/index.js';
   import ThemeSwitch from '$lib/components/theme-switch.svelte';
+  import { type Icon as IconType } from '@lucide/svelte';
   import Atom from '@lucide/svelte/icons/atom';
   import User from '@lucide/svelte/icons/user-round';
   import Users from '@lucide/svelte/icons/users-round';
   import Hash from '@lucide/svelte/icons/hash';
   import Shield from '@lucide/svelte/icons/shield-half';
 
-  const items = [
+  type SidebarItem = {
+    title: string;
+    url: string;
+    icon: typeof IconType
+  }
+
+  const items: SidebarItem[] = [
     {
       title: 'Players',
       url: '/home/players',
@@ -35,9 +42,12 @@
   <Sidebar.Header>
     <Sidebar.MenuRow>
       <Sidebar.MenuItem>
-        <Sidebar.MenuButton>
+        <Sidebar.MenuButton size="lg">
           {#snippet child({ props })}
-            <a href="/home" class="text-2xl" {...props}><Atom size={64} />The Nexus</a>
+            <a href="/home" {...props}>
+              <Atom size={48} />
+              <span class="text-xl">The Nexus</span>
+            </a>
           {/snippet}
         </Sidebar.MenuButton>
       </Sidebar.MenuItem>
@@ -55,18 +65,18 @@
         <Sidebar.Menu>
           {#each items as item (item.title)}
             <Sidebar.MenuItem>
-              <Sidebar.MenuButton>
+              <Sidebar.MenuButton size="lg">
                 {#snippet child({ props })}
                   {@const Icon = item.icon}
                   {#if item.url}
                     <a href={item.url} {...props}>
-                      <Icon size=64 />
-                      <span class="text-2xl">{item.title}</span>
+                      <Icon size={48} />
+                      <span class="text-xl">{item.title}</span>
                     </a>
                   {:else}
                     <p {...props}>
-                      <Icon />
-                      <span class="text-2xl">{item.title}</span>
+                      <Icon size={48}/>
+                      <span class="text-xl">{item.title}</span>
                     </p>
                   {/if}
                 {/snippet}

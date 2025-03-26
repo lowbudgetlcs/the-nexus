@@ -76,13 +76,9 @@
 <section>
   <div class="flex flex-row justify-between py-2">
     <DataTable.GlobalFilter {table} />
-    <Button class="py-4" onclick={() => (toggle.toggle = !toggle.toggle)}
-      >Create Player</Button
-    >
+    <Button class="py-4" onclick={() => (toggle.toggle = !toggle.toggle)}>Create Player</Button>
   </div>
-  <ScrollArea class="h-[1000px]">
-    <div class="rounded-md border">
-      <DataTable.Datatable {table} {columns} />
-    </div>
+  <ScrollArea class="h-[1000px] rounded border">
+    <DataTable.Datatable {table} {columns} />
   </ScrollArea>
 </section>
