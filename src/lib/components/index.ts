@@ -1,4 +1,3 @@
-import Navbar from './navbar.svelte';
-import ThemeSwitch from './theme-switch.svelte';
+import Sidebar from './app-sidebar.svelte';
 
-export { Navbar, ThemeSwitch };
+export { Sidebar };

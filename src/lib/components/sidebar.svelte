@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Toaster } from '$lib/components/ui/sonner';
   import * as Sidebar from '$lib/components/ui/sidebar';
   import AppSidebar from '$lib/components/app-sidebar.svelte';
 
@@ -7,13 +6,9 @@
 </script>
 
 <Sidebar.Provider>
-  <div class="flex mr-4">
-    <AppSidebar />
-    <Sidebar.Trigger class="" />
-  </div>
-  <main class="h-screen w-screen">
+  <AppSidebar />
+  <main>
+    <Sidebar.Trigger />
     {@render children?.()}
   </main>
 </Sidebar.Provider>
-
-<Toaster />

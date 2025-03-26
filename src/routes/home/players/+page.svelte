@@ -53,7 +53,7 @@
   setRemoveTeamToggle(removeTeamToggle);
 </script>
 
-<section class="flex w-full items-center justify-center">
+<section class="items-center justify-center">
   {#key players.length}
     <PlayerDataTable data={players} {columns} />
   {/key}
