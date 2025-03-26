@@ -89,8 +89,6 @@
 <section>
   <div class="flex items-end justify-between py-2">
     <DataTable.GlobalFilter {table} />
-    <Button variant="outline" onclick={() => (toggle.toggle = !toggle.toggle)}>Create Player</Button
-    >
   </div>
   <div class="rounded-md border">
     <Table.Root>
@@ -98,7 +96,13 @@
       <DataTable.Body {table} {columns} />
     </Table.Root>
   </div>
-  <div class="flex flex-row justify-between">
+  <div class="flex flex-row justify-between py-4">
+    <Button
+      variant="outline"
+      size="sm"
+      class="py-4"
+      onclick={() => (toggle.toggle = !toggle.toggle)}>Create Player</Button
+    >
     <DataTable.PageButtons {table} />
   </div>
 </section>

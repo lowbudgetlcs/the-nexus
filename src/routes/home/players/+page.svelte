@@ -53,11 +53,14 @@
   setRemoveTeamToggle(removeTeamToggle);
 </script>
 
-<section class="items-center justify-center">
-  {#key players.length}
-    <PlayerDataTable data={players} {columns} />
-  {/key}
-  <CreatePlayerDialog />
-  <ChangeTeamDialog />
-  <RemoveTeamDialog />
+<section class="mr-8 mt-1 rounded">
+  <h1 class="text-6xl">Players</h1>
+  <div class="items-center justify-center">
+    {#key players.length}
+      <PlayerDataTable data={players} {columns} />
+    {/key}
+  </div>
 </section>
+<CreatePlayerDialog />
+<ChangeTeamDialog />
+<RemoveTeamDialog />
