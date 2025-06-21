@@ -2,7 +2,10 @@ name: Deploy on Prod
 
 on:
   push:
-    branches: ['main']
+    branches: 
+      ['main']
+    paths-ignore:
+      - '**/.md'
 
 jobs:
   env:
