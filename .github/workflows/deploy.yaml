@@ -71,7 +71,7 @@ jobs:
             echo DATABASE_URL="${{ secrets.DATABASE_URL }}" >> .env
             echo NODE_ENV="${{ env.NODE_ENV }}" >> .env
             echo RIOT_API_TOKEN="${{ secrets.RIOT_API_TOKEN }}" >> .env
-            docker-compose down
-            docker-compose pull
-            docker-compose up -d
+            docker compose down
+            docker compose pull
+            docker compose up -d
             rm -rf ./.env
