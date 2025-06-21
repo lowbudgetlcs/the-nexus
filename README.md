@@ -2,6 +2,7 @@
 
 The sveltekit frontend to [Dennys](https://github.com/lowbudgetlcs/dennys)
 
+
 ### Build & Deploy
 
 There is a convenient Makefile that contains all the build and deploy commands.
