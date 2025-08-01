@@ -2,6 +2,8 @@
 APP_NAME = the-nexus
 PORT = 3000
 
+all: build run
+
 # Build the Docker image
 build:
 	docker build -t $(APP_NAME) -f Dockerfile .
