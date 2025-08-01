@@ -36,8 +36,9 @@
   import { columns } from './components/columns';
   import type { Player } from '$lib/types/models';
   import CreatePlayerDialog from './components/create-player-dialog.svelte';
+  import type { PageProps } from './$types';
 
-  let { data } = $props();
+  let { data }: PageProps = $props();
   let { createPlayerSuperform, changeTeamSuperform, removeTeamSuperform } = data;
   const { players } = $derived(data);
   setCreatePlayerForm(createPlayerSuperform);

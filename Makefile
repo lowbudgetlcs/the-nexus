@@ -6,10 +6,10 @@ all: build run
 
 # Build the Docker image
 build:
-	docker build -t $(APP_NAME) -f Dockerfile .
+	docker build -t $(APP_NAME) -f docker/Dockerfile .
 
 build-debug:
-	docker build --no-cache --progress=plain -t $(APP_NAME) -f Dockerfile .
+	docker build --no-cache --progress=plain -t $(APP_NAME) -f docker/Dockerfile .
 
 run:
 	docker-compose up

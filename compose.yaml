@@ -1,9 +1,12 @@
 services:
   the-nexus:
     image: the-nexus
+    build: 
+      context: .
+      dockerfile: docker/Dockerfile
     container_name: the-nexus-container
     ports:
-      - 3000:3000
+      - "127.0.0.1:3000:3000"
     env_file: .env
     environment:
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}

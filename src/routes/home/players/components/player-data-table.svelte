@@ -7,7 +7,6 @@
     getFilteredRowModel,
     type FilterFn,
   } from '@tanstack/table-core';
-  import * as Table from '$lib/components/ui/table';
   import { createSvelteTable } from '$lib/components/ui/data-table';
   import * as DataTable from '$lib/components/datatable/index';
   import { rankItem } from '@tanstack/match-sorter-utils';

@@ -11,9 +11,13 @@ import { checkTeamExists } from '$lib/server/teams';
 import { Success } from '$lib/utils';
 
 export const load: PageServerLoad = async () => {
-  const players = await readAllPlayers();
+  return {
+    players: readAllPlayers().catch(() => {})
+  };
+  /*const players = await readAllPlayers();
   if (Success(players)) return { players: players.unwrap() };
   else return { players: [] };
+    */
 };
 
 export const actions = {
