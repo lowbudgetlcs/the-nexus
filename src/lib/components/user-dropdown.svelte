@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
   import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-  import type { SessionUser } from '$lib/user';
+  import type { SessionUser } from '$lib/server/db/users';
   import { Button } from '$lib/components/ui/button';
   import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
   import User from '@lucide/svelte/icons/user';
