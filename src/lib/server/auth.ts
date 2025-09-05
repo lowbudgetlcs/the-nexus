@@ -1,9 +1,10 @@
 import argon2 from 'argon2';
-import { env } from '$env/dynamic/private';
 import jwt from 'jsonwebtoken';
-import { type AsyncResult, Ok, Err, Success } from '$lib/utils';
-import { readUserById, readUserByUsername } from './users';
-import type { SessionUser } from '$lib/types/models';
+
+import { env } from '$env/dynamic/private';
+import { type AsyncResult, Ok, Err, Success } from '$lib/result';
+import { readUserById, readUserByUsername, type SessionUser } from '$lib/server/db/users';
+
 
 export const authenticate = async (token: string): Promise<SessionUser | null> => {
   try {
@@ -31,8 +32,9 @@ export async function login(username: string, password: string): AsyncResult<str
   const res = await readUserByUsername(username);
   if (!Success(res)) return res;
   const user = res.unwrap();
+  const pepper = env.PASSWORD_PEPPER;
   try {
-    if (await argon2.verify(user.password, password)) {
+    if (await argon2.verify(user.password, password, { secret: Buffer.from(pepper) })) {
       const jwtUser = {
         id: user.id,
         username: user.username,
@@ -52,8 +54,9 @@ export async function login(username: string, password: string): AsyncResult<str
 }
 
 export async function hash(password: string): AsyncResult<string, string> {
+  const pepper = env.PASSWORD_PEPPER;
   try {
-    const hash = await argon2.hash(password);
+    const hash = await argon2.hash(password, { secret: Buffer.from(pepper) });
     return Ok(hash);
   } catch (e) {
     console.log(e);

@@ -2,8 +2,11 @@
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
+bun.lock
+bun.lockb
 node_modules
-.svelte-kit
-.yarn
-.github
+
+# Miscellaneous
+/static/
+/drizzle/
 src/lib/components/ui
