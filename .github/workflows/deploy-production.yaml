@@ -3,10 +3,8 @@ name: Deploy production application
 on:
   push:
     paths-ignore:
-      - 'docker/**'
       - '.gitignore'
       - '*.md'
-      - '*.txt'
       - 'shell.nix'
       - 'Makefile'
       - 'compose.yml'
@@ -32,7 +30,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          file: docker/Dockerfile
+          file: Dockerfile
           push: true
           tags: lblcs/the-nexus:latest
 
@@ -49,13 +47,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /lblcs/docker/the-nexus
-            echo JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}" > .env
-            echo ORIGIN="${{ secrets.ORIGIN }}" >> .env
-            echo USERS_DB_PATH="${{ secrets.USERS_DB_PATH }}" >> .env
-            echo DATABASE_URL="${{ secrets.DATABASE_URL }}" >> .env
-            echo NODE_ENV="${{ env.NODE_ENV }}" >> .env
-            echo RIOT_API_TOKEN="${{ secrets.RIOT_API_TOKEN }}" >> .env
             docker compose down
             docker compose pull
             docker compose up -d
-            rm -f ./.env
