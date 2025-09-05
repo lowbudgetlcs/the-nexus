@@ -33,6 +33,22 @@
       ],
     },
     {
+      title: 'Stats',
+      url: '#',
+      items: [
+        {
+          title: 'Series',
+          url: '/home/series',
+          active: false,
+        },
+        {
+          title: 'Games',
+          url: '/admin/games',
+          active: false,
+        },
+      ],
+    },
+    {
       title: 'Administration',
       url: '#',
       items: [
