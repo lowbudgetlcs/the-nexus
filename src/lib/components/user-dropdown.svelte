@@ -29,11 +29,12 @@
       </DropdownMenu.Trigger>
       <DropdownMenu.Content class="w-(--bits-dropdown-menu-anchor-width)" align="start">
         <DropdownMenu.Item>
-          <form method="POST" action="/?/logout">
-            <Button variant="ghost" type="submit">Sign Out</Button>
-          </form>
+          <Button variant="ghost" class="flex size-full justify-start" type="submit" form="sign-out"
+            >Sign Out</Button
+          >
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   </Sidebar.MenuItem>
+  <form id="sign-out" method="POST" action="/?/logout"></form>
 </Sidebar.Menu>

@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-  <title>Home</title>
+  <title>Events</title>
 </svelte:head>
 
 <section>

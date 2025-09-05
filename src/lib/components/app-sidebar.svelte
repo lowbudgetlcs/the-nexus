@@ -1,72 +1,3 @@
-<script lang="ts" module>
-  type SidebarItem = {
-    title: string;
-    url: string;
-    active: boolean;
-  };
-
-  type SidebarData = {
-    title: string;
-    url: string;
-    items: SidebarItem[];
-  };
-  const navMain: SidebarData[] = [
-    {
-      title: 'Rosters',
-      url: '#',
-      items: [
-        {
-          title: 'Events',
-          url: '/home/events',
-          active: false,
-        },
-        {
-          title: 'Teams',
-          url: '/home/teams',
-          active: false,
-        },
-        {
-          title: 'Players',
-          url: '/home/players',
-          active: false,
-        },
-      ],
-    },
-    {
-      title: 'Stats',
-      url: '#',
-      items: [
-        {
-          title: 'Series',
-          url: '/home/series',
-          active: false,
-        },
-        {
-          title: 'Games',
-          url: '/admin/games',
-          active: false,
-        },
-      ],
-    },
-    {
-      title: 'Administration',
-      url: '#',
-      items: [
-        {
-          title: 'Users',
-          url: '/admin/user',
-          active: false,
-        },
-        {
-          title: 'Dennys Settings',
-          url: '/admin/user',
-          active: false,
-        },
-      ],
-    },
-  ];
-</script>
-
 <script lang="ts">
   import HomeButton from '$lib/components/home-button.svelte';
   import UserDropdown from '$lib/components/user-dropdown.svelte';
@@ -74,13 +5,15 @@
   import * as Sidebar from '$lib/components/ui/sidebar/index.js';
   import { Button } from '$lib/components/ui/button';
   import type { SessionUser } from '$lib/server/db/users';
+  import type { SidebarData } from '$lib/sidebar';
   import type { ComponentProps } from 'svelte';
 
   let {
     ref = $bindable(null),
     user,
+    items,
     ...restProps
-  }: ComponentProps<typeof Sidebar.Root> & { user: SessionUser } = $props();
+  }: ComponentProps<typeof Sidebar.Root> & { user: SessionUser; items: SidebarData[] } = $props();
 </script>
 
 <Sidebar.Root {...restProps} bind:ref>
@@ -91,16 +24,16 @@
     </div>
   </Sidebar.Header>
   <Sidebar.Content>
-    {#each navMain as group (group.title)}
+    {#each items as group (group.title)}
       <Sidebar.Group>
         <Sidebar.GroupLabel>{group.title}</Sidebar.GroupLabel>
         <Sidebar.GroupContent>
           <Sidebar.Menu>
             {#each group.items as item (item.title)}
               <Sidebar.MenuItem>
-                <Sidebar.MenuButton size="lg">
-                  <Button href={item.url} variant="ghost" disabled={!item.active}
-                    >{item.title}</Button
+                <Sidebar.MenuButton size="lg" class="p-0" aria-disabled={!item.active}>
+                  <Button href={item.url} variant="ghost" class="flex size-full justify-start">
+                    <span>{item.title}</span></Button
                   >
                 </Sidebar.MenuButton>
               </Sidebar.MenuItem>

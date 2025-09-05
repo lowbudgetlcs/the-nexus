@@ -7,10 +7,11 @@
 
   let { data, children }: LayoutProps = $props();
   const user = data.user;
+  const items = data.sidebarItems;
 </script>
 
 <Sidebar.Provider>
-  <AppSidebar {user} />
+  <AppSidebar {user} {items} />
   <div class="flex flex-1 flex-col">
     <header class="flex h-16 shrink-0 items-center gap-2 border-b px-4">
       <Sidebar.Trigger class="-ml-1" />
