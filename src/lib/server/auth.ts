@@ -1,9 +1,10 @@
 import argon2 from 'argon2';
-import { env } from '$env/dynamic/private';
 import jwt from 'jsonwebtoken';
-import { type AsyncResult, Ok, Err, Success } from '$lib/utils';
-import { readUserById, readUserByUsername } from './users';
-import type { SessionUser } from '$lib/types/models';
+
+import { env } from '$env/dynamic/private';
+import { type AsyncResult, Ok, Err, Success } from '$lib/result';
+import { readUserById, readUserByUsername } from './db/users';
+
 
 export const authenticate = async (token: string): Promise<SessionUser | null> => {
   try {
