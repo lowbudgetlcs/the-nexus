@@ -1,5 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import pino from 'pino';
+const logger = pino();
 
 export const load: PageServerLoad = async ({ locals }) => {
   const user = locals.user;
@@ -9,7 +11,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions = {
-  logout: async ({ cookies }) => {
+  logout: async ({ locals, cookies }) => {
+    logger.info(`'${locals.user.username}' logged out!`);
     cookies.delete('AuthorizationToken', {
       path: '/',
     });

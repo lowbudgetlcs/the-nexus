@@ -11,7 +11,8 @@ export const handle: Handle = async ({ event, resolve }) => {
     event.locals.user = await authenticate(token);
   }
   if (!event.url.pathname.startsWith('/login')) {
-    if (!event.locals.user) redirect(302, '/login');
+    if (!event.locals.user) 
+      redirect(302, '/login');
   }
 
   const response = await resolve(event);

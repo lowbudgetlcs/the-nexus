@@ -1,5 +1,5 @@
 {
-  "useTabs": false,
+  "arrowParens": "avoid",
   "singleQuote": true,
   "trailingComma": "all",
   "printWidth": 100,
@@ -11,5 +11,10 @@
         "parser": "svelte"
       }
     }
-  ]
+  ],
+  "quoteProps": "consistent",
+  "semi": true,
+  "svelteSortOrder": "options-scripts-markup-styles",
+  "useTabs": false,
+  "tailwindStylesheet": "./src/app.css"
 }

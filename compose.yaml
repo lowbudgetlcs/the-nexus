@@ -1,17 +1,12 @@
 services:
   the-nexus:
-    image: the-nexus
-    build: 
+    image: the-nexus:local
+    build:
       context: .
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile
     container_name: the-nexus-container
+    env_file: .env
     ports:
       - "127.0.0.1:3000:3000"
-    env_file: .env
-    environment:
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
-      - RIOT_API_TOKEN=${RIOT_API_TOKEN}
-      - DATABASE_URL=${DATABASE_URL}
-      - ORIGIN=${ORIGIN}
     volumes:
       - ./sqlite.db:/app/sqlite.db:rw
