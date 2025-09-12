@@ -1,5 +1,9 @@
 <script lang="ts">
-  import FakeTable from '$lib/components/fake-table.svelte';
+  import { type PageProps } from './$types';
+  import DataTable from './data-table.svelte';
+  import { columns } from './columns';
+
+  let { data }: PageProps = $props();
 </script>
 
 <svelte:head>
@@ -7,5 +11,5 @@
 </svelte:head>
 
 <section>
-  <FakeTable />
+  <DataTable data={data.events} {columns} />
 </section>

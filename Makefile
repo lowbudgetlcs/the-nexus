@@ -27,5 +27,9 @@ erase: stop clean
 logs:
 	docker logs -f $(APP_NAME)-container
 
-.PHONY: build run run-interactive stop clean restart logs ps all erase build-debug
+dev:
+	pnpm dev
+
+.PHONY: build run run-interactive stop clean restart logs ps all erase build-debug dev
+
 
